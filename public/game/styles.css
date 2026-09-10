@@ -1,0 +1,107 @@
+:root {
+  color-scheme: dark;
+  --ink: #f6ecdb;
+  --muted: #c7bcb2;
+  --red: #ff4d58;
+  --red-dark: #7d2236;
+  --gold: #edc66f;
+  --panel: rgba(10, 11, 17, .9);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; touch-action: none; }
+body { background: #050609; color: var(--ink); font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; user-select: none; }
+button { color: inherit; font: inherit; }
+#app { display: grid; width: 100%; height: 100%; place-items: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background: radial-gradient(circle at 50% 20%, #25151d, #050609 72%); }
+#game-root { position: relative; width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16)); width: min(100vw, calc(100dvh * 16 / 9)); height: min(100dvh, calc(100vw * 9 / 16)); min-width: 568px; min-height: 320px; overflow: hidden; background: #090a0f; box-shadow: 0 0 80px #000; isolation: isolate; }
+#game { display: block; width: 100%; height: 100%; touch-action: none; }
+
+.screen { position: absolute; inset: 0; z-index: 20; display: none; overflow: hidden; background: radial-gradient(circle at 70% 30%, #47202b, #17121a 45%, #08090d 90%); }
+.screen.active { display: block; animation: screen-in .35s ease-out; }
+@keyframes screen-in { from { opacity: 0; transform: scale(1.015); } }
+
+.title-atmosphere { position: absolute; inset: 0; background: radial-gradient(circle at 71% 26%, #ff465433 0 13%, transparent 34%), linear-gradient(90deg, #08090df2 0 29%, transparent 60%), repeating-linear-gradient(115deg, transparent 0 26px, #ffffff06 27px 28px); }
+.title-atmosphere::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 24%; border-top: 1px solid #f4c76d29; background: repeating-linear-gradient(135deg,#16151a 0 18px,#101015 18px 36px); transform: perspective(300px) rotateX(47deg); transform-origin: bottom; }
+.title-hero { position: absolute; z-index: 1; pointer-events: none; object-fit: contain; filter: drop-shadow(0 30px 26px #000b); }
+.title-hero.hero-a { width: 61%; right: 24%; bottom: -4%; }
+.title-hero.hero-b { width: 46%; right: -7%; bottom: 1%; opacity: .66; transform: scaleX(-1); }
+.title-copy { position: absolute; z-index: 3; left: clamp(34px, 7.4%, 96px); top: 21%; width: 38%; min-width: 340px; text-shadow: 0 4px 20px #000; }
+.title-copy small, .panel-title small, .shop-panel > small, .result-panel > small { color: var(--gold); font-size: clamp(9px, .9vw, 13px); font-weight: 900; letter-spacing: .28em; }
+.title-copy h1 { margin: 2px 0 12px; font-family: Impact, "STKaiti", serif; font-size: clamp(56px, 8vw, 112px); line-height: .96; letter-spacing: .03em; text-shadow: 0 5px 0 #651e2f, 0 16px 34px #000; }
+.title-copy p { max-width: 430px; margin: 0 0 24px; color: #ded2cb; font-size: clamp(13px, 1.25vw, 18px); line-height: 1.75; }
+.primary-button { min-width: 190px; border: 1px solid #ffc09b; border-radius: 4px; padding: 13px 23px; background: linear-gradient(135deg,#e93d48,#8f253c); box-shadow: 0 12px 30px #0009, inset 0 1px #fff6; font-weight: 900; letter-spacing: .1em; cursor: pointer; }
+.primary-button:active { transform: translateY(2px); filter: brightness(.9); }
+.key-hint { display: block; margin-top: 17px; color: #aaa0a0; font-size: clamp(9px, .8vw, 12px); letter-spacing: .05em; }
+
+.panel-title { position: absolute; z-index: 3; top: 6%; left: 7%; }
+.panel-title h2, .shop-panel h2, .result-panel h2 { margin: 3px 0 6px; font: 900 clamp(34px, 4vw, 62px)/1.05 "STKaiti", Georgia, serif; letter-spacing: .04em; }
+.panel-title p { margin: 0; color: var(--muted); font-size: clamp(11px, 1vw, 15px); }
+.fighter-grid { position: absolute; inset: 22% 7% 9%; display: grid; grid-template-columns: 1fr 1fr; gap: 3%; }
+.fighter-card { position: relative; overflow: hidden; border: 1px solid #f3d59b47; border-radius: 9px; background: linear-gradient(140deg,#30202b,#111117 65%); padding: 0; text-align: left; cursor: pointer; box-shadow: inset 0 0 0 1px #ffffff08, 0 18px 50px #0006; }
+.fighter-card::after { content: "选择"; position: absolute; top: 18px; right: 18px; border: 1px solid #f4cc7f6b; padding: 6px 11px; color: #f5d994; font-size: 11px; letter-spacing: .18em; opacity: 0; transform: translateX(8px); transition: .2s; }
+.fighter-card:hover { border-color: #efcc85ad; transform: translateY(-3px); }
+.fighter-card:hover::after { opacity: 1; transform: none; }
+.fighter-art { position: absolute; inset: 0; overflow: hidden; }
+.fighter-art img { width: 113%; height: 100%; object-fit: contain; object-position: 62% 55%; filter: drop-shadow(0 26px 20px #000b); }
+.fighter-art.bike img { width: 250%; max-width: none; height: 190%; transform: translate(-47%, -35%); object-fit: contain; }
+.fighter-info { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: grid; padding: 18px 20px 20px; background: linear-gradient(transparent,#090a0ff5 34%); }
+.fighter-info small { color: var(--gold); font-weight: 800; letter-spacing: .16em; }
+.fighter-info strong { font: 900 clamp(24px, 2.6vw, 42px)/1.2 "STKaiti", serif; }
+.fighter-info em { color: #d1c5bd; font-size: clamp(10px, .9vw, 14px); font-style: normal; }
+.text-button { border: 0; background: transparent; color: #cbbfae; cursor: pointer; }
+.back-title { position: absolute; z-index: 5; top: 7%; right: 7%; font-size: 13px; }
+
+#top-actions { position: absolute; z-index: 11; top: max(16px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); display: none; }
+#top-actions.visible { display: block; }
+.icon-button { width: 38px; height: 38px; border: 1px solid #f2dca64d; border-radius: 50%; background: #0b0c12b8; color: #f6e4c2; font-weight: 900; cursor: pointer; }
+
+#touch-controls { position: absolute; z-index: 12; left: max(28px, env(safe-area-inset-left)); right: max(28px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); display: none; justify-content: space-between; align-items: end; pointer-events: none; }
+#touch-controls.visible { display: flex; }
+#touch-controls > div { display: flex; gap: 13px; align-items: end; pointer-events: auto; }
+#touch-controls button { display: grid; place-items: center; width: clamp(54px, 6.7vw, 82px); aspect-ratio: 1; border: 1px solid #f8dfad78; border-radius: 50%; background: #090b12b8; box-shadow: inset 0 0 0 5px #ffffff08, 0 7px 20px #0007; color: #fff3db; font-size: clamp(18px, 2vw, 28px); font-weight: 900; backdrop-filter: blur(5px); touch-action: none; }
+#touch-controls button.pressed { transform: scale(.92); background: #8e263ed9; border-color: #ffcf93; }
+#touch-controls .touch-right { position: relative; gap: 10px; }
+#touch-controls .touch-right button { width: clamp(52px, 6.1vw, 76px); font-size: clamp(11px, 1.25vw, 16px); }
+#touch-controls .touch-right .attack { width: clamp(66px, 7.3vw, 88px); }
+#touch-controls .touch-right .skill { transform: translateY(-42%); }
+#touch-controls .touch-right .skill.pressed { transform: translateY(-42%) scale(.92); }
+#touch-controls small { display: none; font-size: 8px; opacity: .7; }
+
+.stage-card { position: absolute; z-index: 15; top: 18%; left: 50%; display: none; min-width: 390px; transform: translateX(-50%); text-align: center; text-shadow: 0 4px 20px #000; pointer-events: none; }
+.stage-card.show { display: block; animation: stage-card 2.7s both; }
+.stage-card small { color: var(--gold); font-weight: 900; letter-spacing: .35em; }
+.stage-card h2 { margin: 3px 0; font: 900 clamp(40px, 5vw, 68px)/1.1 "STKaiti", serif; }
+.stage-card p { margin: 0; color: #ddd0c5; font-size: 14px; letter-spacing: .08em; }
+@keyframes stage-card { 0% { opacity: 0; transform: translate(-50%,16px); } 14%,70% { opacity: 1; transform: translate(-50%,0); } 100% { opacity: 0; } }
+
+#shop-screen.active { background: radial-gradient(circle at 30% 35%, #26352d, #120e13 62%, #07080b); }
+.shop-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .34; filter: saturate(.8); }
+.shop-panel { position: absolute; z-index: 3; inset: 8% 8%; padding: 3% 4%; border: 1px solid #e9c9844a; border-radius: 10px; background: #090a0dde; box-shadow: 0 24px 70px #000b; }
+.shop-panel p { margin: 0 0 3%; color: #d7cbc1; font-size: clamp(12px, 1.1vw, 16px); }
+.shop-items { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.shop-items button { display: grid; min-height: 180px; place-items: center; align-content: center; border: 1px solid #efcd8452; border-radius: 8px; padding: 16px; background: linear-gradient(160deg,#282027,#111116); cursor: pointer; }
+.shop-items button:hover { border-color: #efcd84c2; transform: translateY(-3px); background: linear-gradient(160deg,#3a2832,#141419); }
+.shop-items b { display: grid; width: 58px; aspect-ratio: 1; place-items: center; border-radius: 50%; background: #9d2b45; color: #ffe8ae; font-size: 30px; box-shadow: 0 0 26px #e4476755; }
+.shop-items strong { margin-top: 13px; font-size: clamp(16px, 1.6vw, 23px); }
+.shop-items span { margin-top: 4px; color: #bfb2aa; font-size: 12px; }
+
+#result-screen, #pause-screen { background: rgba(5,6,9,.72); backdrop-filter: blur(7px); }
+.result-panel { position: absolute; top: 50%; left: 50%; width: min(620px,80%); transform: translate(-50%,-50%); border: 1px solid #efcd8461; padding: 44px; text-align: center; background: #0b0c12ed; box-shadow: 0 28px 80px #000; }
+.result-panel p { margin: 10px auto 25px; color: #cec1b7; line-height: 1.7; }
+.result-actions { display: flex; justify-content: center; gap: 18px; align-items: center; }
+.pause-screen .result-panel { width: min(480px,70%); }
+
+#rotate-overlay { display: none; position: fixed; inset: 0; z-index: 100; place-content: center; gap: 11px; text-align: center; background: radial-gradient(circle,#26161e,#07080b 70%); }
+#rotate-overlay span { font-size: 58px; color: var(--gold); }
+#rotate-overlay strong { font-size: 20px; letter-spacing: .08em; }
+#rotate-overlay small { color: #afa49c; }
+
+@media (pointer: coarse) { #touch-controls.visible { display: flex; } }
+@media (orientation: portrait) and (pointer: coarse) { #rotate-overlay { display: grid; } }
+@media (max-height: 500px) {
+  .title-copy { top: 15%; }
+  .title-copy p { margin-bottom: 15px; line-height: 1.5; }
+  .fighter-grid { top: 20%; }
+  .shop-panel { inset: 4% 7%; }
+  .shop-items button { min-height: 150px; }
+}

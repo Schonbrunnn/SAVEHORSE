@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+    <meta name="theme-color" content="#090a0f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="前往国轩之窟、救出小马国公主的三关横屏格斗游戏。" />
+    <meta property="og:title" content="宝马之路" />
+    <meta property="og:description" content="穿过伏兵封锁，击败玥与珏，救出小马国公主。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./social-card.png" />
+    <title>宝马之路</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app" aria-label="宝马之路横屏格斗游戏">
+      <section id="game-root">
+        <canvas id="game" width="1280" height="720" aria-label="游戏战斗区域"></canvas>
+
+        <header id="top-actions">
+          <button id="pause-button" class="icon-button" type="button" aria-label="暂停游戏">Ⅱ</button>
+        </header>
+
+        <nav id="touch-controls" aria-label="触屏游戏操作">
+          <div class="touch-left">
+            <button data-action="left" type="button" aria-label="向左移动">←</button>
+            <button data-action="jump" type="button" aria-label="跳跃">↑</button>
+            <button data-action="right" type="button" aria-label="向右移动">→</button>
+          </div>
+          <div class="touch-right">
+            <button class="skill" data-action="skill" type="button">技能<small>K</small></button>
+            <button class="attack" data-action="attack" type="button">攻击<small>J</small></button>
+            <button class="dodge" data-action="dodge" type="button">闪避<small>L</small></button>
+          </div>
+        </nav>
+
+        <section id="title-screen" class="screen active" aria-labelledby="game-title">
+          <div class="title-atmosphere"></div>
+          <img class="title-hero hero-a" src="./assets/chery-captain.png" alt="奇瑞队长小宇" />
+          <img class="title-hero hero-b" src="./assets/strawberry-doctor.png" alt="草莓熊博士珏珏子" />
+          <div class="title-copy">
+            <small>GUOXUAN CAVERN · 3 STAGES</small>
+            <h1 id="game-title">宝马之路</h1>
+            <p>公主被掳进国轩之窟。穿过伏兵封锁，击败玥与珏，把她带回小马国。</p>
+            <button id="start-button" class="primary-button" type="button">踏上救援之路</button>
+            <span class="key-hint">键盘 A / D / W · J / K / L　或横屏触控</span>
+          </div>
+        </section>
+
+        <section id="select-screen" class="screen" aria-labelledby="select-title">
+          <div class="panel-title">
+            <small>SELECT YOUR FIGHTER</small>
+            <h2 id="select-title">选择出发角色</h2>
+            <p>角色会使用原始高清立绘，战斗中保持大比例显示。</p>
+          </div>
+          <div class="fighter-grid">
+            <button class="fighter-card" data-fighter="a" type="button">
+              <span class="fighter-art"><img src="./assets/chery-captain.png" alt="奇瑞队长小宇" /></span>
+              <span class="fighter-info"><small>A · 均衡型</small><strong>奇瑞队长</strong><em>盾击二连 · 回旋飞盾</em></span>
+            </button>
+            <button class="fighter-card" data-fighter="b" type="button">
+              <span class="fighter-art bike"><img src="./assets/jiaotong-knight.png" alt="上海交通骑士阿鼎" /></span>
+              <span class="fighter-info"><small>B · 高机动型</small><strong>上海交通骑士</strong><em>前轮攻击 · 直线冲锋</em></span>
+            </button>
+          </div>
+          <button class="text-button back-title" type="button">← 返回标题</button>
+        </section>
+
+        <section id="stage-card" class="stage-card" aria-live="polite">
+          <small></small><h2></h2><p></p>
+        </section>
+
+        <section id="shop-screen" class="screen" aria-labelledby="shop-title">
+          <img class="shop-art" src="./assets/mystery-merchant.png" alt="神秘商人泉" />
+          <div class="shop-panel">
+            <small>THE WANDERING MERCHANT</small>
+            <h2 id="shop-title">泉的夜市</h2>
+            <p>“公主就在洞窟最深处。挑一件吧，这次不收钱。”</p>
+            <div class="shop-items">
+              <button data-item="heal" type="button"><b>♥</b><strong>回血药水</strong><span>立即回满生命</span></button>
+              <button data-item="max" type="button"><b>◆</b><strong>上限提升果</strong><span>最大 HP +25</span></button>
+              <button data-item="power" type="button"><b>†</b><strong>锋利刀</strong><span>攻击力 +20%</span></button>
+            </div>
+          </div>
+        </section>
+
+        <section id="result-screen" class="screen" aria-labelledby="result-title">
+          <div class="result-panel">
+            <small id="result-kicker">MISSION COMPLETE</small>
+            <h2 id="result-title">公主获救</h2>
+            <p id="result-copy"></p>
+            <div class="result-actions">
+              <button id="retry-button" class="primary-button" type="button">重试本关</button>
+              <button id="home-button" class="text-button" type="button">返回标题</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="pause-screen" class="screen pause-screen" aria-labelledby="pause-title">
+          <div class="result-panel"><small>PAUSED</small><h2 id="pause-title">战斗暂停</h2><p>休息一下，救援仍在等你。</p><button id="resume-button" class="primary-button" type="button">继续战斗</button></div>
+        </section>
+      </section>
+
+      <aside id="rotate-overlay"><span>↻</span><strong>请旋转手机至横屏</strong><small>横屏后将自动继续</small></aside>
+    </main>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>

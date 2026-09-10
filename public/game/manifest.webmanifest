@@ -1,0 +1,9 @@
+{
+  "name": "宝马之路",
+  "short_name": "宝马之路",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#07090d",
+  "theme_color": "#090a0f"
+}
