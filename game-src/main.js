@@ -213,11 +213,12 @@ class UIController {
     this.setGameplayVisible(!paused);
   }
 
-  showResult(success, title, copy) {
+  showResult(success, title, copy, retryLabel = '重试本关') {
     this.setGameplayVisible(false);
     document.querySelector('#result-kicker').textContent = success ? 'MISSION COMPLETE' : 'MISSION FAILED';
     document.querySelector('#result-title').textContent = title;
     document.querySelector('#result-copy').textContent = copy;
+    document.querySelector('#retry-button').textContent = retryLabel;
     this.showOnly(this.result);
   }
 

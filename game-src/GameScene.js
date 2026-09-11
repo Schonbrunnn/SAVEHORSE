@@ -79,6 +79,9 @@ export class FightScene extends Phaser.Scene {
     this.heroData = HEROES[this.heroId];
     this.mapIndex = clamp(Number(data.mapIndex) || 0, 0, MAPS.length - 1);
     this.map = MAPS[this.mapIndex];
+    // A checkpoint belongs to this map, never to the cross-map item carry.
+    this.bossCheckpoint = this.map.bossZone && data.bossCheckpoint === this.map.bossZone.boss
+      ? data.bossCheckpoint : null;
     this.carry = {
       maxHpBonus: data.carry?.maxHpBonus || 0,
       attackMultiplier: data.carry?.attackMultiplier || 1,
@@ -102,6 +105,7 @@ export class FightScene extends Phaser.Scene {
     this.physicsPauseReasons = new Set();
     this.combatPauseSnapshot = null;
     this.time.paused = false;
+    this.physics.world.resume();
     this.tweens.setGlobalTimeScale(1);
     this.hitStopRunning = false;
     this.enemies = [];
@@ -134,15 +138,21 @@ export class FightScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player.body, false, 0.095, 0, -145, 0);
     this.cameras.main.setBackgroundColor('#08090d');
 
-    this.showStageCard();
-    this.setObjective(this.mapIndex === 0 ? '向右前进 · 熟悉移动、二段跳与攻击' : '向右推进 · 清除封锁区');
-    this.time.delayedCall(2900, () => {
-      if (this.mapIndex === 0) {
-        this.showDialogue('prologue', () => this.beginControl());
-      } else {
-        this.beginControl();
-      }
-    });
+    if (this.bossCheckpoint) {
+      this.restoreBossCheckpoint();
+      this.setObjective('Boss 战前检查点 · 向右重新挑战');
+      this.time.delayedCall(250, () => this.beginControl());
+    } else {
+      this.showStageCard();
+      this.setObjective(this.mapIndex === 0 ? '向右前进 · 熟悉移动、二段跳与攻击' : '向右推进 · 清除封锁区');
+      this.time.delayedCall(2900, () => {
+        if (this.mapIndex === 0) {
+          this.showDialogue('prologue', () => this.beginControl());
+        } else {
+          this.beginControl();
+        }
+      });
+    }
 
     window.friendFightersPause = () => this.setPaused(true);
     window.friendFightersResume = () => this.setPaused(false);
@@ -154,6 +164,15 @@ export class FightScene extends Phaser.Scene {
     if (this.gameOver || this.manualPaused) return;
     this.inputManager.setEnabled(true);
     window.friendFightersUI?.setGameplayVisible(true);
+  }
+
+  restoreBossCheckpoint() {
+    const spawnX = this.map.bossZone.trigger - 120;
+    // Rebuilding the scene clears old enemies, boss patterns, timers and locks.
+    // Keep the approach cleared so updateStageFlow cannot restart its waves.
+    this.waveState = { triggered: true, index: this.map.waveZone.waves.length - 1, waiting: false, complete: true };
+    this.hazards.forEach((hazard) => { if (hazard.warningX < spawnX) hazard.state = 'done'; });
+    this.cameras.main.centerOn(spawnX + 145, GAME_HEIGHT / 2);
   }
 
   createBackground() {
@@ -211,7 +230,8 @@ export class FightScene extends Phaser.Scene {
 
   createPlayer() {
     const maxHp = this.heroData.maxHp + this.carry.maxHpBonus;
-    const body = this.physics.add.sprite(this.map.introX, GROUND_Y - 75, 'pixel');
+    const spawnX = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : this.map.introX;
+    const body = this.physics.add.sprite(spawnX, GROUND_Y - 75, 'pixel');
     body.setAlpha(0.001).setDisplaySize(58, 150).setCollideWorldBounds(true);
     body.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
     const visual = new ActionVisual(this, body.x, GROUND_Y, this.heroData.texture, `hero-${this.heroId}`, this.heroId === 'b' ? 208 : 212, 8);
@@ -356,7 +376,7 @@ export class FightScene extends Phaser.Scene {
 
   restartMap() {
     window.friendFightersUI?.hideResults();
-    this.scene.restart({ heroId: this.heroId, mapIndex: this.mapIndex, carry: this.carry });
+    this.scene.restart({ heroId: this.heroId, mapIndex: this.mapIndex, carry: this.carry, bossCheckpoint: this.bossDefeated ? null : this.bossCheckpoint });
   }
 
   update(time, delta) {
@@ -936,6 +956,7 @@ export class FightScene extends Phaser.Scene {
   }
 
   startBossArena() {
+    this.bossCheckpoint = this.map.bossZone.boss;
     this.bossTriggered = true;
     this.setArenaLock(this.map.bossZone.left, this.map.bossZone.right);
     if (this.map.bossZone.boss === 'c') this.spawnBossC();
@@ -1347,7 +1368,10 @@ export class FightScene extends Phaser.Scene {
     this.gameOver = true;
     this.inputManager.setEnabled(false);
     this.setPhysicsPause('gameover', true);
-    window.friendFightersUI?.showResult(false, '救援暂时中断', '调整闪避和格挡时机，再从本关起点重试。');
+    const atBoss = Boolean(this.bossCheckpoint && !this.bossDefeated);
+    window.friendFightersUI?.showResult(false, '救援暂时中断',
+      atBoss ? '将在 Boss 战前满血复活，保留道具，无需重打前面的小兵。' : '调整闪避和格挡时机，再从本关起点重试。',
+      atBoss ? '重新挑战 Boss' : '重试本关');
   }
 
   missionComplete() {
