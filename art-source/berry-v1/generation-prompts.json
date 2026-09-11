@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-11",
+  "generationTool": "built-in imagegen",
+  "generationPolicy": "One call per final asset, no retries.",
+  "merchant": {
+    "status": "omitted before generation",
+    "reason": "Parent conveyed user override to preserve exact seated merchant by extracting it from the newly supplied shop image. No merchant generation call was made."
+  },
+  "assets": [
+    {
+      "asset": "berry-hover",
+      "prompt": "Use case: stylized-concept\nAsset type: original standalone small enemy sprite for a cinematic realistic-texture 2D side-scroller.\nPrimary request: one full-body small strawberry-red teddy bear robot with rounded ears, realistic short red plush fur, a dark gray mechanical jetpack and metal joints. Original design, not copying any licensed bear character. Red/pink body with subtle strawberry-colored accents, simple readable face and clear eye. Dark mechanical parts have textured worn steel and brass details suitable for a dark cavern laboratory.\nComposition/framing: side view facing RIGHT, compact hovering pose, short legs hanging down, arms relaxed. Full character and whole jetpack visible, centered with at least 10 percent empty transparent margin on every side. Jetpack can look powered but no flames or smoke outside figure.\nLighting/mood: soft cool light from upper-left, moderate exposure, realistic texture readable against a dark environment.\nScene/backdrop: genuinely transparent PNG with true alpha, one isolated character only.\nConstraints: no scenery, no floor, no cast shadow onto a backdrop, no painted checkerboard, no text, no letters, no watermarks, no extra characters, no thick outlines. No attack, no projectile.",
+      "path": "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-d59a03a7-1f4f-4ce7-8b00-3dbe92c62fc4.png",
+      "hasAlpha": true,
+      "notes": "Visually inspected; complete isolated right-facing character."
+    },
+    {
+      "asset": "shop-hand-cursor",
+      "prompt": "Use case: stylized-concept\nAsset type: isolated downward-pointing hand cursor for a game shop selection.\nPrimary request: one anatomically correct human RIGHT hand in natural warm flesh tones, index finger extended straight DOWN and all other fingers naturally curled. Five fingers total: one thumb plus four fingers. Short forearm vertical above the hand, entering from the upper direction but fully visible with its top end inside the canvas.\nComposition/framing: frontal view of the BACK of the right hand, wrist directly above the knuckles, fingertip centered and pointing straight down. Show full hand plus a short bare forearm, all inside at least 10 percent transparent margin. One single hand only.\nStyle/medium: realistic painted texture with a subtle game illustration aesthetic, natural skin creases and gentle warm highlights. Clear readable silhouette.\nScene/backdrop: true transparent PNG background with alpha, no checkerboard painted.\nConstraints: natural flesh color, no glove, no blue color, no clothing cuff, no text, no symbols, no items held, no jewelry, no extra fingers, no other body parts, no floor or shadow onto background.",
+      "path": "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-d7319d57-20a2-4c6a-83db-dbb867361de1.png",
+      "hasAlpha": true,
+      "notes": "Natural flesh-colored downward pointer; visible soft brown halo around cutout and fading forearm top may need cleanup. No retry made."
+    },
+    {
+      "asset": "berry-attack",
+      "referenced_image_paths": [
+        "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-d59a03a7-1f4f-4ce7-8b00-3dbe92c62fc4.png"
+      ],
+      "prompt": "Use case: character-consistency\nAsset type: standalone attack-pose enemy sprite for a cinematic realistic-texture 2D side-scroller.\nReference role: the provided transparent hover bear is the EXACT character identity reference. Preserve the same face, rounded ears, eye and nose shapes, red plush fur, pink muzzle and belly, strawberry belly emblem, proportions, worn metal wrist and knee braces, brass harness and twin-cylinder dark steel jetpack. Do not redesign the character.\nPrimary request: show this same single small strawberry-red teddy bear robot in a compact attack pose facing RIGHT. Its near arm holds a compact dark steel arm cannon aimed horizontally straight right. The cannon is small and integrated into the pose, not a giant weapon; far arm helps balance. Short legs hang down with a slight braced bend as it hovers. Keep the facial identity clearly readable.\nComposition/framing: side view facing RIGHT, entire character, jetpack, feet and cannon fully visible, with at least 10 percent empty transparent margin on every side.\nLighting/style: preserve the reference's realistic short plush texture, worn dark steel and brass, soft cool upper-left lighting and moderate exposure.\nScene/backdrop: genuinely transparent PNG with true alpha, one isolated character only.\nConstraints: no projectile, no muzzle flash, no smoke, no fire, no scenery, no floor, no cast shadow onto a backdrop, no painted checkerboard, no text, no watermark, no other character, no thick outlines.",
+      "path": "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-61f3124f-b1b8-461a-b94d-06c5c089fe57.png",
+      "hasAlpha": true,
+      "notes": "Visually inspected; complete isolated right-facing character."
+    },
+    {
+      "asset": "berry-rest",
+      "referenced_image_paths": [
+        "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-d59a03a7-1f4f-4ce7-8b00-3dbe92c62fc4.png"
+      ],
+      "prompt": "Use case: character-consistency\nAsset type: standalone exhausted-rest enemy sprite for a cinematic realistic-texture 2D side-scroller.\nReference role: the provided transparent hover bear is the EXACT character identity reference. Preserve the same face, rounded ears, eye and nose shapes, red plush fur, pink muzzle and belly, strawberry belly emblem, proportions, worn metal wrist and knee braces, brass harness and twin-cylinder dark steel jetpack. Do not redesign the character.\nPrimary request: show this same single small strawberry-red teddy bear robot sitting exhausted, facing RIGHT. Its bottom is down, its short legs extend forward resting at the same baseline, its arms hang tired beside its belly, and its head tilts slightly down. Keep the face recognizable and visible. The jetpack remains attached to the back but is switched OFF: lights unlit, absolutely no flame, thrust, smoke or glow. No weapon and no attack.\nComposition/framing: side view facing RIGHT, entire seated character, whole attached jetpack and feet fully visible, centered with at least 10 percent empty transparent margin on every side. Convey a grounded seated pose only through posture, without drawing any floor or ground.\nLighting/style: preserve the reference's realistic short plush texture, worn dark steel and brass, soft cool upper-left lighting and moderate exposure.\nScene/backdrop: genuinely transparent PNG with true alpha, one isolated character only.\nConstraints: no projectile, no effects, no scenery, no ground plane, no cast shadow onto a backdrop, no painted checkerboard, no text, no watermark, no other character, no thick outlines.",
+      "path": "/Users/quuuan/.codex/generated_images/01a08eba-cc99-7283-a6b2-2b31378abdb2/exec-81e9c9a2-75d0-400f-aa45-a8752a5d2ecd.png",
+      "hasAlpha": true,
+      "notes": "Visually inspected; complete isolated right-facing character."
+    }
+  ]
+}

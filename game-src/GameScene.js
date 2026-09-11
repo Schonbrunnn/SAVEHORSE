@@ -3,6 +3,8 @@ import { InputManager } from './InputManager.js';
 import { SoundBus } from './SoundBus.js';
 import { ActionVisual, BossVisual, EnemyVisual, createCabin, createCrateVisual, createPlatformVisual, drawBones } from './Visuals.js';
 import { DIALOGUES, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, HEROES, MAPS } from './gameData.js';
+import { ENVIRONMENT_ART, propImage } from './EnvironmentArt.js';
+import { BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp } from './CombatRules.js';
 
 const RED = 0xe43b4f;
 const RED_DARK = 0x551923;
@@ -22,6 +24,8 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload() {
+    Object.entries(ENVIRONMENT_ART).forEach(([id, file]) => this.load.image(`prop-${id}`, `./assets/props/${file}`));
+    ['hover', 'attack', 'rest'].forEach((pose) => this.load.image(`berry-${pose}`, `./assets/berry-v1/${pose}.webp`));
     this.load.image('stage-1', './assets/backgrounds/stage1-qinling-road.png');
     this.load.image('stage-2', './assets/backgrounds/stage2-cave-arena.png');
     this.load.image('stage-3', './assets/backgrounds/stage3-strawberry-lab.png');
@@ -38,7 +42,7 @@ export class BootScene extends Phaser.Scene {
     bossDPoses.forEach((pose, index) => this.load.image(`boss-d-actions-pose-${index}`, `./assets/atlases/boss-d/${pose}.png`));
     this.load.image('boss-c', './assets/portraits/boss-c.png');
     this.load.image('boss-d', './assets/portraits/boss-d.png');
-    this.load.image('merchant', './assets/portraits/merchant.png');
+    this.load.image('merchant', './assets/shop-v1/quan-seated.webp');
     this.load.image('princess', './assets/princess.png');
     ['shield', 'ranged', 'heavy'].forEach((type) => {
       ['idle', 'run', 'attack'].forEach((pose) => this.load.image(`minion-${type}-${pose}`, `./assets/atlases/minions/${type}-${pose}.png`));
@@ -79,6 +83,7 @@ export class FightScene extends Phaser.Scene {
       maxHpBonus: data.carry?.maxHpBonus || 0,
       attackMultiplier: data.carry?.attackMultiplier || 1,
       slowUntil: data.carry?.slowUntil || 0,
+      skillCooldownReductionMs: data.carry?.skillCooldownReductionMs || 0,
       selectedItem: data.carry?.selectedItem || null,
     };
     this.incomingHp = Number.isFinite(data.hp) ? data.hp : null;
@@ -163,11 +168,6 @@ export class FightScene extends Phaser.Scene {
     }
 
     this.add.rectangle(this.map.width / 2, GROUND_Y + 66, this.map.width, 132, 0x111219, 0.86).setDepth(-4);
-    this.add.rectangle(this.map.width / 2, GROUND_Y + 4, this.map.width, 9, this.mapIndex === 2 ? 0xd14972 : 0x9c7452, 0.62).setDepth(-3);
-    for (let x = 180; x < this.map.width; x += 330) {
-      this.add.ellipse(x, GROUND_Y + 24, 210, 28, 0x000000, 0.28).setDepth(-2);
-      if (x % 660 === 180) this.add.circle(x + 70, GROUND_Y - 3, 9, 0xe1b45c, 0.22).setDepth(-2);
-    }
 
     if (this.mapIndex === 0) {
       this.add.text(330, 205, '国轩之窟  →', { fontFamily: 'serif', fontSize: '28px', color: '#f1d39b', fontStyle: 'bold', backgroundColor: '#1a1114bb', padding: { x: 16, y: 8 } }).setAngle(-3).setDepth(1);
@@ -187,7 +187,7 @@ export class FightScene extends Phaser.Scene {
     }
 
     if (this.mapIndex === 1) {
-      this.cabin = createCabin(this, 5740, GROUND_Y);
+      this.cabin = createCabin(this, (this.map.cabin.doorIn + this.map.cabin.doorOut) / 2, GROUND_Y);
       this.add.text(5420, GROUND_Y - 32, '进入', { fontFamily: 'sans-serif', fontSize: '18px', color: '#ffe0a0', backgroundColor: '#090a0dcc', padding: { x: 10, y: 5 } }).setOrigin(0.5).setDepth(6);
       this.add.text(6220, GROUND_Y - 32, '离开 →', { fontFamily: 'sans-serif', fontSize: '18px', color: '#ffe0a0', backgroundColor: '#090a0dcc', padding: { x: 10, y: 5 } }).setOrigin(0.5).setDepth(6);
     }
@@ -236,6 +236,7 @@ export class FightScene extends Phaser.Scene {
       lastAfterimage: 0,
       hurtTintUntil: 0,
     };
+    window.friendFightersUI?.setSkillCooldown?.(0, skillCooldownMs(this.heroData, this.carry));
   }
 
   createHud() {
@@ -320,8 +321,8 @@ export class FightScene extends Phaser.Scene {
       });
     };
     capture(this.player, ['stateUntil', 'invulnerableUntil', 'attackHitAt', 'skillReadyAt', 'hurtTintUntil', 'lastAttackAt', 'lastAfterimage']);
-    this.enemies.forEach((enemy) => capture(enemy, ['stateUntil', 'hurtUntil', 'nextAttack', 'hitAt']));
-    capture(this.boss, ['stateUntil', 'hurtUntil', 'nextAttack', 'nextLeap', 'hitAt', 'busyUntil']);
+    this.enemies.forEach((enemy) => capture(enemy, ['stateUntil', 'hurtUntil', 'nextAttack', 'hitAt', 'cycleUntil']));
+    capture(this.boss, ['stateUntil', 'hurtUntil', 'nextAttack', 'nextLeap', 'nextSmash', 'hitAt', 'busyUntil']);
     this.projectiles.forEach((projectile) => capture(projectile, ['createdAt', 'expiresAt', 'returnAt']));
     capture(this.laser, ['until', 'nextDamage']);
     return {
@@ -388,7 +389,7 @@ export class FightScene extends Phaser.Scene {
       p.visual.image.setTintMode?.(Phaser.TintModes.MULTIPLY);
     }
 
-    if (p.state === 'hurt') {
+    if (p.state === 'hurt' || p.state === 'knockdown') {
       if (time >= p.stateUntil) this.setPlayerState(grounded ? 'idle' : 'jump');
       else {
         p.visual.sync(body.x, body.y + 75, p.facing, time, body.body.velocity.x);
@@ -460,7 +461,8 @@ export class FightScene extends Phaser.Scene {
       this.spawnJumpFx(body.x, body.y + 72, p.jumpsUsed === 2);
       if (p.jumpsUsed === 2) {
         p.visual.afterimage(0xe5f1ff);
-        this.tweens.add({ targets: p.visual.image, angle: p.facing * 360, duration: 330, ease: 'Cubic.Out' });
+        // Keep the rider and shield fighter upright during the air boost.
+        p.visual.image.setAngle(0);
       }
     }
 
@@ -539,7 +541,9 @@ export class FightScene extends Phaser.Scene {
 
   startPlayerSkill(time) {
     const p = this.player;
-    p.skillReadyAt = time + (this.heroId === 'a' ? 4100 : 4500);
+    const cooldown = skillCooldownMs(this.heroData, this.carry);
+    p.skillReadyAt = time + cooldown;
+    window.friendFightersUI?.setSkillCooldown?.(cooldown, cooldown);
     p.stateUntil = time + (this.heroId === 'a' ? 560 : 430);
     p.dashHit.clear();
     this.setPlayerState('skill');
@@ -550,6 +554,7 @@ export class FightScene extends Phaser.Scene {
         this.spawnProjectile({
           owner: 'player',
           type: 'shield',
+          piercing: true,
           x: p.body.x + p.facing * 62,
           y: p.body.y - 16,
           vx: p.facing * 610,
@@ -563,7 +568,7 @@ export class FightScene extends Phaser.Scene {
         });
       });
     } else {
-      p.invulnerableUntil = time + 310;
+      p.invulnerableUntil = Math.max(p.invulnerableUntil, time + 310);
       this.spawnSheetFx(p.body.x - p.facing * 70, p.body.y + 30, 1, 190, p.facing);
       this.cameras.main.shake(150, 0.004);
     }
@@ -572,7 +577,7 @@ export class FightScene extends Phaser.Scene {
   startDodge(time) {
     const p = this.player;
     p.stateUntil = time + 370;
-    p.invulnerableUntil = time + 275;
+    p.invulnerableUntil = Math.max(p.invulnerableUntil, time + 275);
     p.lastAfterimage = 0;
     this.setPlayerState('dodge');
     this.soundBus.play('dodge');
@@ -607,14 +612,14 @@ export class FightScene extends Phaser.Scene {
   }
 
   spawnEnemy(spec) {
-    const flying = spec.type === 'berryFlying';
     const strawberry = spec.type.startsWith('berry');
+    const flying = strawberry;
     const values = {
       shield: { hp: 46, speed: 112, damage: 10, range: 92, cooldown: 1250, height: 142 },
       ranged: { hp: 38, speed: 88, damage: 9, range: 410, cooldown: 1850, height: 138 },
       heavy: { hp: 72, speed: 72, damage: 16, range: 112, cooldown: 1900, height: 158 },
-      berryGround: { hp: 34, speed: 132, damage: 9, range: 84, cooldown: 1180, height: 105 },
-      berryFlying: { hp: 28, speed: 94, damage: 8, range: 390, cooldown: 1680, height: 88 },
+      berryGround: { hp: 34, speed: 115, damage: 9, range: 410, cooldown: 1750, height: 100 },
+      berryFlying: { hp: 28, speed: 105, damage: 8, range: 420, cooldown: 1850, height: 100 },
     }[spec.type];
     const y = flying ? (spec.y || 330) : GROUND_Y - values.height / 2;
     const body = this.physics.add.sprite(spec.x, y, 'pixel');
@@ -623,6 +628,9 @@ export class FightScene extends Phaser.Scene {
     if (flying) {
       body.body.setAllowGravity(false);
       body.setImmovable(false);
+      body.setGravityY(1520);
+      body.body.checkCollision.up = false;
+      this.physics.add.collider(body, this.solids);
     } else {
       body.setGravityY(1520);
       this.physics.add.collider(body, this.solids);
@@ -645,6 +653,8 @@ export class FightScene extends Phaser.Scene {
       spawnY: y,
       telegraph: null,
       id: `${spec.type}-${this.time.now}-${Math.random()}`,
+      cyclePhase: strawberry ? 'air' : null,
+      cycleUntil: strawberry ? this.time.now + BERRY_CYCLE.airMs : 0,
     };
     this.enemies.push(enemy);
     this.tweens.add({ targets: enemy.visual.object, alpha: { from: 0, to: 1 }, y: enemy.visual.object.y - 14, duration: 260, ease: 'Back.Out' });
@@ -660,8 +670,9 @@ export class FightScene extends Phaser.Scene {
       const absDx = Math.abs(dx);
       e.facing = Math.sign(dx) || e.facing;
 
-      if (e.type === 'berryFlying') {
-        const targetY = clamp(p.body.y - 145, 210, 430) + Math.sin(time * 0.004 + e.body.x) * 30;
+      if (e.type.startsWith('berry') && this.updateBerryCycle(e, time)) continue;
+      if (e.type.startsWith('berry')) {
+        const targetY = clamp(p.body.y - 120, 250, 400) + Math.sin(time * 0.004 + e.body.x) * 18;
         e.body.setVelocityY((targetY - e.body.y) * 2.1);
       }
 
@@ -684,7 +695,7 @@ export class FightScene extends Phaser.Scene {
           e.telegraph = null;
         }
       } else {
-        const ranged = e.type === 'ranged' || e.type === 'berryFlying';
+        const ranged = e.type === 'ranged' || e.type.startsWith('berry');
         const preferred = ranged ? e.range * 0.82 : e.range;
         if (absDx > preferred) {
           e.state = 'run';
@@ -705,11 +716,44 @@ export class FightScene extends Phaser.Scene {
     }
   }
 
+  updateBerryCycle(enemy, time) {
+    if (enemy.cyclePhase === 'air' && time >= enemy.cycleUntil) {
+      enemy.cyclePhase = 'landing';
+      enemy.state = 'idle';
+      enemy.telegraph?.destroy();
+      enemy.telegraph = null;
+      enemy.body.body.setAllowGravity(true);
+      enemy.body.setVelocity(0, 180);
+      // The rest window must be safe from this bear's already-fired shots too.
+      this.projectiles.filter((p) => p.active && p.sourceEnemy === enemy).forEach((p) => this.destroyProjectile(p));
+    }
+    if (enemy.cyclePhase === 'landing') {
+      enemy.body.setVelocityX(0);
+      if (enemy.body.body.blocked.down || enemy.body.body.touching.down) {
+        enemy.cyclePhase = 'rest';
+        enemy.cycleUntil = time + BERRY_CYCLE.restMs;
+        enemy.body.setVelocity(0, 0);
+      }
+    } else if (enemy.cyclePhase === 'rest' && time >= enemy.cycleUntil) {
+      enemy.cyclePhase = 'air';
+      enemy.cycleUntil = time + BERRY_CYCLE.airMs;
+      enemy.nextAttack = time + 850;
+      enemy.state = 'idle';
+      enemy.body.body.setAllowGravity(false);
+      enemy.body.setVelocity(0, -260);
+    }
+    if (enemy.cyclePhase === 'air') return false;
+    enemy.body.setVelocityX(0);
+    enemy.visual.setState(time < enemy.hurtUntil ? 'hurt' : enemy.cyclePhase === 'rest' ? 'rest' : 'idle');
+    enemy.visual.sync(enemy.body.x, enemy.body.y + enemy.height / 2, enemy.facing, time);
+    return true;
+  }
+
   startEnemyAttack(enemy, time) {
     enemy.state = 'windup';
     enemy.didHit = false;
     const heavy = enemy.type === 'heavy';
-    const ranged = enemy.type === 'ranged' || enemy.type === 'berryFlying';
+    const ranged = enemy.type === 'ranged' || enemy.type.startsWith('berry');
     const warning = heavy ? 520 : ranged ? 430 : 330;
     enemy.hitAt = time + warning;
     enemy.stateUntil = enemy.hitAt + 240;
@@ -724,11 +768,12 @@ export class FightScene extends Phaser.Scene {
     enemy.telegraph?.destroy();
     enemy.telegraph = null;
     if (!enemy.alive) return;
-    if (enemy.type === 'ranged' || enemy.type === 'berryFlying') {
+    if (enemy.type === 'ranged' || enemy.type.startsWith('berry')) {
       const target = this.player.body;
       const angle = Phaser.Math.Angle.Between(enemy.body.x, enemy.body.y, target.x, target.y);
-      const speed = enemy.type === 'berryFlying' ? 300 : 390;
-      this.spawnProjectile({ owner: 'enemy', type: enemy.type === 'berryFlying' ? 'berry' : 'bolt', x: enemy.body.x + enemy.facing * 35, y: enemy.body.y - 12, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, damage: enemy.damage, life: 2100, cell: enemy.type === 'berryFlying' ? 4 : 3, height: enemy.type === 'berryFlying' ? 42 : 30, facing: enemy.facing });
+      const berry = enemy.type.startsWith('berry');
+      const speed = berry ? 280 : 390;
+      this.spawnProjectile({ owner: 'enemy', sourceEnemy: enemy, type: berry ? 'berry' : 'bolt', x: enemy.body.x + enemy.facing * 35, y: enemy.body.y - 12, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, damage: enemy.damage, life: 2100, cell: berry ? 4 : 3, height: berry ? 42 : 30, facing: enemy.facing });
       this.soundBus.play('shot');
       return;
     }
@@ -743,7 +788,7 @@ export class FightScene extends Phaser.Scene {
     enemy.hurtUntil = this.time.now + (heavy ? 260 : 170);
     enemy.state = 'hurt';
     enemy.body.setVelocityX(knockback);
-    if (enemy.type !== 'berryFlying') enemy.body.setVelocityY(-90);
+    if (!enemy.type.startsWith('berry')) enemy.body.setVelocityY(-90);
     enemy.visual.setState('hurt');
     enemy.visual.flash();
     enemy.telegraph?.destroy();
@@ -755,13 +800,15 @@ export class FightScene extends Phaser.Scene {
   killEnemy(enemy) {
     enemy.alive = false;
     enemy.body.disableBody(true, true);
-    const boneX = enemy.visual.object.x;
-    const boneY = enemy.type === 'berryFlying' ? GROUND_Y - 3 : enemy.visual.object.y;
+    const boneX = enemy.body.x;
+    const feetY = enemy.body.y + enemy.height / 2;
+    const surfaces = this.map.terrain.filter((spec) => spec.type === 'platform' && Math.abs(spec.x - boneX) < spec.width / 2 && spec.y >= feetY - 20);
+    const boneY = Math.min(GROUND_Y, ...surfaces.map((spec) => spec.y - 1));
     enemy.visual.fadeDeath(() => enemy.visual.destroy());
     this.time.delayedCall(245, () => this.bones.push(drawBones(this, boneX, boneY, enemy.type.startsWith('berry'))));
   }
 
-  damagePlayer(amount, sourceX, knockback = 280) {
+  damagePlayer(amount, sourceX, knockback = 280, knockdown = false) {
     const p = this.player;
     const now = this.time.now;
     if (now < p.invulnerableUntil || p.hp <= 0) return false;
@@ -777,10 +824,10 @@ export class FightScene extends Phaser.Scene {
       return false;
     }
     p.hp = Math.max(0, p.hp - amount);
-    p.stateUntil = now + 330;
-    p.invulnerableUntil = now + 740;
+    p.stateUntil = now + (knockdown ? RABBIT_SMASH.stunMs : 330);
+    p.invulnerableUntil = now + (knockdown ? RABBIT_SMASH.protectionMs : 740);
     p.body.setVelocity(-sourceDirection * knockback, -170);
-    this.setPlayerState('hurt');
+    this.setPlayerState(knockdown ? 'knockdown' : 'hurt');
     p.visual.flash(115);
     p.hurtTintUntil = now + 115;
     this.soundBus.play('hurt');
@@ -909,6 +956,7 @@ export class FightScene extends Phaser.Scene {
       type: 'c', body, visual: new BossVisual(this, 'c', body.x, GROUND_Y), alive: true,
       hp: 330, maxHp: 330, phase: 1, facing: -1, state: 'idle', hurtUntil: 0,
       nextAttack: this.time.now + 1000, nextLeap: this.time.now + 1700, hitAt: 0, stateUntil: 0, didHit: false,
+      nextSmash: this.time.now + 2500, attackKind: 'normal', attackFacing: -1,
       firstHurtSpoken: false, phaseSpoken: false, phaseTransitioning: false, defeatedSpoken: false, telegraph: null,
     };
   }
@@ -951,7 +999,7 @@ export class FightScene extends Phaser.Scene {
     const b = this.boss;
     const dx = this.player.body.x - b.body.x;
     const absDx = Math.abs(dx);
-    b.facing = Math.sign(dx) || -1;
+    b.facing = b.state === 'windup' ? b.attackFacing : (Math.sign(dx) || -1);
     const grounded = b.body.body.blocked.down || b.body.body.touching.down;
     if (!grounded) {
       b.body.setVelocityX(b.facing * 220);
@@ -966,8 +1014,12 @@ export class FightScene extends Phaser.Scene {
         b.telegraph = null;
         if (b.phase === 1) {
           b.visual.setState('skill');
-          if (absDx < 185) this.damagePlayer(18, b.body.x, 460);
-          this.spawnSheetFx(b.body.x + b.facing * 92, b.body.y - 4, 2, 165, b.facing);
+          const smash = b.attackKind === 'smash';
+          const inFront = dx * b.attackFacing >= -25;
+          if (inFront && absDx < (smash ? RABBIT_SMASH.range : 185) && Math.abs(this.player.body.y - b.body.y) < 135) {
+            this.damagePlayer(smash ? RABBIT_SMASH.damage : 18, b.body.x, smash ? 520 : 460, smash);
+          }
+          this.spawnSheetFx(b.body.x + b.facing * (smash ? 145 : 92), b.body.y - 4, 2, smash ? 245 : 165, b.facing);
           this.impactFeedback(b.body.x + b.facing * 90, b.body.y, true, false);
         } else {
           this.spawnBossGunshot(b);
@@ -977,6 +1029,10 @@ export class FightScene extends Phaser.Scene {
         b.state = 'idle';
         b.visual.setState(b.phase === 2 ? 'gun' : 'idle');
       }
+      return;
+    }
+    if (b.phase === 1 && time >= b.nextSmash && absDx < 360) {
+      this.startBossCAttack(time, true);
       return;
     }
     if (b.phase === 1 && time >= b.nextLeap && absDx > 300 && absDx < 720) {
@@ -1000,17 +1056,24 @@ export class FightScene extends Phaser.Scene {
     if (time >= b.nextAttack && absDx < (b.phase === 1 ? 210 : 680)) this.startBossCAttack(time);
   }
 
-  startBossCAttack(time) {
+  startBossCAttack(time, smash = false) {
     const b = this.boss;
-    const warning = b.phase === 1 ? 540 : 680;
+    const warning = smash ? RABBIT_SMASH.windupMs : b.phase === 1 ? 540 : 680;
+    b.attackKind = smash ? 'smash' : 'normal';
+    b.attackFacing = b.facing;
     b.state = 'windup';
     b.didHit = false;
     b.hitAt = time + warning;
-    b.stateUntil = b.hitAt + 320;
-    b.nextAttack = time + (b.phase === 1 ? 1450 : 1650);
+    b.stateUntil = b.hitAt + (smash ? RABBIT_SMASH.recoveryMs : 320);
+    b.nextAttack = smash ? b.stateUntil + 300 : time + (b.phase === 1 ? 1450 : 1650);
+    if (smash) b.nextSmash = time + RABBIT_SMASH.cooldownMs;
     b.body.setVelocityX(0);
     b.visual.setState(b.phase === 1 ? 'attack' : 'gun');
-    if (b.phase === 1) {
+    if (smash) {
+      b.telegraph = this.add.rectangle(b.body.x + b.facing * 145, GROUND_Y - 12, RABBIT_SMASH.range, 22, 0xff582f, 0.32).setStrokeStyle(3, 0xffd9a5).setDepth(21);
+      this.addWarningText('重斩 · 闪避或跳开', b.body.x, b.body.y - 125, warning);
+      this.soundBus.play('charge');
+    } else if (b.phase === 1) {
       b.telegraph = this.add.arc(b.body.x + b.facing * 102, b.body.y + 72, 88, 195, 342, false, 0xff284f, 0.23).setStrokeStyle(6, 0xffd3c7, 0.9).setDepth(21);
     } else {
       b.telegraph = this.add.rectangle((b.body.x + this.player.body.x) / 2, this.player.body.y - 16, Math.abs(b.body.x - this.player.body.x), 8, 0xff3e53, 0.58).setDepth(21);
@@ -1247,8 +1310,12 @@ export class FightScene extends Phaser.Scene {
       this.player.hp += 25;
     }
     if (item === 'badfruit') {
-      this.player.hp = Math.max(1, this.player.hp - 18);
-      this.carry.slowUntil = Date.now() + 16000;
+      this.player.hp = Math.max(1, this.player.hp - 10);
+      const combatNow = this.combatPauseSnapshot?.clockTime ?? this.time.now;
+      const remaining = Math.max(0, this.player.skillReadyAt - combatNow);
+      this.carry.skillCooldownReductionMs += 500;
+      this.carry.slowUntil = 0;
+      this.player.skillReadyAt = this.time.now + Math.max(0, remaining - 500);
     }
     if (item === 'hurt') this.player.hp = Math.max(1, this.player.hp - 34);
     if (item === 'knife') {
@@ -1270,7 +1337,8 @@ export class FightScene extends Phaser.Scene {
     this.player.body.setVelocityX(0);
     this.cameras.main.fadeOut(430, 8, 7, 12);
     this.time.delayedCall(470, () => {
-      this.scene.restart({ heroId: this.heroId, mapIndex: nextMapIndex, hp: this.player.hp, carry: this.carry });
+      const hp = nextMapIndex > this.mapIndex ? nextStageHp(this.player.hp, this.player.maxHp) : this.player.hp;
+      this.scene.restart({ heroId: this.heroId, mapIndex: nextMapIndex, hp, carry: this.carry });
     });
   }
 
@@ -1291,6 +1359,8 @@ export class FightScene extends Phaser.Scene {
   }
 
   spawnProjectile(config) {
+    // Combined enemy + boss projectile budget for readable phone encounters.
+    if (config.owner !== 'player' && this.projectiles.filter((p) => p.active && p.owner !== 'player').length >= 10) return null;
     if (config.owner === 'boss') {
       const activeBossShots = this.projectiles.filter((projectile) => projectile.active && projectile.owner === 'boss');
       while (activeBossShots.length >= 10) this.destroyProjectile(activeBossShots.shift());
@@ -1303,6 +1373,7 @@ export class FightScene extends Phaser.Scene {
       createdAt: this.time.now,
       expiresAt: this.time.now + config.life,
       hit: new Set(),
+      lastHits: new Map(),
     };
     this.projectiles.push(projectile);
     return projectile;
@@ -1324,13 +1395,15 @@ export class FightScene extends Phaser.Scene {
 
       if (projectile.owner === 'player') {
         for (const enemy of this.enemies) {
-          if (!enemy.alive || projectile.hit.has(enemy) || Math.hypot(enemy.body.x - projectile.x, enemy.body.y - projectile.y) > 92) continue;
+          if (!enemy.alive || projectile.hit.has(enemy) || time - (projectile.lastHits.get(enemy) ?? -Infinity) < 200 || Math.hypot(enemy.body.x - projectile.x, enemy.body.y - projectile.y) > 92) continue;
           projectile.hit.add(enemy);
+          projectile.lastHits.set(enemy, time);
           this.hurtEnemy(enemy, projectile.damage, Math.sign(projectile.vx) * 390, true);
           this.impactFeedback(projectile.x, projectile.y, true);
         }
-        if (this.boss?.alive && !projectile.hit.has(this.boss) && distance(this.bossContactPoint(projectile), projectile) < 120) {
+        if (this.boss?.alive && !projectile.hit.has(this.boss) && time - (projectile.lastHits.get(this.boss) ?? -Infinity) >= 200 && distance(this.bossContactPoint(projectile), projectile) < 120) {
           projectile.hit.add(this.boss);
+          projectile.lastHits.set(this.boss, time);
           this.hurtBoss(projectile.damage, Math.sign(projectile.vx) * 240, true);
           this.impactFeedback(projectile.x, projectile.y, true);
         }
@@ -1420,7 +1493,7 @@ export class FightScene extends Phaser.Scene {
           hazard.state = 'falling';
           hazard.y = -70;
           hazard.vy = 90;
-          hazard.rock = this.add.circle(hazard.x, hazard.y, 48, 0x4b4240).setStrokeStyle(8, 0xa17e60).setDepth(19);
+          hazard.rock = propImage(this, hazard.x, hazard.y, 'boulder', 98, 0.5).setDepth(19);
         });
       }
       if (hazard.state !== 'falling') continue;
@@ -1512,8 +1585,11 @@ export class FightScene extends Phaser.Scene {
     this.hud.fillStyle(RED, 1).fillRoundedRect(30, 49, 378 * hpRatio, 18, 5);
     this.hud.fillStyle(0xffffff, 0.34).fillRect(34, 51, Math.max(0, 370 * hpRatio), 3);
 
-    const cooldown = Math.max(0, p.skillReadyAt - time);
+    // Pause and dialogue freeze the same clock for both HUD representations.
+    const cooldownTime = this.combatPauseSnapshot?.clockTime ?? time;
+    const cooldown = Math.max(0, p.skillReadyAt - cooldownTime);
     this.skillLabel.setText(cooldown > 0 ? `${this.heroData.skill} · ${Math.ceil(cooldown / 100) / 10}s` : `${this.heroData.skill} · READY`);
+    window.friendFightersUI?.setSkillCooldown?.(cooldown, skillCooldownMs(this.heroData, this.carry));
 
     if (this.boss?.alive) {
       const ratio = clamp(this.boss.hp / this.boss.maxHp, 0, 1);

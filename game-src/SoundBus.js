@@ -72,6 +72,7 @@ export class SoundBus {
       case 'block': this.tone({ frequency: 820, endFrequency: 430, duration: 0.1, type: 'triangle', gain: 0.085 }); break;
       case 'dodge': this.noise(0.13, 0.065, 1800); break;
       case 'skill': this.tone({ frequency: 170, endFrequency: 680, duration: 0.25, type: 'sawtooth', gain: 0.08 }); break;
+      case 'charge': this.tone({ frequency: 90, endFrequency: 340, duration: 0.7, type: 'triangle', gain: 0.1 }); break;
       case 'shot': this.tone({ frequency: 510, endFrequency: 150, duration: 0.08, type: 'square', gain: 0.06 }); break;
       case 'laser': this.tone({ frequency: 95, endFrequency: 42, duration: 0.62, type: 'sawtooth', gain: 0.11 }); break;
       case 'wave': this.tone({ frequency: 260, endFrequency: 520, duration: 0.2, type: 'triangle', gain: 0.08 }); break;

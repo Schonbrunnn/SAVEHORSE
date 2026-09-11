@@ -1,0 +1,116 @@
+{
+  "bones": {
+    "file": "bones-v1.webp",
+    "sourceSize": [
+      1942,
+      809
+    ],
+    "sourceBounds": {
+      "left": 56,
+      "top": 174,
+      "width": 1849,
+      "height": 490
+    },
+    "size": [
+      516,
+      140
+    ],
+    "bytes": 41398,
+    "fringeRemoved": 1180
+  },
+  "crate": {
+    "file": "crate-v1.webp",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "sourceBounds": {
+      "left": 125,
+      "top": 135,
+      "width": 1009,
+      "height": 1015
+    },
+    "size": [
+      388,
+      390
+    ],
+    "bytes": 77732,
+    "fringeRemoved": 0
+  },
+  "stone": {
+    "file": "stone-platform-v1.webp",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "sourceBounds": {
+      "left": 28,
+      "top": 276,
+      "width": 2116,
+      "height": 227
+    },
+    "size": [
+      1028,
+      114
+    ],
+    "bytes": 55028,
+    "fringeRemoved": 0
+  },
+  "metal": {
+    "file": "metal-platform-v1.webp",
+    "sourceSize": [
+      2172,
+      724
+    ],
+    "sourceBounds": {
+      "left": 39,
+      "top": 287,
+      "width": 2095,
+      "height": 143
+    },
+    "size": [
+      1028,
+      74
+    ],
+    "bytes": 37452,
+    "fringeRemoved": 0
+  },
+  "cabin": {
+    "file": "cabin-v1.webp",
+    "sourceSize": [
+      1635,
+      962
+    ],
+    "sourceBounds": {
+      "left": 67,
+      "top": 131,
+      "width": 1501,
+      "height": 701
+    },
+    "size": [
+      1284,
+      602
+    ],
+    "bytes": 281312,
+    "fringeRemoved": 0
+  },
+  "boulder": {
+    "file": "boulder-v1.webp",
+    "sourceSize": [
+      1312,
+      1199
+    ],
+    "sourceBounds": {
+      "left": 73,
+      "top": 76,
+      "width": 1164,
+      "height": 1065
+    },
+    "size": [
+      388,
+      355
+    ],
+    "bytes": 53802,
+    "fringeRemoved": 0
+  }
+}

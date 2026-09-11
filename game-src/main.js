@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BootScene, FightScene } from './GameScene.js';
 import { GAME_HEIGHT, GAME_WIDTH } from './gameData.js';
+import { renderSkillCooldown } from './SkillCooldown.js';
 
 class UIController {
   constructor() {
@@ -22,6 +23,7 @@ class UIController {
     this.dialogueProgress = document.querySelector('#dialogue-progress');
     this.dialogueNext = document.querySelector('#dialogue-next');
     this.touchControls = document.querySelector('#touch-controls');
+    this.skillButton = document.querySelector('#touch-controls [data-action="skill"]');
     this.topActions = document.querySelector('#top-actions');
     this.dialogueLines = [];
     this.dialogueIndex = 0;
@@ -40,7 +42,13 @@ class UIController {
     document.querySelector('#resume-button')?.addEventListener('click', () => window.friendFightersResume?.());
     document.querySelector('#retry-button')?.addEventListener('click', () => window.friendFightersRetry?.());
     document.querySelector('#home-button')?.addEventListener('click', () => this.returnHome());
-    document.querySelectorAll('[data-item]').forEach((button) => button.addEventListener('click', () => window.friendFightersChooseItem?.(button.dataset.item)));
+    document.querySelectorAll('[data-item]').forEach((button) => {
+      button.addEventListener('click', () => window.friendFightersChooseItem?.(button.dataset.item));
+      ['pointerenter', 'pointerdown', 'focus'].forEach((type) => button.addEventListener(type, () => this.pointAtShopItem(button)));
+    });
+    window.addEventListener('resize', () => {
+      if (this.shop.classList.contains('active')) this.pointAtShopItem(this.shop.querySelector('.pointed') || this.shop.querySelector('[data-item]'));
+    });
     this.dialogueNext?.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -106,6 +114,10 @@ class UIController {
     this.touchControls.classList.toggle('visible', visible && this.touchDevice);
   }
 
+  setSkillCooldown(remainingMs, totalMs) {
+    renderSkillCooldown(this.skillButton, remainingMs, totalMs);
+  }
+
   showStage(index, title, subtitle) {
     const small = this.stageCard.querySelector('small');
     const heading = this.stageCard.querySelector('h2');
@@ -142,7 +154,7 @@ class UIController {
       princess: './assets/princess.png',
       'boss-c': './assets/portraits/boss-c.png',
       'boss-d': './assets/portraits/boss-d.png',
-      merchant: './assets/portraits/merchant.png',
+      merchant: './assets/shop-v1/quan-seated.webp',
     };
     this.dialoguePortrait.src = portraits[line.portrait] || this.dialogueOptions.hero.portrait;
     this.dialoguePortrait.alt = speaker;
@@ -171,6 +183,17 @@ class UIController {
     this.setGameplayVisible(false);
     document.querySelectorAll('[data-item]').forEach((button) => { button.disabled = false; button.classList.remove('chosen'); });
     this.showOnly(this.shop);
+    this.pointAtShopItem(this.shop.querySelector('[data-item]'));
+  }
+
+  pointAtShopItem(button) {
+    if (!button || button.disabled) return;
+    const hand = this.shop.querySelector('#shop-hand');
+    const parent = this.shop.querySelector('.shop-cloth').getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
+    hand.style.left = `${rect.left - parent.left + rect.width * 0.52}px`;
+    hand.style.top = `${rect.top - parent.top + rect.height * 0.38}px`;
+    this.shop.querySelectorAll('[data-item]').forEach((item) => item.classList.toggle('pointed', item === button));
   }
 
   hideShop(item) {

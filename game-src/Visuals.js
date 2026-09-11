@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { POSE } from './gameData.js';
+import { propImage } from './EnvironmentArt.js';
 
 function applyWhiteFlash(target, enabled) {
   if (!target?.setTint) return;
@@ -59,6 +60,8 @@ export class ActionVisual {
       this.scene.tweens.add({ targets: this.image, scaleX: this.baseScale * 1.15, scaleY: this.baseScale * 1.04, duration: 130, yoyo: true, ease: 'Back.Out' });
     } else if (state === 'guard') {
       this.image.setAngle(-this.facing * 5);
+    } else if (state === 'knockdown') {
+      this.scene.tweens.add({ targets: this.image, angle: -this.facing * 64, duration: 140, ease: 'Quad.Out' });
     } else if (state === 'hurt') {
       this.image.setAngle(-this.facing * 10);
     } else if (state === 'dodge') {
@@ -118,19 +121,13 @@ export class EnemyVisual {
   constructor(scene, x, y, type) {
     this.scene = scene;
     this.type = type;
-    this.vector = type.startsWith('berry');
+    this.berry = type.startsWith('berry');
     this.state = 'idle';
     this.facing = -1;
 
-    if (this.vector) {
-      this.object = createBerryBear(scene, x, y, type === 'berryFlying');
-      this.image = null;
-      return;
-    }
-
-    this.textureKey = `minion-${type}-idle`;
+    this.textureKey = this.berry ? 'berry-hover' : `minion-${type}-idle`;
     this.image = scene.add.image(x, y, this.textureKey).setOrigin(0.5, 1).setDepth(11);
-    this.baseScale = 178 / this.image.height;
+    this.baseScale = (this.berry ? 116 : 178) / this.image.height;
     this.image.setScale(this.baseScale);
     this.object = this.image;
     this.setState('idle', true);
@@ -139,14 +136,10 @@ export class EnemyVisual {
   setState(state, force = false) {
     if (!force && this.state === state) return;
     this.state = state;
-    if (this.vector) {
-      this.object.setScale(state === 'attack' ? 1.08 : 1);
-      this.object.setAngle(state === 'hurt' ? -this.facing * 12 : 0);
-      return;
-    }
     const pose = state === 'attack' ? 'attack' : state === 'run' ? 'run' : 'idle';
-    this.textureKey = `minion-${this.type}-${pose}`;
+    this.textureKey = this.berry ? `berry-${state === 'attack' ? 'attack' : state === 'rest' ? 'rest' : 'hover'}` : `minion-${this.type}-${pose}`;
     this.image.setTexture(this.textureKey);
+    if (this.berry) this.baseScale = (state === 'rest' ? 86 : 116) / this.image.height;
     this.scene.tweens.killTweensOf(this.image);
     // A state change may interrupt the spawn fade before alpha reaches 1.
     this.image.setScale(this.baseScale).setAlpha(1).setAngle(state === 'hurt' ? -this.facing * 10 : 0);
@@ -157,26 +150,13 @@ export class EnemyVisual {
 
   sync(x, feetY, facing, time) {
     this.facing = facing || this.facing;
-    this.object.setPosition(x, feetY + (this.image ? 44 * this.baseScale : 0) + (this.state === 'run' ? Math.sin(time * 0.025) * 3 : 0));
-    if (this.image) this.image.setFlipX(this.facing < 0);
-    else this.object.setScale(Math.abs(this.object.scaleX) * (this.facing > 0 ? -1 : 1), Math.abs(this.object.scaleY));
+    this.object.setPosition(x, feetY + (this.berry ? 1 : 44 * this.baseScale) + (this.state === 'run' ? Math.sin(time * 0.025) * 3 : 0));
+    this.image.setFlipX(this.facing < 0);
   }
 
   flash(duration = 90) {
-    if (this.image) {
-      applyWhiteFlash(this.image, true);
-      this.scene.time.delayedCall(duration, () => this.image?.active && applyWhiteFlash(this.image, false));
-    } else {
-      this.object.list.forEach((child) => child.setFillStyle?.(0xffffff));
-      this.scene.time.delayedCall(duration, () => {
-        if (!this.object?.active) return;
-        const [body, belly, earA, earB] = this.object.list;
-        body?.setFillStyle?.(0xe83d70);
-        belly?.setFillStyle?.(0xffd7d3);
-        earA?.setFillStyle?.(0xf05b83);
-        earB?.setFillStyle?.(0xf05b83);
-      });
-    }
+    applyWhiteFlash(this.image, true);
+    this.scene.time.delayedCall(duration, () => this.image?.active && applyWhiteFlash(this.image, false));
   }
 
   fadeDeath(onComplete) {
@@ -194,23 +174,6 @@ export class EnemyVisual {
   destroy() {
     this.object.destroy();
   }
-}
-
-function createBerryBear(scene, x, y, flying) {
-  const container = scene.add.container(x, y).setDepth(11);
-  const body = scene.add.circle(0, -54, 44, 0xe83d70).setStrokeStyle(5, 0x68233d);
-  const belly = scene.add.ellipse(0, -43, 42, 35, 0xffd7d3);
-  const earA = scene.add.circle(-27, -91, 17, 0xf05b83).setStrokeStyle(5, 0x68233d);
-  const earB = scene.add.circle(27, -91, 17, 0xf05b83).setStrokeStyle(5, 0x68233d);
-  const eyeA = scene.add.circle(-15, -64, 5, 0xffdf52);
-  const eyeB = scene.add.circle(15, -64, 5, 0xffdf52);
-  const nose = scene.add.circle(0, -51, 6, 0x72243f);
-  const leaf = scene.add.triangle(0, -22, -11, 0, 0, -14, 11, 0, 0x55b860);
-  const pack = flying ? scene.add.rectangle(0, -103, 34, 18, 0x3b3544).setStrokeStyle(3, 0xffb250) : null;
-  const flameA = flying ? scene.add.triangle(-12, -111, -8, 0, 0, -23, 8, 0, 0xff774e) : null;
-  const flameB = flying ? scene.add.triangle(12, -111, -8, 0, 0, -23, 8, 0, 0xffc85c) : null;
-  container.add([body, belly, earA, earB, eyeA, eyeB, nose, leaf, pack, flameA, flameB].filter(Boolean));
-  return container;
 }
 
 export class BossVisual {
@@ -283,49 +246,30 @@ export class BossVisual {
 
 export function drawBones(scene, x, y, strawberry = false) {
   const c = scene.add.container(x, y).setDepth(4).setAlpha(0);
-  const color = strawberry ? 0xffd9d9 : 0xe9e1cf;
-  const skull = scene.add.circle(0, -12, 16, color).setStrokeStyle(3, 0x857f75);
-  const eyeA = scene.add.circle(-6, -14, 3, 0x34313a);
-  const eyeB = scene.add.circle(6, -14, 3, 0x34313a);
-  const boneA = scene.add.rectangle(-21, 4, 38, 7, color).setAngle(28);
-  const boneB = scene.add.rectangle(21, 4, 38, 7, color).setAngle(-28);
-  c.add([boneA, boneB, skull, eyeA, eyeB]);
-  scene.tweens.add({ targets: c, alpha: 0.72, duration: 220 });
+  const remains = propImage(scene, 0, 2, 'bones', strawberry ? 84 : 108);
+  remains.setFlipX(Math.round(x) % 2 === 0);
+  c.add(remains);
+  // No physics body: remains are scenery, never obstacles to the next wave.
+  scene.tweens.add({ targets: c, alpha: 0.94, duration: 240 });
   return c;
 }
 
 export function createCrateVisual(scene, x, feetY) {
   const c = scene.add.container(x, feetY).setDepth(5);
-  const box = scene.add.rectangle(0, -34, 72, 68, 0x70452b).setStrokeStyle(5, 0xc59352);
-  const slatA = scene.add.rectangle(0, -34, 8, 66, 0x3e291e).setAngle(45);
-  const slatB = scene.add.rectangle(0, -34, 8, 66, 0x3e291e).setAngle(-45);
-  const badge = scene.add.circle(0, -34, 11, 0xb22e3f).setStrokeStyle(2, 0xf0c66b);
-  c.add([box, slatA, slatB, badge]);
+  c.add(propImage(scene, 0, 1, 'crate', 74).setDisplaySize(74, 70));
   return c;
 }
 
 export function createPlatformVisual(scene, x, y, width, stage) {
   const c = scene.add.container(x, y).setDepth(3);
-  const main = scene.add.rectangle(0, 0, width, 24, stage === 3 ? 0x452e4d : 0x4c4541)
-    .setStrokeStyle(3, stage === 3 ? 0xff6e9c : 0xa99371);
-  const underside = scene.add.rectangle(0, 15, width * 0.9, 14, 0x19171c).setAlpha(0.85);
-  c.add([underside, main]);
-  for (let xPos = -width / 2 + 36; xPos < width / 2; xPos += 72) {
-    c.add(scene.add.circle(xPos, 0, 4, stage === 3 ? 0xffcc66 : 0xcbb57e));
-  }
+  // The artwork begins at the collision surface (spec.y - 1); all rock/beam
+  // depth extends downward so characters don't appear to hover above it.
+  c.add(propImage(scene, 0, -2, stage === 3 ? 'metal' : 'stone', width, 0));
   return c;
 }
 
 export function createCabin(scene, x, groundY) {
   const c = scene.add.container(x, groundY).setDepth(2);
-  const wall = scene.add.rectangle(0, -150, 650, 300, 0x2b1c1a).setStrokeStyle(7, 0x8b5832);
-  const roof = scene.add.triangle(0, -365, -370, 0, 0, -160, 370, 0, 0x311819).setStrokeStyle(7, 0xb1663d);
-  const doorA = scene.add.rectangle(-255, -84, 92, 168, 0x161117).setStrokeStyle(5, 0xe0ad67);
-  const doorB = scene.add.rectangle(255, -84, 92, 168, 0x161117).setStrokeStyle(5, 0xe0ad67);
-  const lamp = scene.add.circle(0, -220, 18, 0xffbd57).setStrokeStyle(5, 0x5e3523);
-  const sign = scene.add.text(0, -275, '泉 · 小木屋', { fontFamily: 'serif', fontSize: '28px', color: '#ffe0a0', fontStyle: 'bold' }).setOrigin(0.5);
-  const mist = scene.add.ellipse(0, -25, 560, 72, 0xb5685d, 0.12);
-  c.add([mist, wall, roof, doorA, doorB, lamp, sign]);
-  scene.tweens.add({ targets: lamp, alpha: 0.48, duration: 780, yoyo: true, repeat: -1 });
+  c.add(propImage(scene, 0, 2, 'cabin', 1110));
   return c;
 }

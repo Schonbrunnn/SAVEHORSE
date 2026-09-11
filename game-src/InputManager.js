@@ -30,6 +30,49 @@ export class InputManager {
     scene.input.addPointer(8);
     this.boundButtons = [];
     this.bindTouchButtons();
+    this.bindJoystick();
+    this.onBlur = () => this.clear();
+    window.addEventListener('blur', this.onBlur);
+  }
+
+  bindJoystick() {
+    const pad = document.querySelector('#move-stick');
+    if (!pad) return;
+    const knob = pad.querySelector('.stick-knob');
+    let pointer = null;
+    const reset = () => {
+      if (pointer !== null) {
+        this.touchDown.left.delete(pointer);
+        this.touchDown.right.delete(pointer);
+      }
+      pointer = null;
+      knob.style.transform = '';
+      pad.classList.remove('pressed');
+    };
+    const move = (event) => {
+      if (event.pointerId !== pointer || !this.enabled) return;
+      event.preventDefault();
+      const rect = pad.getBoundingClientRect();
+      const radius = rect.width * 0.32;
+      const dx = Math.max(-radius, Math.min(radius, event.clientX - rect.left - rect.width / 2));
+      this.touchDown.left.delete(pointer);
+      this.touchDown.right.delete(pointer);
+      if (Math.abs(dx) > radius * 0.18) this.touchDown[dx < 0 ? 'left' : 'right'].add(pointer);
+      knob.style.transform = `translateX(${dx}px)`;
+    };
+    const down = (event) => {
+      if (!this.enabled || pointer !== null) return;
+      pointer = event.pointerId;
+      pad.setPointerCapture(pointer);
+      pad.classList.add('pressed');
+      move(event);
+      window.dispatchEvent(new CustomEvent('friend-fighters-unlock-audio'));
+    };
+    const up = (event) => { if (event.pointerId === pointer) reset(); };
+    const bindings = { pointerdown: down, pointermove: move, pointerup: up, pointercancel: up, lostpointercapture: up };
+    Object.entries(bindings).forEach(([type, handler]) => pad.addEventListener(type, handler, { passive: false }));
+    this.resetJoystick = reset;
+    this.unbindJoystick = () => Object.entries(bindings).forEach(([type, handler]) => pad.removeEventListener(type, handler));
   }
 
   bindTouchButtons() {
@@ -65,7 +108,7 @@ export class InputManager {
       const keyboardDown = Boolean(this.keys[action]?.isDown);
       // Preserve a short tap even if pointerdown/up both occur between frames.
       const next = this.enabled && (keyboardDown || this.touchDown[action].size > 0 || this.pendingTouchPress.has(action));
-      this.pressed[action] = next && !this.current[action];
+      this.pressed[action] = this.enabled && (this.pendingTouchPress.has(action) || (next && !this.current[action]));
       this.released[action] = !next && this.current[action];
       this.previous[action] = this.current[action];
       this.current[action] = next;
@@ -90,6 +133,7 @@ export class InputManager {
   }
 
   clear() {
+    this.resetJoystick?.();
     this.pendingTouchPress.clear();
     for (const action of ACTIONS) {
       this.touchDown[action].clear();
@@ -107,6 +151,9 @@ export class InputManager {
   }
 
   destroy() {
+    this.clear();
+    this.unbindJoystick?.();
+    window.removeEventListener('blur', this.onBlur);
     this.boundButtons.forEach(({ button, down, up }) => {
       button.removeEventListener('pointerdown', down);
       button.removeEventListener('pointerup', up);

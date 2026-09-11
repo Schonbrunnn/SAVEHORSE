@@ -13,7 +13,7 @@
     <meta property="og:image" content="./social-card.png" />
     <title>宝马之路</title>
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=20260911-portraits" />
+    <link rel="stylesheet" href="./styles.css?v=20260911-merchant-battle-v3" />
   </head>
   <body>
     <main id="app" aria-label="宝马之路横屏格斗游戏">
@@ -26,14 +26,13 @@
 
         <nav id="touch-controls" aria-label="触屏游戏操作">
           <div class="touch-left">
-            <button data-action="left" type="button" aria-label="向左移动">←</button>
-            <button data-action="jump" type="button" aria-label="跳跃">↑</button>
-            <button data-action="right" type="button" aria-label="向右移动">→</button>
+            <div id="move-stick" aria-label="左右拖动移动摇杆"><span class="stick-track">‹　　›</span><span class="stick-knob"></span></div>
+            <button data-action="jump" type="button" aria-label="跳跃，空中再点一次二段跳"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 18 16 8l9 10M16 9v18M7 5h18"/></svg><span>跳跃</span></button>
           </div>
           <div class="touch-right">
-            <button class="skill" data-action="skill" type="button">技能<small>K</small></button>
-            <button class="attack" data-action="attack" type="button">攻击<small>J</small></button>
-            <button class="dodge" data-action="guard" type="button">格挡/闪避<small>L</small></button>
+            <button class="skill" data-action="skill" type="button" aria-label="技能"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m19 3-13 16h9l-2 10 13-17h-9z"/></svg><span>技能</span></button>
+            <button class="attack" data-action="attack" type="button" aria-label="攻击"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m10 22 15-18 3 1-1 6-15 13M6 19l9 8M10 24l-5 5M3 27l4 4"/></svg><span>攻击</span></button>
+            <button class="dodge" data-action="guard" type="button" aria-label="原地格挡，移动时闪避"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 10 4v9c0 6-10 13-10 13S6 22 6 16V7zM10 16h12m-5-5 5 5-5 5"/></svg><span>闪避</span></button>
           </div>
         </nav>
 
@@ -104,17 +103,22 @@
         </section>
 
         <section id="shop-screen" class="screen" aria-labelledby="shop-title">
-          <img class="shop-art" src="./assets/mystery-merchant.png" alt="神秘商人泉" />
           <div class="shop-panel">
-            <small>THE WANDERING MERCHANT</small>
-            <h2 id="shop-title">泉的夜市</h2>
-            <p>没有标价，也没有说明。只能凭直觉拿走一件。</p>
-            <div class="shop-items">
-              <button data-item="heal" type="button"><b>♥</b><strong>回血药水</strong></button>
-              <button data-item="max" type="button"><b>◆</b><strong>上限提升果</strong></button>
-              <button data-item="badfruit" type="button"><b>☂</b><strong>拉肚子坏果</strong></button>
-              <button data-item="hurt" type="button"><b>!</b><strong>扣血药水</strong></button>
-              <button data-item="knife" type="button"><b>†</b><strong>锋利刀</strong></button>
+            <div class="shop-intro"><small>THE WANDERING MERCHANT</small>
+              <h2 id="shop-title">泉的夜市</h2>
+              <p>“拿一样东西再走吧。”</p>
+              <span>只能选择一件</span>
+            </div>
+            <img class="shop-portrait" src="./assets/shop-v1/quan-seated.webp" alt="坐着托脸的神秘商人泉" />
+            <div class="shop-cloth">
+              <div class="shop-items">
+                <button data-item="heal" type="button"><img src="./assets/shop-v1/heal.webp" alt="" /><strong>回血药水</strong></button>
+                <button data-item="max" type="button"><img src="./assets/shop-v1/max.webp" alt="" /><strong>上限提升果</strong></button>
+                <button data-item="badfruit" type="button"><img src="./assets/shop-v1/badfruit.webp" alt="" /><strong>拉肚子坏果</strong></button>
+                <button data-item="hurt" type="button"><img src="./assets/shop-v1/hurt.webp" alt="" /><strong>扣血药水</strong></button>
+                <button data-item="knife" type="button"><img src="./assets/shop-v1/knife.webp" alt="" /><strong>锋利刀</strong></button>
+              </div>
+              <img id="shop-hand" src="./assets/shop-v1/hand.webp" alt="" aria-hidden="true" />
             </div>
           </div>
         </section>
@@ -138,6 +142,6 @@
 
       <aside id="rotate-overlay"><span>↻</span><strong>请旋转手机至横屏</strong><small>横屏后将自动继续</small></aside>
     </main>
-    <script type="module" src="./game.js"></script>
+    <script type="module" src="./game.js?v=20260911-merchant-battle-v3"></script>
   </body>
 </html>

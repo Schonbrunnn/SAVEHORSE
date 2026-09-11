@@ -12,6 +12,7 @@ export const HEROES = {
     speed: 325,
     attack: 18,
     skill: '回旋飞盾',
+    skillCooldownMs: 4100,
   },
   b: {
     name: '阿鼎',
@@ -22,6 +23,7 @@ export const HEROES = {
     speed: 370,
     attack: 15,
     skill: '交大冲锋',
+    skillCooldownMs: 1800,
   },
 };
 
@@ -34,6 +36,7 @@ export const POSE = {
   guard: 5,
   dodge: 6,
   hurt: 7,
+  knockdown: 7,
 };
 
 export const MAPS = [
