@@ -47843,7 +47843,7 @@ var gt = ot(8054), he = ot(61061), le = ot(60421), ue = ot(10312), fe = ot(83388
   RIGHT: ke,
   UP: qe,
   DOWN: _e
-}, Li = nt.Q8, Fi = nt.En, Oi = nt.Qw, Di = nt.gd, wi = nt.j$, Ii = nt.l2, Bi = nt.Tm, Ni = nt.Xs, Gi = nt.iJ, Ui = nt.XT, zi = nt.dv, Vi = nt.PX, bi = nt.B_, Yi = nt.nl, Wi = nt.sV, Hi = nt.SY, Xi = nt.Cu, Ki = nt.Zt, Zi = nt.xS, Qi = nt.Dh, Ji = nt.qt, $i = nt.pd, ji = nt.M3, ki = nt.Ae, qi = nt.aH, _i = nt.zU, ts = nt.x3, es = nt.AQ, is = nt.ry, ss = nt.NS, rs = nt.A4, as = nt.FE, ns = nt.zA, os = nt.Z5, hs = nt._k, ls = nt.AB, us = nt.ho, fs = nt.D7, ds = nt.O1, vs = nt.gX, cs = nt.sx, ps = nt.Fu, ms = nt.UP, gs = nt.Aq, xs = nt.xv, ys = nt.CB, ut = nt.Ay, Et = [
+}, Fi = nt.Q8, Oi = nt.En, Di = nt.Qw, wi = nt.gd, Ii = nt.j$, Bi = nt.l2, Ni = nt.Tm, Gi = nt.Xs, Ui = nt.iJ, zi = nt.XT, Vi = nt.dv, bi = nt.PX, Yi = nt.B_, Wi = nt.nl, Hi = nt.sV, Xi = nt.SY, Ki = nt.Cu, Zi = nt.Zt, Qi = nt.xS, Ji = nt.Dh, $i = nt.qt, ji = nt.pd, ki = nt.M3, qi = nt.Ae, _i = nt.aH, ts = nt.zU, es = nt.x3, is = nt.AQ, ss = nt.ry, rs = nt.NS, as = nt.A4, ns = nt.FE, os = nt.zA, hs = nt.Z5, ls = nt._k, us = nt.AB, fs = nt.ho, ds = nt.D7, vs = nt.O1, cs = nt.gX, ps = nt.sx, ms = nt.Fu, gs = nt.UP, xs = nt.Aq, ys = nt.xv, Ts = nt.CB, ut = nt.Ay, Et = [
   "left",
   "right",
   "jump",
@@ -49990,12 +49990,32 @@ function Ai(c, g, t) {
   const s = a ? `技能冷却中，剩余 ${(Math.ceil(l / 100) / 10).toFixed(1)} 秒` : "技能已就绪";
   c.getAttribute("aria-label") !== s && c.setAttribute("aria-label", s);
 }
-var Mi = class {
+function Mi(c) {
+  if (!c) return () => {
+  };
+  const g = (a) => {
+    a.cancelable && a.preventDefault();
+  }, d = {
+    gesturestart: g,
+    gesturechange: g,
+    gestureend: g,
+    touchmove: (a) => {
+      a.touches.length > 1 && g(a);
+    },
+    touchend: (a) => {
+      a.target?.closest?.("#touch-controls") && g(a);
+    },
+    dblclick: g,
+    dragstart: g
+  };
+  return Object.entries(d).forEach(([a, s]) => c.addEventListener(a, s, { passive: !1 })), () => Object.entries(d).forEach(([a, s]) => c.removeEventListener(a, s));
+}
+var Ri = class {
   constructor() {
     this.game = null, this.touchDevice = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0, this.screens = [...document.querySelectorAll(".screen")], this.intro = document.querySelector("#intro-screen"), this.title = document.querySelector("#title-screen"), this.select = document.querySelector("#select-screen"), this.stageCard = document.querySelector("#stage-card"), this.shop = document.querySelector("#shop-screen"), this.result = document.querySelector("#result-screen"), this.pause = document.querySelector("#pause-screen"), this.dialogue = document.querySelector("#dialogue-overlay"), this.dialoguePortraitFrame = document.querySelector(".dialogue-portrait-frame"), this.dialoguePortrait = document.querySelector("#dialogue-portrait"), this.dialogueSpeaker = document.querySelector("#dialogue-speaker"), this.dialogueText = document.querySelector("#dialogue-text"), this.dialogueProgress = document.querySelector("#dialogue-progress"), this.dialogueNext = document.querySelector("#dialogue-next"), this.touchControls = document.querySelector("#touch-controls"), this.skillButton = document.querySelector('#touch-controls [data-action="skill"]'), this.topActions = document.querySelector("#top-actions"), this.dialogueLines = [], this.dialogueIndex = 0, this.dialogueOptions = null, this.introTimers = [], this.bind(), this.playIntro();
   }
   bind() {
-    document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((c) => c.addEventListener("click", () => this.startRun(c.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((c) => {
+    this.removeTouchGestureGuard = Mi(document.querySelector("#game-root")), document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((c) => c.addEventListener("click", () => this.startRun(c.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((c) => {
       c.addEventListener("click", () => window.friendFightersChooseItem?.(c.dataset.item)), [
         "pointerenter",
         "pointerdown",
@@ -50115,9 +50135,9 @@ var Mi = class {
   returnHome() {
     this.result.classList.remove("active"), this.pause.classList.remove("active"), this.dialogue.classList.remove("active"), this.setGameplayVisible(!1), this.game && (this.game.scene.stop("FightScene"), this.game.scene.start("BootScene")), this.showOnly(this.title);
   }
-}, ti = new Mi();
+}, ti = new Ri();
 window.friendFightersUI = ti;
-var Ri = {
+var Pi = {
   type: ut.AUTO,
   parent: "game",
   width: mt,
@@ -50165,5 +50185,5 @@ var Ri = {
     smoothStep: !0
   },
   scene: [Ci, Ei]
-}, Pi = new ut.Game(Ri);
-ti.setGame(Pi);
+}, Li = new ut.Game(Pi);
+ti.setGame(Li);

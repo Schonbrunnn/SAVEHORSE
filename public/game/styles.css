@@ -12,8 +12,10 @@
 html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; touch-action: none; }
 body { background: #050609; color: var(--ink); font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; user-select: none; }
 button { color: inherit; font: inherit; }
-#app { display: grid; width: 100%; height: 100%; place-items: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background: radial-gradient(circle at 50% 20%, #25151d, #050609 72%); }
-#game-root { position: relative; width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16)); width: min(100vw, calc(100dvh * 16 / 9)); height: min(100dvh, calc(100vw * 9 / 16)); min-width: 568px; min-height: 320px; overflow: hidden; background: #090a0f; box-shadow: 0 0 80px #000; isolation: isolate; }
+#app { --safe-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)); --safe-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); display: grid; width: 100%; height: 100%; place-items: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background: radial-gradient(circle at 50% 20%, #25151d, #050609 72%); }
+@supports (height: 100dvh) { #app { --safe-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); } }
+#game-root { position: relative; width: min(var(--safe-width), calc(var(--safe-height) * 16 / 9)); height: min(var(--safe-height), calc(var(--safe-width) * 9 / 16)); min-width: 0; min-height: 0; overflow: hidden; background: #090a0f; box-shadow: 0 0 80px #000; isolation: isolate; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+#game-root img { -webkit-user-drag: none; }
 #game { position: absolute; inset: 0; display: block; width: 100%; height: 100%; touch-action: none; }
 #game canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
 
@@ -94,31 +96,29 @@ button { color: inherit; font: inherit; }
 .text-button { border: 0; background: transparent; color: #cbbfae; cursor: pointer; }
 .back-title { position: absolute; z-index: 5; top: 7%; right: 7%; font-size: 13px; }
 
-#top-actions { position: absolute; z-index: 11; top: max(16px, env(safe-area-inset-top)); right: max(18px, env(safe-area-inset-right)); display: none; }
+#top-actions { position: absolute; z-index: 11; top: 16px; right: 18px; display: none; }
 #top-actions.visible { display: block; }
 .icon-button { width: 38px; height: 38px; border: 1px solid #f2dca64d; border-radius: 50%; background: #0b0c12b8; color: #f6e4c2; font-weight: 900; cursor: pointer; }
 
-#touch-controls { position: absolute; z-index: 12; left: max(28px, env(safe-area-inset-left)); right: max(28px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); display: none; justify-content: space-between; align-items: end; pointer-events: none; }
+#touch-controls { --action-size: clamp(54px, 11.5vh, 78px); position: absolute; z-index: 12; left: 20px; right: 20px; bottom: 14px; display: none; justify-content: space-between; align-items: end; pointer-events: none; touch-action: none; }
 #touch-controls.visible { display: flex; }
-#touch-controls > div { display: flex; gap: 13px; align-items: end; pointer-events: auto; }
-#touch-controls button { display: grid; place-items: center; width: clamp(54px, 6.7vw, 82px); aspect-ratio: 1; border: 1px solid #f8dfad78; border-radius: 50%; background: #090b12b8; box-shadow: inset 0 0 0 5px #ffffff08, 0 7px 20px #0007; color: #fff3db; font-size: clamp(18px, 2vw, 28px); font-weight: 900; backdrop-filter: blur(5px); touch-action: none; }
-#touch-controls button.pressed { transform: scale(.92); background: #8e263ed9; border-color: #ffcf93; }
-#touch-controls .touch-right { position: relative; gap: 10px; }
-#touch-controls .touch-right button { width: clamp(52px, 6.1vw, 76px); font-size: clamp(11px, 1.25vw, 16px); }
-#touch-controls .touch-right .attack { width: clamp(66px, 7.3vw, 88px); }
-#touch-controls .touch-right .skill { transform: translateY(-42%); }
-#touch-controls .touch-right .skill.pressed { transform: translateY(-42%) scale(.92); }
-#touch-controls small { display: none; font-size: 8px; opacity: .7; }
-#touch-controls button { align-content: center; gap: 2px; }
-#touch-controls button svg { width: 42%; height: 42%; min-height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-#touch-controls button span { font-size: 10px; font-weight: 600; letter-spacing: .08em; }
-#touch-controls .attack { background: radial-gradient(circle at 35% 25%, #865246c9, #291b26db); }
+#touch-controls > div { pointer-events: none; }
+#touch-controls button { display: grid; place-items: center; align-content: center; gap: 2px; width: var(--action-size); height: var(--action-size); padding: 0; border: 1px solid #f8dfad78; border-radius: 50%; background: #090b12d9; box-shadow: inset 0 0 0 4px #ffffff08, 0 5px 16px #0006; color: #fff3db; font-weight: 900; backdrop-filter: blur(5px); touch-action: none; pointer-events: auto; }
+#touch-controls button.pressed { transform: scale(.94); background: #8e263ed9; border-color: #ffcf93; box-shadow: inset 0 0 0 3px #ffcf932b, 0 0 15px #ffcf9333; }
+#touch-controls .touch-right { position: relative; width: calc(var(--action-size) * 2.75); height: calc(var(--action-size) * 2.55); }
+#touch-controls .touch-right button { position: absolute; }
+#touch-controls .touch-right .attack { right: 0; bottom: 0; width: calc(var(--action-size) * 1.28); height: calc(var(--action-size) * 1.28); border-color: #efb49a; background: radial-gradient(circle at 35% 25%, #865246e6, #291b26ed); }
+#touch-controls .touch-right .jump { right: 0; bottom: calc(var(--action-size) * 1.46); width: calc(var(--action-size) * 1.05); height: calc(var(--action-size) * 1.05); color: #d2f3df; border-color: #a1ceb4; background: radial-gradient(circle at 35% 25%, #365b50e6, #142b29ed); }
+#touch-controls .touch-right .skill { right: calc(var(--action-size) * 1.45); bottom: calc(var(--action-size) * 1.32); }
+#touch-controls .touch-right .dodge { right: calc(var(--action-size) * 1.45); bottom: 0; }
+#touch-controls button svg { width: calc(var(--action-size) * .43); height: calc(var(--action-size) * .43); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+#touch-controls .attack svg { width: calc(var(--action-size) * .53); height: calc(var(--action-size) * .53); }
+#touch-controls button span { font-size: 12px; font-weight: 700; line-height: 1.15; letter-spacing: .04em; pointer-events: none; }
 #touch-controls .skill { color: #bfe7ef; }
 #touch-controls .touch-right .skill {
   --skill-gray: 0;
   --skill-brightness: 1;
   --skill-angle: 360deg;
-  position: relative;
   isolation: isolate;
   color: #bfefff;
   border-color: #8dddeb;
@@ -129,10 +129,11 @@ button { color: inherit; font: inherit; }
 #touch-controls .skill::after { content: ''; position: absolute; inset: 3px; z-index: -1; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #36677d, #102738 75%); pointer-events: none; }
 #touch-controls .skill.cooling-down { box-shadow: inset 0 0 0 1px #ffffff14, 0 5px 16px #0006; }
 #touch-controls .dodge { color: #dbcbb1; }
-#move-stick { position: relative; width: clamp(100px, 13vw, 148px); aspect-ratio: 1; border-radius: 50%; border: 1px solid #e2d2ba55; background: radial-gradient(circle, #a59c891a 0 38%, #080d17a8 40%); box-shadow: inset 0 0 20px #0008; touch-action: none; display: grid; place-items: center; }
+#move-stick { position: relative; width: clamp(106px, 24vh, 148px); aspect-ratio: 1; border-radius: 50%; border: 1px solid #e2d2ba55; background: radial-gradient(circle, #a59c8912 0 38%, #080d1770 40%); box-shadow: inset 0 0 14px #0004; opacity: .42; transition: opacity .14s ease-out; touch-action: none; pointer-events: auto; display: grid; place-items: center; }
 .stick-track { color: #eedbc485; font-size: 28px; pointer-events: none; }
 .stick-knob { position: absolute; width: 43%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #a99f86bd, #343d4dd9); border: 1px solid #f5e4bf85; box-shadow: 0 4px 12px #0007, inset 0 0 0 4px #ffffff08; pointer-events: none; }
 #move-stick.pressed .stick-knob { border-color: #fff1ca; }
+#move-stick.pressed { opacity: .65; }
 
 .stage-card { position: absolute; z-index: 15; top: 18%; left: 50%; display: none; min-width: 390px; transform: translateX(-50%); text-align: center; text-shadow: 0 4px 20px #000; pointer-events: none; }
 .stage-card.show { display: block; animation: stage-card 2.7s both; }
