@@ -1,0 +1,121 @@
+{
+  "generatedBy": "scripts/build-character-assets.mjs",
+  "cellSize": 512,
+  "atlases": [
+    {
+      "id": "player-a",
+      "layout": "4x2",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "idle",
+        "run",
+        "jump",
+        "attack",
+        "skill",
+        "guard",
+        "dodge",
+        "hurt"
+      ]
+    },
+    {
+      "id": "player-b",
+      "layout": "4x2",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "idle",
+        "run",
+        "jump",
+        "attack",
+        "skill",
+        "guard",
+        "dodge",
+        "hurt"
+      ]
+    },
+    {
+      "id": "boss-c",
+      "layout": "4x2",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "idle",
+        "run",
+        "jump",
+        "attack",
+        "skill",
+        "gun",
+        "fire",
+        "hurt"
+      ]
+    },
+    {
+      "id": "boss-d",
+      "layout": "4x2",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "idle",
+        "charge",
+        "summon",
+        "lanes",
+        "fan",
+        "laser",
+        "overload",
+        "hurt"
+      ]
+    },
+    {
+      "id": "minions",
+      "layout": "3x3",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "shield-idle",
+        "shield-run",
+        "shield-attack",
+        "ranged-idle",
+        "ranged-run",
+        "ranged-attack",
+        "heavy-idle",
+        "heavy-run",
+        "heavy-attack"
+      ]
+    },
+    {
+      "id": "effects",
+      "layout": "4x2",
+      "cell": [
+        512,
+        512
+      ],
+      "poses": [
+        "shield",
+        "charge",
+        "slash",
+        "bullet",
+        "berry",
+        "fan",
+        "laser"
+      ]
+    }
+  ],
+  "portraits": {
+    "playerA": "assets/portraits/player-a.png",
+    "playerB": "assets/portraits/player-b.png",
+    "bossC": "assets/portraits/boss-c.png",
+    "bossD": "assets/portraits/boss-d.png",
+    "merchant": "assets/portraits/merchant.png"
+  }
+}
