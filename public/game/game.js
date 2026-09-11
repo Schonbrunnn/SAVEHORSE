@@ -48875,7 +48875,7 @@ var Ci = class extends ut.Scene {
     super("FightScene");
   }
   init(c = {}) {
-    this.heroId = c.heroId === "b" ? "b" : "a", this.heroData = fi[this.heroId], this.mapIndex = St(Number(c.mapIndex) || 0, 0, re.length - 1), this.map = re[this.mapIndex], this.carry = {
+    this.heroId = c.heroId === "b" ? "b" : "a", this.heroData = fi[this.heroId], this.mapIndex = St(Number(c.mapIndex) || 0, 0, re.length - 1), this.map = re[this.mapIndex], this.bossCheckpoint = this.map.bossZone && c.bossCheckpoint === this.map.bossZone.boss ? c.bossCheckpoint : null, this.carry = {
       maxHpBonus: c.carry?.maxHpBonus || 0,
       attackMultiplier: c.carry?.attackMultiplier || 1,
       slowUntil: c.carry?.slowUntil || 0,
@@ -48884,17 +48884,28 @@ var Ci = class extends ut.Scene {
     }, this.incomingHp = Number.isFinite(c.hp) ? c.hp : null;
   }
   create() {
-    this.soundBus = window.__friendFightersSoundBus || new ui(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new li(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
+    this.soundBus = window.__friendFightersSoundBus || new ui(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new li(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.physics.world.resume(), this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
       triggered: !1,
       index: -1,
       waiting: !1,
       complete: !1
-    }, this.laser = null, this.physics.world.setBounds(0, 0, this.map.width, 720), this.createBackground(), this.createTerrain(), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, 0, this.map.width, 720), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0, -145, 0), this.cameras.main.setBackgroundColor("#08090d"), this.showStageCard(), this.setObjective(this.mapIndex === 0 ? "向右前进 · 熟悉移动、二段跳与攻击" : "向右推进 · 清除封锁区"), this.time.delayedCall(2900, () => {
+    }, this.laser = null, this.physics.world.setBounds(0, 0, this.map.width, 720), this.createBackground(), this.createTerrain(), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, 0, this.map.width, 720), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0, -145, 0), this.cameras.main.setBackgroundColor("#08090d"), this.bossCheckpoint ? (this.restoreBossCheckpoint(), this.setObjective("Boss 战前检查点 · 向右重新挑战"), this.time.delayedCall(250, () => this.beginControl())) : (this.showStageCard(), this.setObjective(this.mapIndex === 0 ? "向右前进 · 熟悉移动、二段跳与攻击" : "向右推进 · 清除封锁区"), this.time.delayedCall(2900, () => {
       this.mapIndex === 0 ? this.showDialogue("prologue", () => this.beginControl()) : this.beginControl();
-    }), window.friendFightersPause = () => this.setPaused(!0), window.friendFightersResume = () => this.setPaused(!1), window.friendFightersRetry = () => this.restartMap(), window.friendFightersChooseItem = (c) => this.chooseShopItem(c);
+    })), window.friendFightersPause = () => this.setPaused(!0), window.friendFightersResume = () => this.setPaused(!1), window.friendFightersRetry = () => this.restartMap(), window.friendFightersChooseItem = (c) => this.chooseShopItem(c);
   }
   beginControl() {
     this.gameOver || this.manualPaused || (this.inputManager.setEnabled(!0), window.friendFightersUI?.setGameplayVisible(!0));
+  }
+  restoreBossCheckpoint() {
+    const c = this.map.bossZone.trigger - 120;
+    this.waveState = {
+      triggered: !0,
+      index: this.map.waveZone.waves.length - 1,
+      waiting: !1,
+      complete: !0
+    }, this.hazards.forEach((g) => {
+      g.warningX < c && (g.state = "done");
+    }), this.cameras.main.centerOn(c + 145, 720 / 2);
   }
   createBackground() {
     const c = Math.ceil(this.map.width / mt);
@@ -48973,12 +48984,12 @@ L：原地格挡 / 带方向闪避`, {
     });
   }
   createPlayer() {
-    const c = this.heroData.maxHp + this.carry.maxHpBonus, g = this.physics.add.sprite(this.map.introX, 515, "pixel");
-    g.setAlpha(1e-3).setDisplaySize(58, 150).setCollideWorldBounds(!0), g.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
-    const t = new ci(this, g.x, 590, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
+    const c = this.heroData.maxHp + this.carry.maxHpBonus, g = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : this.map.introX, t = this.physics.add.sprite(g, 515, "pixel");
+    t.setAlpha(1e-3).setDisplaySize(58, 150).setCollideWorldBounds(!0), t.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
+    const l = new ci(this, t.x, 590, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
     this.player = {
-      body: g,
-      visual: t,
+      body: t,
+      visual: l,
       hp: St(this.incomingHp ?? c, 1, c),
       maxHp: c,
       attack: this.heroData.attack * this.carry.attackMultiplier,
@@ -49126,7 +49137,8 @@ L：原地格挡 / 带方向闪避`, {
     window.friendFightersUI?.hideResults(), this.scene.restart({
       heroId: this.heroId,
       mapIndex: this.mapIndex,
-      carry: this.carry
+      carry: this.carry,
+      bossCheckpoint: this.bossDefeated ? null : this.bossCheckpoint
     });
   }
   update(c, g) {
@@ -49455,7 +49467,7 @@ L：原地格挡 / 带方向闪避`, {
     c.x < g && (c.x = g, c.body.velocity.x < 0 && c.setVelocityX(0)), c.x > t && (c.x = t, c.body.velocity.x > 0 && c.setVelocityX(0));
   }
   startBossArena() {
-    this.bossTriggered = !0, this.setArenaLock(this.map.bossZone.left, this.map.bossZone.right), this.map.bossZone.boss === "c" ? this.spawnBossC() : this.spawnBossD(), this.showDialogue(`${this.map.bossZone.boss}_enter`, () => {
+    this.bossCheckpoint = this.map.bossZone.boss, this.bossTriggered = !0, this.setArenaLock(this.map.bossZone.left, this.map.bossZone.right), this.map.bossZone.boss === "c" ? this.spawnBossC() : this.spawnBossD(), this.showDialogue(`${this.map.bossZone.boss}_enter`, () => {
       this.bossBattleStarted = !0, this.setObjective(this.boss.type === "c" ? "击败秦岭杀人兔 · 注意刀光前摇" : "击败草莓熊博士 · 利用双层平台躲避弹幕"), this.showNotice("BOSS BATTLE", 1600);
     });
   }
@@ -49779,7 +49791,10 @@ L：原地格挡 / 带方向闪避`, {
     }));
   }
   playerDefeated() {
-    this.gameOver || (this.gameOver = !0, this.inputManager.setEnabled(!1), this.setPhysicsPause("gameover", !0), window.friendFightersUI?.showResult(!1, "救援暂时中断", "调整闪避和格挡时机，再从本关起点重试。"));
+    if (this.gameOver) return;
+    this.gameOver = !0, this.inputManager.setEnabled(!1), this.setPhysicsPause("gameover", !0);
+    const c = !!(this.bossCheckpoint && !this.bossDefeated);
+    window.friendFightersUI?.showResult(!1, "救援暂时中断", c ? "将在 Boss 战前满血复活，保留道具，无需重打前面的小兵。" : "调整闪避和格挡时机，再从本关起点重试。", c ? "重新挑战 Boss" : "重试本关");
   }
   missionComplete() {
     this.gameOver || (this.gameOver = !0, this.inputManager.setEnabled(!1), this.setPhysicsPause("gameover", !0), window.friendFightersUI?.showResult(!0, "小马公主获救", `${this.heroData.name}穿过国轩之窟，击败草莓熊博士，把公主平安带回了小马国。`));
@@ -50126,8 +50141,8 @@ var Ri = class {
   setPaused(c) {
     this.pause.classList.toggle("active", c), this.setGameplayVisible(!c);
   }
-  showResult(c, g, t) {
-    this.setGameplayVisible(!1), document.querySelector("#result-kicker").textContent = c ? "MISSION COMPLETE" : "MISSION FAILED", document.querySelector("#result-title").textContent = g, document.querySelector("#result-copy").textContent = t, this.showOnly(this.result);
+  showResult(c, g, t, l = "重试本关") {
+    this.setGameplayVisible(!1), document.querySelector("#result-kicker").textContent = c ? "MISSION COMPLETE" : "MISSION FAILED", document.querySelector("#result-title").textContent = g, document.querySelector("#result-copy").textContent = t, document.querySelector("#retry-button").textContent = l, this.showOnly(this.result);
   }
   hideResults() {
     this.result.classList.remove("active"), this.setGameplayVisible(!1);
