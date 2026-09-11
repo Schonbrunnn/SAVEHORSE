@@ -8,7 +8,7 @@ import { BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp } from '../game
 const source = (await readFile(new URL('../game-src/GameScene.js', import.meta.url), 'utf8'))
   .replace(/^import .*;\n/gm, '').replace(/export class /g, 'class ');
 const Phaser = { Scene: class {}, Math: { Linear: (a, b, t) => a + (b - a) * t } };
-const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp);
+const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', 'ActionVisual', 'BossVisual', 'InputManager', 'SoundBus', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp, class {}, class {}, class { setEnabled(value) { this.enabled = value; } destroy() {} }, class { play() {} });
 globalThis.window = {};
 const noOp = () => {};
 const body = (x = 100, y = 500) => ({
@@ -124,4 +124,90 @@ shield.updateProjectiles(701, 0);
 assert.deepEqual([...hits.values()], [2, 2]);
 for (let index = 0; index < 10; index++) assert.ok(shield.spawnProjectile({ owner: index % 2 ? 'boss' : 'enemy', life: 2000 }));
 assert.equal(shield.spawnProjectile({ owner: 'enemy', life: 2000 }), null);
-console.log('PASS: cooldowns, capped healing, berry air/landing/rest, paused deadlines, shop single choice, knockdown protection, piercing per-leg hits and shared projectile budget.');
+// Exercise the real init/create/retry/startBossArena paths with rendering stubbed.
+const checkpointScene = (data) => {
+  const s = scene();
+  s.init(data);
+  s.events = { once: noOp };
+  s.tweens = { setGlobalTimeScale: noOp };
+  s.time.delayedCall = (delay, callback) => { s.startDelay = delay; s.delayed = callback; };
+  s.physics = { world: { setBounds: noOp, resume() { s.resumed = true; } }, add: {
+    collider: noOp,
+    sprite(x, y) {
+      const sprite = body(x, y);
+      for (const key of ['setAlpha', 'setDisplaySize', 'setCollideWorldBounds', 'setGravityY', 'setMaxVelocity', 'setDragX', 'setImmovable']) sprite[key] = () => sprite;
+      return sprite;
+    },
+  } };
+  Object.assign(s.cameras.main, { setBounds: noOp, startFollow: noOp, setBackgroundColor: noOp, centerOn(x, y) { s.cameraCenter = { x, y }; } });
+  s.createBackground = s.createHud = s.showStageCard = noOp;
+  s.createTerrain = () => { s.solids = {}; s.hazards = s.map.terrain.filter(t => t.type === 'rock').map(t => ({ ...t, state: 'idle' })); };
+  s.setObjective = text => { s.objective = text; };
+  s.showNotice = noOp;
+  s.showDialogue = (key, done) => { s.lastDialogue = key; done(); };
+  s.setArenaLock = (left, right) => { s.activeLock = { left, right }; };
+  s.scene = { restart(payload) { s.retryPayload = payload; } };
+  // Stale fields must be cleared by create, not carried into a fresh attempt.
+  s.enemies = [{}]; s.projectiles = [{}]; s.laser = {}; s.activeLock = {};
+  s.bossDefeated = true; s.boss = { hp: 1, phase: 2 };
+  s.create();
+  return s;
+};
+for (const [mapIndex, bossId] of [[1, 'c'], [2, 'd']]) {
+  const carry = { selectedItem: 'badfruit', skillCooldownReductionMs: 500, maxHpBonus: 25, attackMultiplier: 1.22 };
+  const initial = checkpointScene({ heroId: 'b', mapIndex, carry });
+  assert.equal(initial.player.body.x, MAPS[mapIndex].introX, 'ordinary stage entry must not skip waves');
+  assert.equal(initial.bossCheckpoint, null);
+  initial.waveState.complete = true;
+  initial.startBossArena();
+  assert.equal(initial.bossCheckpoint, bossId, 'activate only when reaching this boss');
+  initial.player.hp = 0;
+  initial.boss.hp = 1; initial.boss.phase = 2;
+  initial.restartMap();
+  assert.equal(initial.retryPayload.hp, undefined, 'retry must not carry death HP');
+  const revived = checkpointScene(initial.retryPayload);
+  assert.equal(revived.player.body.x, MAPS[mapIndex].bossZone.trigger - 120);
+  assert.equal(revived.player.hp, HEROES.b.maxHp + 25);
+  assert.equal(revived.player.skillReadyAt, 0);
+  assert.equal(revived.player.state, 'idle');
+  assert.equal(revived.waveState.complete, true);
+  assert.equal(revived.waveState.waiting, false);
+  assert.equal(revived.waveState.index, MAPS[mapIndex].waveZone.waves.length - 1);
+  assert.equal(revived.hazards.every(h => h.state === 'done'), true);
+  assert.equal(revived.activeLock, null);
+  assert.equal(revived.boss, null);
+  assert.equal(revived.laser, null);
+  assert.equal(revived.enemies.length + revived.projectiles.length, 0);
+  assert.equal(revived.resumed, true);
+  assert.equal(revived.startDelay, 250);
+  assert.equal(revived.cameraCenter.x, revived.player.body.x + 145);
+  assert.equal(revived.carry.skillCooldownReductionMs, 500, 'do not apply merchant benefits twice');
+  assert.equal(revived.player.attack, HEROES.b.attack * 1.22);
+  assert.equal(revived.merchantVisited, false);
+  revived.startWaveZone = () => assert.fail('a boss retry must never restart earlier waves');
+  revived.updateStageFlow();
+  assert.equal(revived.bossTriggered, false, 'allow the player to walk into the arena');
+  revived.player.body.x = revived.map.bossZone.trigger;
+  revived.updateStageFlow();
+  assert.equal(revived.boss.type, bossId);
+  assert.equal(revived.boss.hp, revived.boss.maxHp);
+  assert.equal(revived.boss.phase, 1);
+  assert.equal(revived.boss.firstHurtSpoken, false);
+  assert.equal(revived.bossBattleStarted, true);
+  revived.restartMap();
+  assert.equal(revived.retryPayload.bossCheckpoint, bossId, 'checkpoint survives repeated deaths');
+  revived.bossDefeated = true;
+  revived.restartMap();
+  assert.equal(revived.retryPayload.bossCheckpoint, null, 'post-victory replay starts normally');
+  if (mapIndex === 1) {
+    revived.transitionToMap(2); revived.delayed();
+    assert.equal(revived.retryPayload.bossCheckpoint, undefined, 'checkpoint must not follow the player to Map3');
+  }
+}
+for (const data of [{ mapIndex: 0, bossCheckpoint: 'c' }, { mapIndex: 2, bossCheckpoint: 'c' }]) {
+  const ordinary = checkpointScene(data);
+  assert.equal(ordinary.bossCheckpoint, null);
+  assert.equal(ordinary.waveState.triggered, false);
+  assert.equal(ordinary.player.body.x, ordinary.map.introX);
+}
+console.log('PASS: combat timings/items, piercing and projectile budget; C/D checkpoint lifecycle, full-health retries, fresh bosses, cleared waves/hazards and cross-map isolation.');
