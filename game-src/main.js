@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { BootScene, FightScene } from './GameScene.js';
 import { GAME_HEIGHT, GAME_WIDTH } from './gameData.js';
 import { renderSkillCooldown } from './SkillCooldown.js';
+import { installTouchGestureGuard } from './TouchGestureGuard.js';
 
 class UIController {
   constructor() {
@@ -34,6 +35,7 @@ class UIController {
   }
 
   bind() {
+    this.removeTouchGestureGuard = installTouchGestureGuard(document.querySelector('#game-root'));
     document.querySelector('#skip-intro')?.addEventListener('click', () => this.finishIntro());
     document.querySelector('#start-button')?.addEventListener('click', () => this.showOnly(this.select));
     document.querySelector('.back-title')?.addEventListener('click', () => this.showOnly(this.title));
