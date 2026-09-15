@@ -1,0 +1,230 @@
+{
+  "mode": "built-in image_gen",
+  "generationCalls": 3,
+  "retries": 0,
+  "variants": 0,
+  "sourceCopyPolicy": "Selected generated PNGs copied unchanged; original generated files preserved.",
+  "requestedDimensions": [
+    2048,
+    2048
+  ],
+  "actualDimensions": [
+    1254,
+    1254
+  ],
+  "layout": {
+    "columns": 2,
+    "rows": 4,
+    "xBoundaries": [
+      0,
+      627,
+      1254
+    ],
+    "yBoundaries": [
+      0,
+      313,
+      627,
+      940,
+      1254
+    ]
+  },
+  "prompts": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/prompts.json",
+  "sources": [
+    {
+      "name": "mountain",
+      "selected": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/mountain-source.png",
+      "generatedOriginal": "/Users/quuuan/.codex/generated_images/01a0a427-0225-7a53-8291-2093e7102690/exec-db45b576-a6c4-4bed-8783-1c11808a3754.png"
+    },
+    {
+      "name": "cave",
+      "selected": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/cave-source.png",
+      "generatedOriginal": "/Users/quuuan/.codex/generated_images/01a0a427-0225-7a53-8291-2093e7102690/exec-9343951d-7d75-4150-a17e-74d5ecaf18ee.png"
+    },
+    {
+      "name": "strawberry-lab",
+      "selected": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/strawberry-lab-source.png",
+      "generatedOriginal": "/Users/quuuan/.codex/generated_images/01a0a427-0225-7a53-8291-2093e7102690/exec-142693d9-4191-4a54-b2d1-b7ec5a971b15.png"
+    }
+  ],
+  "inspection": {
+    "visual": "Eight cells in correct 2-by-4 order with coherent original painted materials. No characters, text or UI. Platform edges are readable and structural arches have open centers.",
+    "limitations": [
+      "Tool returned 1254x1254 despite requested 2048x2048; nominal cell rows alternate 313 and 314 pixels.",
+      "Background panels are visually opaque but their alpha is mostly 252/253 rather than strictly 255. Integration should flatten background crops if strict opacity is needed.",
+      "Cave and laboratory upper panels contain thin pale seams; crop those off during integration.",
+      "Some tall objects reach close to their cell edges, so the requested 40-pixel-equivalent padding is not consistently present.",
+      "Laboratory cooling pump is a mostly solid assembly with limited open movement space; the separate laboratory structural arch has a large transparent opening.",
+      "Small near-transparent fringe pixels exist near some boundaries; images are preserved unedited."
+    ],
+    "alphaAudit": [
+      {
+        "path": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/mountain-source.png",
+        "width": 1254,
+        "height": 1254,
+        "color": "RGBA",
+        "cell_alpha": [
+          {
+            "cell": 0,
+            "transparent_fraction": 0,
+            "opaque_fraction": 0,
+            "partial_fraction": 1
+          },
+          {
+            "cell": 1,
+            "transparent_fraction": 0,
+            "opaque_fraction": 0.00012,
+            "partial_fraction": 0.99988
+          },
+          {
+            "cell": 2,
+            "transparent_fraction": 0.62784,
+            "opaque_fraction": 0.00049,
+            "partial_fraction": 0.37167
+          },
+          {
+            "cell": 3,
+            "transparent_fraction": 0.81058,
+            "opaque_fraction": 0.00075,
+            "partial_fraction": 0.18867
+          },
+          {
+            "cell": 4,
+            "transparent_fraction": 0.49775,
+            "opaque_fraction": 0.00105,
+            "partial_fraction": 0.5012
+          },
+          {
+            "cell": 5,
+            "transparent_fraction": 0.67052,
+            "opaque_fraction": 0.00083,
+            "partial_fraction": 0.32865
+          },
+          {
+            "cell": 6,
+            "transparent_fraction": 0.53242,
+            "opaque_fraction": 0.00122,
+            "partial_fraction": 0.46635
+          },
+          {
+            "cell": 7,
+            "transparent_fraction": 0.58916,
+            "opaque_fraction": 0.00052,
+            "partial_fraction": 0.41032
+          }
+        ]
+      },
+      {
+        "path": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/cave-source.png",
+        "width": 1254,
+        "height": 1254,
+        "color": "RGBA",
+        "cell_alpha": [
+          {
+            "cell": 0,
+            "transparent_fraction": 0,
+            "opaque_fraction": 0,
+            "partial_fraction": 1
+          },
+          {
+            "cell": 1,
+            "transparent_fraction": 0,
+            "opaque_fraction": 0,
+            "partial_fraction": 1
+          },
+          {
+            "cell": 2,
+            "transparent_fraction": 0.55194,
+            "opaque_fraction": 0.00373,
+            "partial_fraction": 0.44433
+          },
+          {
+            "cell": 3,
+            "transparent_fraction": 0.77545,
+            "opaque_fraction": 0.00319,
+            "partial_fraction": 0.22136
+          },
+          {
+            "cell": 4,
+            "transparent_fraction": 0.59583,
+            "opaque_fraction": 0.00077,
+            "partial_fraction": 0.4034
+          },
+          {
+            "cell": 5,
+            "transparent_fraction": 0.63967,
+            "opaque_fraction": 0.00111,
+            "partial_fraction": 0.35922
+          },
+          {
+            "cell": 6,
+            "transparent_fraction": 0.63223,
+            "opaque_fraction": 0.00217,
+            "partial_fraction": 0.3656
+          },
+          {
+            "cell": 7,
+            "transparent_fraction": 0.69149,
+            "opaque_fraction": 0.00126,
+            "partial_fraction": 0.30724
+          }
+        ]
+      },
+      {
+        "path": "/Users/quuuan/Documents/Codex/2026-09-10/you/map-art-v3-source/strawberry-lab-source.png",
+        "width": 1254,
+        "height": 1254,
+        "color": "RGBA",
+        "cell_alpha": [
+          {
+            "cell": 0,
+            "transparent_fraction": 0.00001,
+            "opaque_fraction": 0,
+            "partial_fraction": 0.99999
+          },
+          {
+            "cell": 1,
+            "transparent_fraction": 0.00002,
+            "opaque_fraction": 0.00005,
+            "partial_fraction": 0.99993
+          },
+          {
+            "cell": 2,
+            "transparent_fraction": 0.58935,
+            "opaque_fraction": 0.00038,
+            "partial_fraction": 0.41027
+          },
+          {
+            "cell": 3,
+            "transparent_fraction": 0.73746,
+            "opaque_fraction": 0.00012,
+            "partial_fraction": 0.26243
+          },
+          {
+            "cell": 4,
+            "transparent_fraction": 0.53059,
+            "opaque_fraction": 0.00076,
+            "partial_fraction": 0.46865
+          },
+          {
+            "cell": 5,
+            "transparent_fraction": 0.54168,
+            "opaque_fraction": 0.0005,
+            "partial_fraction": 0.45781
+          },
+          {
+            "cell": 6,
+            "transparent_fraction": 0.65846,
+            "opaque_fraction": 0.00009,
+            "partial_fraction": 0.34145
+          },
+          {
+            "cell": 7,
+            "transparent_fraction": 0.64357,
+            "opaque_fraction": 0.00019,
+            "partial_fraction": 0.35624
+          }
+        ]
+      }
+    ]
+  }
+}
