@@ -1,0 +1,182 @@
+{
+  "frames": {
+    "distant": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 320
+      }
+    },
+    "chamber": {
+      "frame": {
+        "x": 640,
+        "y": 0,
+        "w": 640,
+        "h": 320
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 320
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 320
+      }
+    },
+    "ledge": {
+      "frame": {
+        "x": 15,
+        "y": 394,
+        "w": 610,
+        "h": 172
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 610,
+        "h": 172
+      },
+      "sourceSize": {
+        "w": 610,
+        "h": 172
+      }
+    },
+    "pier": {
+      "frame": {
+        "x": 874,
+        "y": 335,
+        "w": 172,
+        "h": 290
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 172,
+        "h": 290
+      },
+      "sourceSize": {
+        "w": 172,
+        "h": 290
+      }
+    },
+    "arch": {
+      "frame": {
+        "x": 43,
+        "y": 655,
+        "w": 555,
+        "h": 290
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 555,
+        "h": 290
+      },
+      "sourceSize": {
+        "w": 555,
+        "h": 290
+      }
+    },
+    "machine": {
+      "frame": {
+        "x": 787,
+        "y": 655,
+        "w": 347,
+        "h": 290
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 347,
+        "h": 290
+      },
+      "sourceSize": {
+        "w": 347,
+        "h": 290
+      }
+    },
+    "landmark": {
+      "frame": {
+        "x": 91,
+        "y": 975,
+        "w": 459,
+        "h": 290
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 459,
+        "h": 290
+      },
+      "sourceSize": {
+        "w": 459,
+        "h": 290
+      }
+    },
+    "scatter": {
+      "frame": {
+        "x": 655,
+        "y": 989,
+        "w": 610,
+        "h": 262
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 610,
+        "h": 262
+      },
+      "sourceSize": {
+        "w": 610,
+        "h": 262
+      }
+    },
+    "shaft": {
+      "frame": {
+        "x": 941,
+        "y": 434,
+        "w": 38,
+        "h": 81
+      },
+      "rotated": false,
+      "trimmed": false
+    }
+  },
+  "meta": {
+    "image": "mountain.webp",
+    "size": {
+      "w": 1280,
+      "h": 1280
+    },
+    "scale": "1"
+  }
+}
