@@ -28,8 +28,8 @@ export const ROUTE_MAPS = {
     minis: [{ id: 'mini-shield', name: '盾卫长', type: 'shield', x: 670, floorY: -210, left: 200, right: 1140,
       entry: { x: 1060, y: -285 }, hp: 150, speed: 130, range: 180, damage: 14, cooldown: 1500,
       hint: '盾击之后会重砸 · 绕背或二段跳', required: true, attacks: [
-        { name: '盾击', warning: 520, range: 190, damage: 14 },
-        { name: '重盾落砸 · 跳起', warning: 850, range: 270, damage: 20, knockdown: true },
+        { name: '盾击', warning: 520, activeMs: 130, recoveryMs: 360, lunge: 200, range: 190, damage: 14 },
+        { name: '重盾落砸 · 跳起', warning: 850, activeMs: 170, recoveryMs: 580, range: 270, damage: 20, knockdown: true },
       ] }],
   },
   2: {
@@ -64,8 +64,8 @@ export const ROUTE_MAPS = {
     minis: [{ id: 'mini-quarry', name: '裂岩监工', type: 'heavy', x: 1840, floorY: -210, left: 1260, right: 2710,
       entry: { x: 2600, y: -285 }, hp: 205, speed: 105, range: 190, damage: 19, cooldown: 1800,
       hint: '可选挑战 · 胜利获得补给并放下交汇井捷径桥', required: false, needsWave: true, attacks: [
-        { name: '横扫 · 绕到背后', warning: 680, range: 215, damage: 17 },
-        { name: '裂地重锤 · 二段跳', warning: 1000, range: 330, damage: 25, knockdown: true },
+        { name: '横扫 · 绕到背后', warning: 680, activeMs: 160, recoveryMs: 420, lunge: 100, range: 215, damage: 17 },
+        { name: '裂地重锤 · 二段跳', warning: 1000, activeMs: 180, recoveryMs: 650, range: 330, damage: 25, knockdown: true },
       ] }],
   },
   3: {
@@ -92,8 +92,8 @@ export const ROUTE_MAPS = {
     minis: [{ id: 'mini-core', name: '莓核巡卫', type: 'berryFlying', x: 2870, floorY: 1130, left: 2400, right: 3280,
       entry: { x: 3200, y: 1055 }, hp: 210, speed: 125, range: 440, damage: 14, cooldown: 1550,
       hint: '空中三连弹 / 扇形弹 · 落地休息 4 秒时反击', required: true, needsWave: true, attacks: [
-        { name: '三线瞄准', warning: 780, range: 520, damage: 14, volley: [-0.14, 0, 0.14], speed: 355 },
-        { name: '扇形弹幕', warning: 1000, range: 540, damage: 16, volley: [-0.32, 0, 0.32], speed: 300 },
+        { name: '三线瞄准', warning: 780, activeMs: 140, recoveryMs: 380, range: 520, damage: 14, volley: [-0.14, 0, 0.14], speed: 355 },
+        { name: '扇形弹幕', warning: 1000, activeMs: 180, recoveryMs: 480, range: 540, damage: 16, volley: [-0.32, 0, 0.32], speed: 300 },
       ] }],
   },
 };
