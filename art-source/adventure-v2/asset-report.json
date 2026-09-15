@@ -1,0 +1,283 @@
+{
+  "mode": "built-in image_gen; algorithmic neutral-checkerboard removal and cell padding",
+  "assets": [
+    {
+      "file": "traversal-stone-v2.png",
+      "source_file": "traversal-stone-v2-source.png",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_mode": "RGB",
+      "size": [
+        1280,
+        1280
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 1369406,
+      "partial_alpha_pixels": 24898,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "source_cells": [
+        [
+          0,
+          0,
+          627,
+          627
+        ],
+        [
+          627,
+          0,
+          1254,
+          627
+        ],
+        [
+          0,
+          627,
+          627,
+          1254
+        ],
+        [
+          627,
+          627,
+          1254,
+          1254
+        ]
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell_size": [
+        640,
+        640
+      ],
+      "cell_bounds": [
+        [
+          86,
+          265,
+          554,
+          375
+        ],
+        [
+          86,
+          242,
+          554,
+          397
+        ],
+        [
+          133,
+          86,
+          507,
+          554
+        ],
+        [
+          140,
+          86,
+          499,
+          554
+        ]
+      ]
+    },
+    {
+      "file": "traversal-lab-v2.png",
+      "source_file": "traversal-lab-v2-source.png",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_mode": "RGB",
+      "size": [
+        1280,
+        1280
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 1147712,
+      "partial_alpha_pixels": 24876,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "source_cells": [
+        [
+          0,
+          0,
+          627,
+          627
+        ],
+        [
+          627,
+          0,
+          1254,
+          627
+        ],
+        [
+          0,
+          627,
+          627,
+          1254
+        ],
+        [
+          627,
+          627,
+          1254,
+          1254
+        ]
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell_size": [
+        640,
+        640
+      ],
+      "cell_bounds": [
+        [
+          86,
+          159,
+          554,
+          481
+        ],
+        [
+          121,
+          86,
+          519,
+          554
+        ],
+        [
+          174,
+          86,
+          465,
+          554
+        ],
+        [
+          86,
+          101,
+          554,
+          539
+        ]
+      ]
+    },
+    {
+      "file": "mech-explosion-v2.png",
+      "source_file": "mech-explosion-v2-source.png",
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_mode": "RGB",
+      "size": [
+        1280,
+        1280
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 1357921,
+      "partial_alpha_pixels": 89540,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "source_cells": [
+        [
+          0,
+          0,
+          627,
+          627
+        ],
+        [
+          627,
+          0,
+          1254,
+          627
+        ],
+        [
+          0,
+          627,
+          627,
+          1254
+        ],
+        [
+          627,
+          627,
+          1254,
+          1254
+        ]
+      ],
+      "grid": [
+        2,
+        2
+      ],
+      "cell_size": [
+        640,
+        640
+      ],
+      "cell_bounds": [
+        [
+          215,
+          213,
+          425,
+          426
+        ],
+        [
+          141,
+          140,
+          499,
+          499
+        ],
+        [
+          86,
+          93,
+          554,
+          546
+        ],
+        [
+          171,
+          150,
+          469,
+          490
+        ]
+      ]
+    },
+    {
+      "file": "mech-wreck-v2.png",
+      "source_file": "mech-wreck-v2-source.png",
+      "source_size": [
+        1774,
+        887
+      ],
+      "source_mode": "RGB",
+      "size": [
+        1536,
+        768
+      ],
+      "mode": "RGBA",
+      "transparent_pixels": 804678,
+      "partial_alpha_pixels": 17300,
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "source_cells": [
+        [
+          0,
+          0,
+          1774,
+          887
+        ]
+      ],
+      "grid": [
+        1,
+        1
+      ],
+      "bounds": [
+        192,
+        115,
+        1344,
+        653
+      ]
+    }
+  ]
+}
