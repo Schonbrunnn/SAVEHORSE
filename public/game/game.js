@@ -1,4 +1,4 @@
-var Ti = {
+var Ei = {
   50792(f) {
     var m = Object.prototype.hasOwnProperty, t = "~";
     function o() {
@@ -6481,7 +6481,7 @@ var Ti = {
         }, a;
       var s = t.text, e = s.length, i = t.maxWidth, r = t.wordWrapCharCode, n = Number.MAX_VALUE, h = Number.MAX_VALUE, l = 0, d = 0, u = t.fontData.chars, c = t.fontData.lineHeight, p = t.letterSpacing, g = t.lineSpacing, x = 0, y = 0, T = 0, S = null, C = t._align, E = 0, M = 0, A = t.fontSize / t.fontData.size, P = A * t.scaleX, F = A * t.scaleY, O = null, B = 0, G = [], U = Number.MAX_VALUE, I = 0, R = 0, L = 0, w, b, z, D = [], N = [], V = null, Y = function(rt, dt) {
         for (var mt = 0, vt = 0; vt < rt.length; vt++) {
-          var ct = rt.charCodeAt(vt), ht = dt.chars[ct];
+          var pt = rt.charCodeAt(vt), ht = dt.chars[pt];
           ht && (mt += ht.xAdvance);
         }
         return mt * P;
@@ -6826,16 +6826,16 @@ var Ti = {
                 q = _.x, it = _.y, K = _.scale, Q = _.rotation, _.color ? (P = _.color, F = _.color, O = _.color, B = _.color) : (P = _.tint.topLeft, F = _.tint.topRight, O = _.tint.bottomLeft, B = _.tint.bottomRight), A = _.tintMode, P = s.getTintAppendFloatAlpha(P, l._alphaTL), F = s.getTintAppendFloatAlpha(F, l._alphaTR), O = s.getTintAppendFloatAlpha(O, l._alphaBL), B = s.getTintAppendFloatAlpha(B, l._alphaBR);
               }
               r.tintEffect = A, r.tintTopLeft = P, r.tintTopRight = F, r.tintBottomLeft = O, r.tintBottomRight = B, q *= K, it *= K, q -= l.displayOriginX, it -= l.displayOriginY, q += J, E.applyITRS(q, it, Q, K, K), C.multiply(E, S);
-              var at = b, rt = z, dt = S.e, mt = S.f, vt = rt * S.c + S.e, ct = rt * S.d + S.f, ht = at * S.a + rt * S.c + S.e, ft = at * S.b + rt * S.d + S.f, X = at * S.a + S.e, Et = at * S.b + S.f;
+              var at = b, rt = z, dt = S.e, mt = S.f, vt = rt * S.c + S.e, pt = rt * S.d + S.f, ht = at * S.a + rt * S.c + S.e, ft = at * S.b + rt * S.d + S.f, X = at * S.a + S.e, Ct = at * S.b + S.f;
               y.run(x, l, void 0, 0, i, { quad: [
                 dt,
                 mt,
                 vt,
-                ct,
+                pt,
                 ht,
                 ft,
                 X,
-                Et
+                Ct
               ] }, r);
             }
           }
@@ -22654,7 +22654,7 @@ return new ` + this.key + `();
         x < 0 && (x += 289), p[g] = (x * 34 + 10) * x % 289;
       }
     }, u = function(c, p, g) {
-      var x = l.uvw, y = l.i0, T = l.f0, S = l.g_, C = l.l_, E = l.g, M = l.l, A = l.o1, P = l.o2, F = l.i1, O = l.i2, B = l.i3, G = l.v0, U = l.v1, I = l.v2, R = l.v3, L = l.x0, w = l.x1, b = l.x2, z = l.x3, D = l.vx, N = l.vy, V = l.vz, Y = l.hash, W = l.theta, H = l.sz, K = l.psi, Q = l.Ct, $ = l.St, j = l.szp, J = l.gx, tt = l.gy, k = l.gz, st = l.px, Z = l.py, et = l.pz, q = l.Sp, it = l.Cp, lt = l.Ctp, _ = l.qx, at = l.qy, rt = l.qz, dt = l.Sa, mt = l.Ca, vt = l.w, ct = l.w2, ht = l.w3, ft = l.gdotx;
+      var x = l.uvw, y = l.i0, T = l.f0, S = l.g_, C = l.l_, E = l.g, M = l.l, A = l.o1, P = l.o2, F = l.i1, O = l.i2, B = l.i3, G = l.v0, U = l.v1, I = l.v2, R = l.v3, L = l.x0, w = l.x1, b = l.x2, z = l.x3, D = l.vx, N = l.vy, V = l.vz, Y = l.hash, W = l.theta, H = l.sz, K = l.psi, Q = l.Ct, $ = l.St, j = l.szp, J = l.gx, tt = l.gy, k = l.gz, st = l.px, Z = l.py, et = l.pz, q = l.Sp, it = l.Cp, lt = l.Ctp, _ = l.qx, at = l.qy, rt = l.qz, dt = l.Sa, mt = l.Ca, vt = l.w, pt = l.w2, ht = l.w3, ft = l.gdotx;
       x[0] = 0 * c[0] + 1 * c[1] + 1 * c[2], x[1] = 1 * c[0] + 0 * c[1] + 1 * c[2], x[2] = 1 * c[0] + 1 * c[1] + 0 * c[2];
       for (var X = 0; X < 3; X++)
         y[X] = Math.floor(x[X]), T[X] = x[X] - y[X];
@@ -22662,35 +22662,35 @@ return new ` + this.key + `();
         A[X] = Math.min(E[X], M[X]), P[X] = Math.max(E[X], M[X]);
       for (X = 0; X < 3; X++)
         F[X] = y[X] + A[X], O[X] = y[X] + P[X], B[X] = y[X] + 1;
-      var Et = y[0], Rt = y[1], St = y[2], Ot = F[0], wt = F[1], Ft = F[2], zt = O[0], Vt = O[1], Yt = O[2], Wt = B[0], Ht = B[1], Xt = B[2];
-      for (G[0] = -0.5 * Et + 0.5 * Rt + 0.5 * St, G[1] = 0.5 * Et - 0.5 * Rt + 0.5 * St, G[2] = 0.5 * Et + 0.5 * Rt - 0.5 * St, U[0] = -0.5 * Ot + 0.5 * wt + 0.5 * Ft, U[1] = 0.5 * Ot - 0.5 * wt + 0.5 * Ft, U[2] = 0.5 * Ot + 0.5 * wt - 0.5 * Ft, I[0] = -0.5 * zt + 0.5 * Vt + 0.5 * Yt, I[1] = 0.5 * zt - 0.5 * Vt + 0.5 * Yt, I[2] = 0.5 * zt + 0.5 * Vt - 0.5 * Yt, R[0] = -0.5 * Wt + 0.5 * Ht + 0.5 * Xt, R[1] = 0.5 * Wt - 0.5 * Ht + 0.5 * Xt, R[2] = 0.5 * Wt + 0.5 * Ht - 0.5 * Xt, X = 0; X < 3; X++)
+      var Ct = y[0], Mt = y[1], Tt = y[2], Ft = F[0], Ot = F[1], Lt = F[2], Vt = O[0], Yt = O[1], Wt = O[2], Ht = B[0], Xt = B[1], Kt = B[2];
+      for (G[0] = -0.5 * Ct + 0.5 * Mt + 0.5 * Tt, G[1] = 0.5 * Ct - 0.5 * Mt + 0.5 * Tt, G[2] = 0.5 * Ct + 0.5 * Mt - 0.5 * Tt, U[0] = -0.5 * Ft + 0.5 * Ot + 0.5 * Lt, U[1] = 0.5 * Ft - 0.5 * Ot + 0.5 * Lt, U[2] = 0.5 * Ft + 0.5 * Ot - 0.5 * Lt, I[0] = -0.5 * Vt + 0.5 * Yt + 0.5 * Wt, I[1] = 0.5 * Vt - 0.5 * Yt + 0.5 * Wt, I[2] = 0.5 * Vt + 0.5 * Yt - 0.5 * Wt, R[0] = -0.5 * Ht + 0.5 * Xt + 0.5 * Kt, R[1] = 0.5 * Ht - 0.5 * Xt + 0.5 * Kt, R[2] = 0.5 * Ht + 0.5 * Xt - 0.5 * Kt, X = 0; X < 3; X++)
         L[X] = c[X] - G[X], w[X] = c[X] - U[X], b[X] = c[X] - I[X], z[X] = c[X] - R[X];
       if (p[0] > 0 || p[1] > 0 || p[2] > 0) {
         if (D[0] = G[0], D[1] = U[0], D[2] = I[0], D[3] = R[0], N[0] = G[1], N[1] = U[1], N[2] = I[1], N[3] = R[1], V[0] = G[2], V[1] = U[2], V[2] = I[2], V[3] = R[2], p[0] > 0) for (X = 0; X < 4; X++) D[X] = (D[X] % p[0] + p[0]) % p[0];
         if (p[1] > 0) for (X = 0; X < 4; X++) N[X] = (N[X] % p[1] + p[1]) % p[1];
         if (p[2] > 0) for (X = 0; X < 4; X++) V[X] = (V[X] % p[2] + p[2]) % p[2];
-        var Kt = D[0], Zt = N[0], Qt = V[0], Jt = D[1], $t = N[1], jt = V[1], kt = D[2], qt = N[2], _t = V[2], te = D[3], ee = N[3], ie = V[3];
-        y[0] = Math.floor(0 * Kt + 1 * Zt + 1 * Qt + 0.5), y[1] = Math.floor(1 * Kt + 0 * Zt + 1 * Qt + 0.5), y[2] = Math.floor(1 * Kt + 1 * Zt + 0 * Qt + 0.5), F[0] = Math.floor(0 * Jt + 1 * $t + 1 * jt + 0.5), F[1] = Math.floor(1 * Jt + 0 * $t + 1 * jt + 0.5), F[2] = Math.floor(1 * Jt + 1 * $t + 0 * jt + 0.5), O[0] = Math.floor(0 * kt + 1 * qt + 1 * _t + 0.5), O[1] = Math.floor(1 * kt + 0 * qt + 1 * _t + 0.5), O[2] = Math.floor(1 * kt + 1 * qt + 0 * _t + 0.5), B[0] = Math.floor(0 * te + 1 * ee + 1 * ie + 0.5), B[1] = Math.floor(1 * te + 0 * ee + 1 * ie + 0.5), B[2] = Math.floor(1 * te + 1 * ee + 0 * ie + 0.5);
+        var Zt = D[0], Qt = N[0], Jt = V[0], $t = D[1], jt = N[1], kt = V[1], qt = D[2], _t = N[2], te = V[2], ee = D[3], ie = N[3], se = V[3];
+        y[0] = Math.floor(0 * Zt + 1 * Qt + 1 * Jt + 0.5), y[1] = Math.floor(1 * Zt + 0 * Qt + 1 * Jt + 0.5), y[2] = Math.floor(1 * Zt + 1 * Qt + 0 * Jt + 0.5), F[0] = Math.floor(0 * $t + 1 * jt + 1 * kt + 0.5), F[1] = Math.floor(1 * $t + 0 * jt + 1 * kt + 0.5), F[2] = Math.floor(1 * $t + 1 * jt + 0 * kt + 0.5), O[0] = Math.floor(0 * qt + 1 * _t + 1 * te + 0.5), O[1] = Math.floor(1 * qt + 0 * _t + 1 * te + 0.5), O[2] = Math.floor(1 * qt + 1 * _t + 0 * te + 0.5), B[0] = Math.floor(0 * ee + 1 * ie + 1 * se + 0.5), B[1] = Math.floor(1 * ee + 0 * ie + 1 * se + 0.5), B[2] = Math.floor(1 * ee + 1 * ie + 0 * se + 0.5);
       }
       y[0] += e[0], y[1] += e[1], y[2] += e[2], F[0] += e[0], F[1] += e[1], F[2] += e[2], O[0] += e[0], O[1] += e[1], O[2] += e[2], B[0] += e[0], B[1] += e[1], B[2] += e[2];
-      var Ct = l.vx, Dt = l.vy;
-      for (Ct[0] = y[2], Ct[1] = F[2], Ct[2] = O[2], Ct[3] = B[2], d(Ct, Dt), Dt[0] += y[1], Dt[1] += F[1], Dt[2] += O[1], Dt[3] += B[1], d(Dt, Ct), Ct[0] += y[0], Ct[1] += F[0], Ct[2] += O[0], Ct[3] += B[0], d(Ct, Y), X = 0; X < 4; X++)
+      var St = l.vx, wt = l.vy;
+      for (St[0] = y[2], St[1] = F[2], St[2] = O[2], St[3] = B[2], d(St, wt), wt[0] += y[1], wt[1] += F[1], wt[2] += O[1], wt[3] += B[1], d(wt, St), St[0] += y[0], St[1] += F[0], St[2] += O[0], St[3] += B[0], d(St, Y), X = 0; X < 4; X++)
         W[X] = Y[X] * 3.883222077, H[X] = 0.996539792 - 6920415e-9 * Y[X], K[X] = Y[X] * 0.108705628, Q[X] = Math.cos(W[X]), $[X] = Math.sin(W[X]), j[X] = Math.sqrt(Math.max(0, 1 - H[X] * H[X]));
       if (g !== 0) for (X = 0; X < 4; X++)
         st[X] = Q[X] * j[X], Z[X] = $[X] * j[X], et[X] = H[X], q[X] = Math.sin(K[X]), it[X] = Math.cos(K[X]), lt[X] = $[X] * q[X] - Q[X] * it[X], _[X] = (1 - H[X]) * (lt[X] * $[X]) + H[X] * q[X], at[X] = (1 - H[X]) * (-lt[X] * Q[X]) + H[X] * it[X], rt[X] = -(Z[X] * it[X] + st[X] * q[X]), dt[X] = Math.sin(g), mt[X] = Math.cos(g), J[X] = mt[X] * st[X] + dt[X] * _[X], tt[X] = mt[X] * Z[X] + dt[X] * at[X], k[X] = mt[X] * et[X] + dt[X] * rt[X];
       else for (X = 0; X < 4; X++)
         J[X] = Q[X] * j[X], tt[X] = $[X] * j[X], k[X] = H[X];
       for (X = 0; X < 4; X++) {
-        var ue = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], fe = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], de = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
-        vt[X] = 0.5 - (ue * ue + fe * fe + de * de), vt[X] < 0 && (vt[X] = 0), ct[X] = vt[X] * vt[X], ht[X] = ct[X] * vt[X];
+        var de = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], ve = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], ce = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
+        vt[X] = 0.5 - (de * de + ve * ve + ce * ce), vt[X] < 0 && (vt[X] = 0), pt[X] = vt[X] * vt[X], ht[X] = pt[X] * vt[X];
       }
       for (X = 0; X < 4; X++) {
-        var ci = J[X], pi = tt[X], mi = k[X], gi = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], xi = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], yi = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
-        ft[X] = ci * gi + pi * xi + mi * yi;
+        var gi = J[X], xi = tt[X], yi = k[X], Ti = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], Si = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], Ci = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
+        ft[X] = gi * Ti + xi * Si + yi * Ci;
       }
-      var ve = 0;
-      for (X = 0; X < 4; X++) ve += ht[X] * ft[X];
-      return 39.5 * ve;
+      var pe = 0;
+      for (X = 0; X < 4; X++) pe += ht[X] * ft[X];
+      return 39.5 * pe;
     };
     f.exports = m;
   },
@@ -25606,8 +25606,8 @@ return new ` + this.key + `();
           return lt.x = void 0, lt.y = void 0, lt;
         var _ = !R.pushable && !L.pushable;
         if (Q) {
-          var at = D.x - N.x, rt = D.y - N.y, dt = Math.sqrt(Math.pow(at, 2) + Math.pow(rt, 2)), mt = (N.x - D.x) / dt || 0, vt = (N.y - D.y) / dt || 0, ct = 2 * (W.x * mt + W.y * vt - H.x * mt - H.y * vt) / (R.mass + L.mass);
-          (V || Y || !R.pushable || !L.pushable) && (ct *= 2), !V && R.pushable && (W.x = W.x - ct / R.mass * mt, W.y = W.y - ct / R.mass * vt, W.multiply(R.bounce)), !Y && L.pushable && (H.x = H.x + ct / L.mass * mt, H.y = H.y + ct / L.mass * vt, H.multiply(L.bounce)), !V && !Y && (q *= 0.5, it *= 0.5), (!V || R.pushable || _) && (R.x -= q, R.y -= it, R.updateCenter()), (!Y || L.pushable || _) && (L.x += q, L.y += it, L.updateCenter()), lt.result = !0;
+          var at = D.x - N.x, rt = D.y - N.y, dt = Math.sqrt(Math.pow(at, 2) + Math.pow(rt, 2)), mt = (N.x - D.x) / dt || 0, vt = (N.y - D.y) / dt || 0, pt = 2 * (W.x * mt + W.y * vt - H.x * mt - H.y * vt) / (R.mass + L.mass);
+          (V || Y || !R.pushable || !L.pushable) && (pt *= 2), !V && R.pushable && (W.x = W.x - pt / R.mass * mt, W.y = W.y - pt / R.mass * vt, W.multiply(R.bounce)), !Y && L.pushable && (H.x = H.x + pt / L.mass * mt, H.y = H.y + pt / L.mass * vt, H.multiply(L.bounce)), !V && !Y && (q *= 0.5, it *= 0.5), (!V || R.pushable || _) && (R.x -= q, R.y -= it, R.updateCenter()), (!Y || L.pushable || _) && (L.x += q, L.y += it, L.updateCenter()), lt.result = !0;
         } else
           !V && (R.pushable || _) && (R.x -= q, R.y -= it, R.updateCenter()), (!Y || L.pushable || _) && (L.x += q, L.y += it, L.updateCenter()), lt.x = void 0, lt.y = void 0;
         return lt;
@@ -28543,8 +28543,8 @@ return new ` + this.key + `();
                 var mt = N.tangentImpulse;
                 N.tangentImpulse += p, N.tangentImpulse < -g && (N.tangentImpulse = -g), N.tangentImpulse > g && (N.tangentImpulse = g), p = N.tangentImpulse - mt;
               }
-              var vt = M * rt + P * p, ct = A * rt + F * p;
-              C.isStatic || C.isSleeping || (C.positionPrev.x += vt * C.inverseMass, C.positionPrev.y += ct * C.inverseMass, C.anglePrev += (Y * ct - W * vt) * C.inverseInertia), E.isStatic || E.isSleeping || (E.positionPrev.x -= vt * E.inverseMass, E.positionPrev.y -= ct * E.inverseMass, E.anglePrev -= (H * ct - K * vt) * E.inverseInertia);
+              var vt = M * rt + P * p, pt = A * rt + F * p;
+              C.isStatic || C.isSleeping || (C.positionPrev.x += vt * C.inverseMass, C.positionPrev.y += pt * C.inverseMass, C.anglePrev += (Y * pt - W * vt) * C.inverseInertia), E.isStatic || E.isSleeping || (E.positionPrev.x -= vt * E.inverseMass, E.positionPrev.y -= pt * E.inverseMass, E.anglePrev -= (H * pt - K * vt) * E.inverseInertia);
             }
           }
         }
@@ -32500,7 +32500,7 @@ return new ` + this.key + `();
     });
   },
   30130(f, m, t) {
-    var o = t(50792), v = t(83419), a = t(92503), s = t(47406), e = t(53663), i = t(16971), r = t(15214), n = t(72266), h = t(62791), l = t(21832), d = t(59444), u = t(62087), c = t(61842), p = t(76409), g = t(95449), x = t(61199), y = t(14255), T = t(12682), S = t(13119), C = t(22731), E = t(57032), M = t(52903), A = t(13922), P = t(33466), F = t(75798), O = t(90830), B = t(52302), G = t(34989), U = t(91614), I = t(15600), R = t(99786), L = t(26825), w = t(54900), b = t(34652), z = t(26703), D = t(56165), N = t(40305), V = t(55905), Y = t(58167), W = t(40752), H = t(13279), K = t(27459), Q = t(88856), $ = t(10845), j = t(99184), J = t(27996), tt = t(56432), k = t(17486), st = t(68517), Z = t(31029), et = t(94494), q = t(87469), it = t(89723), lt = t(12913), _ = t(22995), at = t(86081), rt = t(88383), dt = t(34454), mt = t(46211), vt = t(64552), ct = t(95433);
+    var o = t(50792), v = t(83419), a = t(92503), s = t(47406), e = t(53663), i = t(16971), r = t(15214), n = t(72266), h = t(62791), l = t(21832), d = t(59444), u = t(62087), c = t(61842), p = t(76409), g = t(95449), x = t(61199), y = t(14255), T = t(12682), S = t(13119), C = t(22731), E = t(57032), M = t(52903), A = t(13922), P = t(33466), F = t(75798), O = t(90830), B = t(52302), G = t(34989), U = t(91614), I = t(15600), R = t(99786), L = t(26825), w = t(54900), b = t(34652), z = t(26703), D = t(56165), N = t(40305), V = t(55905), Y = t(58167), W = t(40752), H = t(13279), K = t(27459), Q = t(88856), $ = t(10845), j = t(99184), J = t(27996), tt = t(56432), k = t(17486), st = t(68517), Z = t(31029), et = t(94494), q = t(87469), it = t(89723), lt = t(12913), _ = t(22995), at = t(86081), rt = t(88383), dt = t(34454), mt = t(46211), vt = t(64552), pt = t(95433);
     f.exports = new v({
       Extends: o,
       initialize: function(ft) {
@@ -32564,10 +32564,10 @@ return new ` + this.key + `();
           TransformerTile: dt,
           TransformerTileSprite: mt,
           TransformerVertex: vt,
-          YieldContext: ct
-        }, Object.entries(X.config.renderNodes).forEach(function(Et) {
-          var Rt = Et[0], St = Et[1];
-          this.addNodeConstructor(Rt, St);
+          YieldContext: pt
+        }, Object.entries(X.config.renderNodes).forEach(function(Ct) {
+          var Mt = Ct[0], Tt = Ct[1];
+          this.addNodeConstructor(Mt, Tt);
         }, this), this.currentBatchNode = null, this.currentBatchDrawingContext = null, this.debug = !1, this.debugGraph = null, this.currentDebugNode = null;
       },
       addNode: function(ht, ft) {
@@ -32623,15 +32623,15 @@ return new ` + this.key + `();
       },
       debugToString: function() {
         var ht = "", ft = 0, X = this.debugGraph;
-        function Et(St) {
-          return "  ".repeat(St);
+        function Ct(Tt) {
+          return "  ".repeat(Tt);
         }
-        function Rt(St, Ot) {
-          for (var wt = Et(Ot) + St.name + `
-`, Ft = 0; Ft < St.children.length; Ft++) wt += Rt(St.children[Ft], Ot + 1);
-          return wt;
+        function Mt(Tt, Ft) {
+          for (var Ot = Ct(Ft) + Tt.name + `
+`, Lt = 0; Lt < Tt.children.length; Lt++) Ot += Mt(Tt.children[Lt], Ft + 1);
+          return Ot;
         }
-        return ht = Rt(X, ft), ht;
+        return ht = Mt(X, ft), ht;
       }
     });
   },
@@ -47723,12 +47723,12 @@ texCoord = mod(texCoord, 1.0) * outFrame.zw + outFrame.xy;` },
       UUID: t(45650)
     };
   }
-}, ce = {};
+}, me = {};
 function ot(f) {
-  var m = ce[f];
+  var m = me[f];
   if (m !== void 0) return m.exports;
-  var t = ce[f] = { exports: {} };
-  return Ti[f](t, t.exports, ot), t.exports;
+  var t = me[f] = { exports: {} };
+  return Ei[f](t, t.exports, ot), t.exports;
 }
 ot.d = (f, m) => {
   for (var t in m) ot.o(m, t) && !ot.o(f, t) && Object.defineProperty(f, t, {
@@ -47747,112 +47747,112 @@ ot.g = (function() {
 ot.o = (f, m) => Object.prototype.hasOwnProperty.call(f, m);
 var nt = {};
 ot.d(nt, {
-  A4: () => We,
-  AB: () => Je,
-  AQ: () => Ve,
-  Ae: () => ii,
-  Aq: () => ti,
-  Ay: () => Si,
-  B_: () => Fe,
-  CB: () => ai,
-  Cu: () => Ie,
-  D7: () => $e,
-  Dh: () => Ge,
-  En: () => Se,
-  FE: () => He,
-  Fu: () => _e,
-  M3: () => li,
-  NS: () => ui,
-  O1: () => je,
-  PX: () => di,
-  Q8: () => si,
-  Qw: () => Ce,
-  SY: () => oi,
-  Tm: () => Me,
-  UP: () => fi,
-  XT: () => Le,
-  Xs: () => Pe,
-  Z5: () => Ke,
-  Zt: () => Be,
-  _k: () => Ze,
-  aH: () => Ue,
-  dv: () => we,
-  gX: () => ke,
-  gd: () => Ee,
-  ho: () => Qe,
-  iJ: () => Re,
-  j$: () => ri,
-  l2: () => Ae,
-  nl: () => Oe,
-  pd: () => be,
-  qt: () => ni,
-  ry: () => Ye,
-  sV: () => De,
-  sx: () => qe,
-  x3: () => hi,
-  xS: () => Ne,
-  xv: () => ei,
-  zA: () => Xe,
-  zU: () => ze
+  A4: () => Xe,
+  AB: () => je,
+  AQ: () => We,
+  Ae: () => ri,
+  Aq: () => ii,
+  Ay: () => Ai,
+  B_: () => we,
+  CB: () => oi,
+  Cu: () => Ne,
+  D7: () => ke,
+  Dh: () => Ue,
+  En: () => Ee,
+  FE: () => Ke,
+  Fu: () => ei,
+  M3: () => fi,
+  NS: () => di,
+  O1: () => qe,
+  PX: () => ci,
+  Q8: () => ai,
+  Qw: () => Ae,
+  SY: () => li,
+  Tm: () => Pe,
+  UP: () => vi,
+  XT: () => Oe,
+  Xs: () => Fe,
+  Z5: () => Qe,
+  Zt: () => Ge,
+  _k: () => Je,
+  aH: () => Ve,
+  dv: () => Ie,
+  gX: () => _e,
+  gd: () => Me,
+  ho: () => $e,
+  iJ: () => Le,
+  j$: () => ni,
+  l2: () => Re,
+  nl: () => De,
+  pd: () => ze,
+  qt: () => hi,
+  ry: () => He,
+  sV: () => Be,
+  sx: () => ti,
+  x3: () => ui,
+  xS: () => be,
+  xv: () => si,
+  zA: () => Ze,
+  zU: () => Ye
 });
 ot(63595);
-var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388), Me = ot(26638), Re = ot(42857), Pe = ot(83419), Le = ot(25410), Fe = ot(44965), Oe = ot(27460), we = ot(84902), De = ot(93055), Ie = ot(11889), Be = ot(50127), Ne = ot(77856), Ge = ot(55738), be = ot(14350), Ue = ot(57777), ze = ot(75508), Ve = ot(44563), Ye = ot(18922), We = ot(36909), He = ot(93364), Xe = ot(29795), Ke = ot(97482), Ze = ot(62194), Qe = ot(41392), Je = ot(23717), $e = ot(27458), je = ot(62501), ke = ot(90291), qe = ot(84322), _e = ot(43066), ti = ot(91799), ei = Tt.VERSION, ii = Tt.LOG_VERSION, si = Tt.AUTO, ri = Tt.CANVAS, ai = Tt.WEBGL, ni = Tt.HEADLESS, oi = Tt.FOREVER, hi = Tt.NONE, li = Tt.LEFT, ui = Tt.RIGHT, fi = Tt.UP, di = Tt.DOWN, Si = {
-  Actions: Se,
-  Animations: Ce,
-  BlendModes: Ee,
-  Cache: Ae,
-  Cameras: Me,
-  Core: Re,
-  Class: Pe,
-  Curves: Le,
-  Data: Fe,
-  Display: Oe,
-  DOM: we,
-  Events: De,
-  Filters: Ie,
-  Game: Be,
-  GameObjects: Ne,
-  Geom: Ge,
-  Input: be,
-  Loader: Ue,
-  Math: ze,
-  Physics: Ve,
-  Plugins: Ye,
-  Renderer: We,
-  Scale: He,
-  ScaleModes: Xe,
-  Scene: Ke,
-  Scenes: Ze,
-  Structs: Qe,
-  Sound: Je,
-  Textures: $e,
-  Tilemaps: je,
-  Time: ke,
-  TintModes: qe,
-  Tweens: _e,
-  Utils: ti,
-  VERSION: ei,
-  LOG_VERSION: ii,
-  AUTO: si,
-  CANVAS: ri,
-  WEBGL: ai,
-  HEADLESS: ni,
-  FOREVER: oi,
-  NONE: hi,
-  LEFT: li,
-  RIGHT: ui,
-  UP: fi,
-  DOWN: di
-}, Qi = nt.Q8, Ji = nt.En, $i = nt.Qw, ji = nt.gd, ki = nt.j$, qi = nt.l2, _i = nt.Tm, ts = nt.Xs, es = nt.iJ, is = nt.XT, ss = nt.dv, rs = nt.PX, as = nt.B_, ns = nt.nl, os = nt.sV, hs = nt.SY, ls = nt.Cu, us = nt.Zt, fs = nt.xS, ds = nt.Dh, vs = nt.qt, cs = nt.pd, ps = nt.M3, ms = nt.Ae, gs = nt.aH, xs = nt.zU, ys = nt.x3, Ts = nt.AQ, Ss = nt.ry, Cs = nt.NS, Es = nt.A4, As = nt.FE, Ms = nt.zA, Rs = nt.Z5, Ps = nt._k, Ls = nt.AB, Fs = nt.ho, Os = nt.D7, ws = nt.O1, Ds = nt.gX, Is = nt.sx, Bs = nt.Fu, Ns = nt.UP, Gs = nt.Aq, bs = nt.xv, Us = nt.CB, ut = nt.Ay, Pt = [
+var yt = ot(8054), Ee = ot(61061), Ae = ot(60421), Me = ot(10312), Re = ot(83388), Pe = ot(26638), Le = ot(42857), Fe = ot(83419), Oe = ot(25410), we = ot(44965), De = ot(27460), Ie = ot(84902), Be = ot(93055), Ne = ot(11889), Ge = ot(50127), be = ot(77856), Ue = ot(55738), ze = ot(14350), Ve = ot(57777), Ye = ot(75508), We = ot(44563), He = ot(18922), Xe = ot(36909), Ke = ot(93364), Ze = ot(29795), Qe = ot(97482), Je = ot(62194), $e = ot(41392), je = ot(23717), ke = ot(27458), qe = ot(62501), _e = ot(90291), ti = ot(84322), ei = ot(43066), ii = ot(91799), si = yt.VERSION, ri = yt.LOG_VERSION, ai = yt.AUTO, ni = yt.CANVAS, oi = yt.WEBGL, hi = yt.HEADLESS, li = yt.FOREVER, ui = yt.NONE, fi = yt.LEFT, di = yt.RIGHT, vi = yt.UP, ci = yt.DOWN, Ai = {
+  Actions: Ee,
+  Animations: Ae,
+  BlendModes: Me,
+  Cache: Re,
+  Cameras: Pe,
+  Core: Le,
+  Class: Fe,
+  Curves: Oe,
+  Data: we,
+  Display: De,
+  DOM: Ie,
+  Events: Be,
+  Filters: Ne,
+  Game: Ge,
+  GameObjects: be,
+  Geom: Ue,
+  Input: ze,
+  Loader: Ve,
+  Math: Ye,
+  Physics: We,
+  Plugins: He,
+  Renderer: Xe,
+  Scale: Ke,
+  ScaleModes: Ze,
+  Scene: Qe,
+  Scenes: Je,
+  Structs: $e,
+  Sound: je,
+  Textures: ke,
+  Tilemaps: qe,
+  Time: _e,
+  TintModes: ti,
+  Tweens: ei,
+  Utils: ii,
+  VERSION: si,
+  LOG_VERSION: ri,
+  AUTO: ai,
+  CANVAS: ni,
+  WEBGL: oi,
+  HEADLESS: hi,
+  FOREVER: li,
+  NONE: ui,
+  LEFT: fi,
+  RIGHT: di,
+  UP: vi,
+  DOWN: ci
+}, _i = nt.Q8, ts = nt.En, es = nt.Qw, is = nt.gd, ss = nt.j$, rs = nt.l2, as = nt.Tm, ns = nt.Xs, os = nt.iJ, hs = nt.XT, ls = nt.dv, us = nt.PX, fs = nt.B_, ds = nt.nl, vs = nt.sV, cs = nt.SY, ps = nt.Cu, ms = nt.Zt, gs = nt.xS, xs = nt.Dh, ys = nt.qt, Ts = nt.pd, Ss = nt.M3, Cs = nt.Ae, Es = nt.aH, As = nt.zU, Ms = nt.x3, Rs = nt.AQ, Ps = nt.ry, Ls = nt.NS, Fs = nt.A4, Os = nt.FE, ws = nt.zA, Ds = nt.Z5, Is = nt._k, Bs = nt.AB, Ns = nt.ho, Gs = nt.D7, bs = nt.O1, Us = nt.gX, zs = nt.sx, Vs = nt.Fu, Ys = nt.UP, Ws = nt.Aq, Hs = nt.xv, Xs = nt.CB, ut = nt.Ay, Rt = [
   "left",
   "right",
   "jump",
   "attack",
   "skill",
   "guard"
-], Ci = class {
+], Mi = class {
   constructor(f) {
-    this.scene = f, this.enabled = !1, this.touchDown = Object.fromEntries(Pt.map((m) => [m, /* @__PURE__ */ new Set()])), this.pendingTouchPress = /* @__PURE__ */ new Set(), this.current = Object.fromEntries(Pt.map((m) => [m, !1])), this.previous = Object.fromEntries(Pt.map((m) => [m, !1])), this.pressed = Object.fromEntries(Pt.map((m) => [m, !1])), this.released = Object.fromEntries(Pt.map((m) => [m, !1])), this.keys = f.input.keyboard?.addKeys({
+    this.scene = f, this.enabled = !1, this.touchDown = Object.fromEntries(Rt.map((m) => [m, /* @__PURE__ */ new Set()])), this.pendingTouchPress = /* @__PURE__ */ new Set(), this.current = Object.fromEntries(Rt.map((m) => [m, !1])), this.previous = Object.fromEntries(Rt.map((m) => [m, !1])), this.pressed = Object.fromEntries(Rt.map((m) => [m, !1])), this.released = Object.fromEntries(Rt.map((m) => [m, !1])), this.keys = f.input.keyboard?.addKeys({
       left: ut.Input.Keyboard.KeyCodes.A,
       right: ut.Input.Keyboard.KeyCodes.D,
       jump: ut.Input.Keyboard.KeyCodes.W,
@@ -47889,7 +47889,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
   bindTouchButtons() {
     document.querySelectorAll("#touch-controls [data-action]").forEach((f) => {
       const m = f.dataset.action, t = m === "dodge" ? "guard" : m;
-      if (!Pt.includes(t)) return;
+      if (!Rt.includes(t)) return;
       const o = (a) => {
         this.enabled && (a.preventDefault(), this.touchDown[t].add(a.pointerId), this.pendingTouchPress.add(t), f.classList.add("pressed"), f.setPointerCapture?.(a.pointerId), window.dispatchEvent(new CustomEvent("friend-fighters-unlock-audio")));
       }, v = (a) => {
@@ -47903,7 +47903,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
     });
   }
   poll() {
-    for (const f of Pt) {
+    for (const f of Rt) {
       const m = !!this.keys[f]?.isDown, t = this.enabled && (m || this.touchDown[f].size > 0 || this.pendingTouchPress.has(f));
       this.pressed[f] = this.enabled && (this.pendingTouchPress.has(f) || t && !this.current[f]), this.released[f] = !t && this.current[f], this.previous[f] = this.current[f], this.current[f] = t;
     }
@@ -47923,7 +47923,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
   }
   clear() {
     this.resetJoystick?.(), this.pendingTouchPress.clear();
-    for (const f of Pt)
+    for (const f of Rt)
       this.touchDown[f].clear(), this.current[f] = !1, this.previous[f] = !1, this.pressed[f] = !1, this.released[f] = !1;
     this.boundButtons.forEach(({ button: f }) => f.classList.remove("pressed"));
   }
@@ -47935,7 +47935,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
       f.removeEventListener("pointerdown", m), f.removeEventListener("pointerup", t), f.removeEventListener("pointercancel", t), f.removeEventListener("lostpointercapture", t);
     });
   }
-}, Ei = class {
+}, Ri = class {
   constructor() {
     this.context = null, this.master = null, this.unlocked = !1, this.unlock = this.unlock.bind(this), window.addEventListener("friend-fighters-unlock-audio", this.unlock), window.addEventListener("pointerdown", this.unlock, { passive: !0 }), window.addEventListener("keydown", this.unlock);
   }
@@ -48087,144 +48087,194 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
         break;
     }
   }
-}, At = (f, m, t = 590) => ({
+}, Et = (f, m, t = 590) => ({
   left: f,
   right: m,
   y: t
-}), se = (f) => f.map(([m, t, o = 260]) => ({
+}), re = (f) => f.map(([m, t, o = 260]) => ({
   type: "platform",
   x: m,
   y: t,
   width: o
-})), pt = (f, m, t, o, v, a) => ({
+})), ct = (f, m, t, o, v, a) => ({
   id: f,
   name: m,
   x: t,
   y: o,
   width: v,
   height: a
-}), Ai = {
+}), Pi = {
   1: {
-    top: -900,
+    top: -780,
     bottom: 960,
-    floors: [At(0, 3100), At(3730, 4600)],
-    platforms: se([
-      [350, 430],
-      [600, 270],
-      [350, 110],
-      [600, -50],
+    floors: [Et(0, 4620), Et(5220, 6200)],
+    platforms: re([
       [
-        920,
+        450,
         430,
-        220
+        280
       ],
       [
-        1040,
+        740,
+        275,
+        300
+      ],
+      [
+        970,
+        430,
+        250
+      ],
+      [
+        2840,
+        430,
+        260
+      ],
+      [
+        3070,
         270,
-        220
+        280
       ],
       [
-        850,
+        3830,
         110,
-        220
+        1420
       ],
       [
-        1040,
+        3950,
         -50,
-        220
+        300
       ],
       [
-        680,
+        4230,
         -210,
-        950
+        320
+      ],
+      [
+        5560,
+        430,
+        280
+      ],
+      [
+        5820,
+        285,
+        300
       ]
     ]),
     rooms: [
-      pt("road", "山门中庭", 0, 0, 1190, 720),
-      pt("belfry", "上层绞盘楼", 140, -900, 1050, 900),
-      pt("ambush", "伏兵关隘", 1250, 0, 1450, 720),
-      pt("bridge", "落桥峡谷", 2730, 0, 1190, 720),
-      pt("exit", "洞窟前庭", 3920, 0, 680, 720)
+      ct("road", "松林驿道", 0, 0, 1200, 720),
+      ct("ruin", "旧驿站屋顶 · 可选补给", 250, -400, 870, 650),
+      ct("ambush", "伏兵关隘", 1200, 0, 1510, 720),
+      ct("tower-foot", "钟楼脚下", 2710, 250, 1830, 470),
+      ct("belfry", "后山绞盘楼", 2800, -780, 1740, 1030),
+      ct("bridge", "落桥峡谷", 4540, 0, 780, 720),
+      ct("exit", "洞窟前庭", 5320, 0, 880, 720)
     ],
     links: [
-      ["road", "belfry"],
+      ["road", "ruin"],
+      ["ruin", "road"],
       ["road", "ambush"],
-      ["ambush", "bridge"],
+      ["ambush", "tower-foot"],
+      ["tower-foot", "belfry"],
+      ["belfry", "tower-foot"],
+      ["tower-foot", "bridge"],
       ["bridge", "exit"]
     ],
-    requirements: {
-      wave: ["mountain-winch"],
-      exit: ["mountain-winch"]
-    },
+    requirements: { exit: ["mountain-winch"] },
     seals: [{
       id: "mountain-door",
-      x: 1190,
+      x: 4550,
       requires: ["mountain-winch"],
-      name: "山门",
-      hint: "先登上绞盘楼，击败守卫后攻击绞盘"
+      name: "峡谷山门",
+      hint: "从左侧石阶登上后山钟楼，击败盾卫长后启动绞盘"
     }],
     objects: [
       {
         type: "lever",
         id: "mountain-winch",
-        x: 380,
-        y: -210,
+        x: 4320,
+        y: 110,
         requires: ["mini-shield"],
-        name: "山门绞盘",
-        notice: "山门与峡谷落桥已开启 · 升降台接回中庭"
+        name: "峡谷绞盘",
+        notice: "山门与落桥已开启 · 东侧升降台接回山道"
       },
       {
         type: "lift",
-        x: 980,
+        x: 4450,
         lowY: 590,
-        highY: -210,
+        highY: 110,
         width: 180,
         requires: ["mountain-winch"],
-        name: "中庭捷径"
+        name: "钟楼回程"
       },
       {
         type: "bridge",
-        x: 3420,
+        x: 4910,
         y: 465,
-        width: 760,
+        width: 780,
         requires: ["mountain-winch"]
       },
       {
         type: "beacon",
-        x: 240,
+        x: 300,
         y: 590,
         noHeal: !0,
-        text: "山门封闭 · 两侧阶梯都通向上层绞盘楼"
+        text: "先熟悉移动和跳跃 · 屋顶有补给，沿山道向右追赶"
       },
       {
         type: "beacon",
-        x: 2920,
+        x: 1110,
         y: 590,
-        text: "绞盘已经放下峡谷桥 · 跳上桥面穿过峡谷"
+        noHeal: !0,
+        text: "前方只有普通伏兵 · 攻击后留意收招与格挡"
+      },
+      {
+        type: "beacon",
+        x: 2800,
+        y: 590,
+        text: "先喘口气 · 山门在右侧，绞盘藏在上方钟楼"
+      },
+      {
+        type: "beacon",
+        x: 3080,
+        y: 270,
+        noHeal: !0,
+        text: "前方才是盾卫长 · 重砸前二段跳，收招时反击"
+      },
+      {
+        type: "beacon",
+        x: 5380,
+        y: 590,
+        text: "桥已经渡过 · 公主的踪迹通向洞窟"
       },
       {
         type: "reward",
-        x: 240,
-        y: -268
+        x: 740,
+        y: 217
       },
       {
-        type: "beacon",
-        x: 4110,
-        y: 590,
-        text: "洞窟入口就在前方"
+        type: "reward",
+        x: 4230,
+        y: -268,
+        requires: ["mini-shield"]
+      },
+      {
+        type: "reward",
+        x: 5820,
+        y: 227
       }
     ],
     minis: [{
       id: "mini-shield",
       name: "盾卫长",
       type: "shield",
-      x: 670,
-      floorY: -210,
-      left: 200,
-      right: 1140,
+      x: 3970,
+      floorY: 110,
+      left: 3220,
+      right: 4480,
+      triggerX: 3820,
       entry: {
-        x: 1060,
-        y: -285
+        x: 3860,
+        y: 35
       },
       hp: 150,
       speed: 130,
@@ -48233,6 +48283,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
       cooldown: 1500,
       hint: "盾击之后会重砸 · 绕背或二段跳",
       required: !0,
+      needsWave: !0,
       attacks: [{
         name: "盾击",
         warning: 520,
@@ -48256,13 +48307,13 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
     top: -900,
     bottom: 1450,
     floors: [
-      At(0, 2440),
-      At(2780, 4480),
-      At(4870, 6500),
-      At(1440, 2840, 1120),
-      At(4370, 5190, 1120)
+      Et(0, 2440),
+      Et(2780, 4480),
+      Et(4870, 6500),
+      Et(1440, 2840, 1120),
+      Et(4370, 5190, 1120)
     ],
-    platforms: se([
+    platforms: re([
       [2350, 430],
       [2640, 270],
       [2350, 110],
@@ -48274,14 +48325,14 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
       ]
     ]),
     rooms: [
-      pt("entrance", "洞窟入口", 0, 0, 820, 720),
-      pt("patrol", "佣兵封锁厅", 820, 0, 1450, 720),
-      pt("junction", "三层交汇井", 2280, -210, 630, 1500),
-      pt("gallery", "上层旧矿廊 · 可选", 1230, -900, 1510, 900),
-      pt("counterweight", "下层配重室", 1430, 720, 1390, 590),
-      pt("rabbit", "杀人兔竞技场", 2960, 0, 1280, 720),
-      pt("drain", "战后排水暗道", 4330, 720, 870, 590),
-      pt("cabin", "商人木屋", 5240, 0, 1260, 720)
+      ct("entrance", "洞窟入口", 0, 0, 820, 720),
+      ct("patrol", "佣兵封锁厅", 820, 0, 1450, 720),
+      ct("junction", "三层交汇井", 2280, -210, 630, 1500),
+      ct("gallery", "上层旧矿廊 · 可选", 1230, -900, 1510, 900),
+      ct("counterweight", "下层配重室", 1430, 720, 1390, 590),
+      ct("rabbit", "杀人兔竞技场", 2960, 0, 1280, 720),
+      ct("drain", "战后排水暗道", 4330, 720, 870, 590),
+      ct("cabin", "商人木屋", 5240, 0, 1260, 720)
     ],
     links: [
       ["entrance", "patrol"],
@@ -48357,7 +48408,7 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
       },
       {
         type: "lift",
-        x: 4790,
+        x: 4710,
         lowY: 1120,
         highY: 590,
         width: 160,
@@ -48432,11 +48483,11 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
     top: -1010,
     bottom: 1500,
     floors: [
-      At(0, 3340),
-      At(3700, 6100),
-      At(2380, 4520, 1130)
+      Et(0, 3340),
+      Et(3700, 6100),
+      Et(2380, 4520, 1130)
     ],
-    platforms: se([
+    platforms: re([
       [2510, 450],
       [2800, 290],
       [2510, 130],
@@ -48449,12 +48500,12 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
       ]
     ]),
     rooms: [
-      pt("entry", "基地入口", 0, 0, 900, 720),
-      pt("bears", "草莓熊防线", 900, 0, 1450, 720),
-      pt("hub", "双回路中枢", 2370, 0, 2250, 720),
-      pt("upper-power", "上层冷却回路", 2410, -1010, 2090, 1010),
-      pt("lower-power", "下层动力回路", 2370, 720, 2150, 620),
-      pt("doctor", "博士机甲室", 4760, 0, 1280, 720)
+      ct("entry", "基地入口", 0, 0, 900, 720),
+      ct("bears", "草莓熊防线", 900, 0, 1450, 720),
+      ct("hub", "双回路中枢", 2370, 0, 2250, 720),
+      ct("upper-power", "上层冷却回路", 2410, -1010, 2090, 1010),
+      ct("lower-power", "下层动力回路", 2370, 720, 2150, 620),
+      ct("doctor", "博士机甲室", 4760, 0, 1280, 720)
     ],
     links: [
       ["entry", "bears"],
@@ -48599,10 +48650,10 @@ var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388
 function bt(f, m = []) {
   return m.every((t) => f.has(t));
 }
-function It(f, m, t = 590, o = 150) {
+function Dt(f, m, t = 590, o = 32) {
   return f.x >= m && Math.abs(f.y + 75 - t) <= o;
 }
-var gt = 1280, Mi = {
+var It = 1280, Li = {
   a: {
     name: "小宇",
     title: "奇瑞队长",
@@ -48625,7 +48676,7 @@ var gt = 1280, Mi = {
     skill: "交大冲锋",
     skillCooldownMs: 1600
   }
-}, pe = {
+}, ge = {
   idle: 0,
   run: 1,
   jump: 2,
@@ -48635,14 +48686,14 @@ var gt = 1280, Mi = {
   dodge: 6,
   hurt: 7,
   knockdown: 7
-}, he = [
+}, le = [
   {
     id: 1,
     title: "秦岭山道",
-    subtitle: "山门回环 · 盾卫长与绞盘楼",
+    subtitle: "松林驿道 → 伏兵关隘 → 后山钟楼",
     background: "stage-1",
-    width: 4600,
-    exitX: 4420,
+    width: 6200,
+    exitX: 6080,
     introX: 240,
     waveZone: {
       left: 1260,
@@ -48682,8 +48733,8 @@ var gt = 1280, Mi = {
       },
       {
         type: "rock",
-        x: 3e3,
-        warningX: 3040
+        x: 3020,
+        warningX: 2820
       },
       {
         type: "crate",
@@ -48966,9 +49017,9 @@ var gt = 1280, Mi = {
     ]
   }
 ];
-for (const f of he)
-  f.route = Ai[f.id], f.traversal = f.route.objects, f.terrain = [...f.terrain.filter((m) => m.type !== "platform" || m.bossPlatform), ...f.route.platforms];
-var Ri = {
+for (const f of le)
+  f.route = Pi[f.id], f.traversal = f.route.objects, f.terrain = [...f.terrain.filter((m) => m.type !== "platform" || m.bossPlatform), ...f.route.platforms];
+var Fi = {
   cave_arrival: [
     {
       speaker: "旁白",
@@ -49200,7 +49251,7 @@ var Ri = {
       portrait: "hero"
     }
   ]
-}, Pi = {
+}, Oi = {
   bones: "bones-v1.webp",
   crate: "crate-v1.webp",
   stone: "stone-platform-v1.webp",
@@ -49225,10 +49276,384 @@ function xt(f, m, t, o, v, a = 1) {
   const s = f.add.image(m, t, `prop-${o}`).setOrigin(0.5, a);
   return s.setScale(v / s.width), s;
 }
+var pi = [
+  "mountain",
+  "mine",
+  "reactor"
+], Ut = (f) => `world-${pi[f - 1]}`;
+function fe(f, m, t, o, v, a = 1) {
+  const s = f.add.image(m, t, Ut(f.map.id), o).setOrigin(0.5, a);
+  return s.setScale(v / s.width), s;
+}
+var wi = {
+  1: [
+    [
+      "landmark",
+      720,
+      590,
+      330
+    ],
+    [
+      "arch",
+      1160,
+      590,
+      390
+    ],
+    [
+      "scatter",
+      80,
+      590,
+      240
+    ],
+    [
+      "scatter",
+      1e3,
+      590,
+      180
+    ],
+    [
+      "scatter",
+      1670,
+      590,
+      140
+    ],
+    [
+      "pier",
+      2910,
+      595,
+      160,
+      380
+    ],
+    [
+      "pier",
+      3600,
+      595,
+      185,
+      470
+    ],
+    [
+      "pier",
+      4260,
+      595,
+      185,
+      470
+    ],
+    [
+      "landmark",
+      3780,
+      110,
+      370
+    ],
+    [
+      "machine",
+      4390,
+      110,
+      230
+    ],
+    [
+      "scatter",
+      4220,
+      -210,
+      180
+    ],
+    [
+      "arch",
+      5490,
+      590,
+      510
+    ],
+    [
+      "scatter",
+      5340,
+      590,
+      200
+    ],
+    [
+      "scatter",
+      6060,
+      590,
+      250
+    ]
+  ],
+  2: [
+    [
+      "arch",
+      310,
+      590,
+      560
+    ],
+    [
+      "scatter",
+      720,
+      590,
+      210
+    ],
+    [
+      "landmark",
+      2060,
+      590,
+      280
+    ],
+    [
+      "pier",
+      1460,
+      590,
+      170,
+      740
+    ],
+    [
+      "pier",
+      2150,
+      590,
+      160,
+      740
+    ],
+    [
+      "arch",
+      1870,
+      -210,
+      510
+    ],
+    [
+      "landmark",
+      1550,
+      -210,
+      270
+    ],
+    [
+      "scatter",
+      2430,
+      -210,
+      180
+    ],
+    [
+      "machine",
+      1740,
+      1120,
+      370
+    ],
+    [
+      "arch",
+      2430,
+      1120,
+      470
+    ],
+    [
+      "scatter",
+      1510,
+      1120,
+      170
+    ],
+    [
+      "arch",
+      3070,
+      590,
+      550
+    ],
+    [
+      "scatter",
+      4030,
+      590,
+      220
+    ],
+    [
+      "pier",
+      4450,
+      1120,
+      135,
+      500
+    ],
+    [
+      "machine",
+      4870,
+      1120,
+      250
+    ],
+    [
+      "scatter",
+      5070,
+      1120,
+      180
+    ],
+    [
+      "scatter",
+      5240,
+      590,
+      190
+    ]
+  ],
+  3: [
+    [
+      "arch",
+      350,
+      590,
+      510
+    ],
+    [
+      "scatter",
+      760,
+      590,
+      210
+    ],
+    [
+      "landmark",
+      1770,
+      590,
+      260
+    ],
+    [
+      "pier",
+      2430,
+      590,
+      150,
+      680
+    ],
+    [
+      "arch",
+      2910,
+      590,
+      470
+    ],
+    [
+      "scatter",
+      3220,
+      590,
+      180
+    ],
+    [
+      "machine",
+      4170,
+      -350,
+      380
+    ],
+    [
+      "landmark",
+      3570,
+      -350,
+      300
+    ],
+    [
+      "pier",
+      4350,
+      590,
+      165,
+      920
+    ],
+    [
+      "arch",
+      3830,
+      1130,
+      540
+    ],
+    [
+      "machine",
+      2670,
+      1130,
+      350
+    ],
+    [
+      "landmark",
+      3160,
+      1130,
+      200
+    ],
+    [
+      "scatter",
+      4410,
+      1130,
+      190
+    ],
+    [
+      "arch",
+      4850,
+      590,
+      650
+    ],
+    [
+      "scatter",
+      5990,
+      590,
+      230
+    ]
+  ]
+}, Di = {
+  1: [{
+    id: "mountain-winch",
+    points: [
+      [4320, 60],
+      [4485, 60],
+      [4485, 525],
+      [4550, 525],
+      [4910, 525]
+    ]
+  }],
+  2: [{
+    id: "cave-counterweight",
+    points: [
+      [1740, 1070],
+      [1740, 1225],
+      [2600, 1225],
+      [2600, 660],
+      [2890, 660]
+    ]
+  }, {
+    id: "cave-drain",
+    points: [
+      [4630, 960],
+      [4710, 960],
+      [4710, 660],
+      [5210, 660]
+    ]
+  }],
+  3: [{
+    id: "base-north",
+    points: [
+      [4170, -390],
+      [4355, -390],
+      [4355, 385],
+      [4660, 385]
+    ]
+  }, {
+    id: "base-south",
+    points: [
+      [2670, 1080],
+      [2670, 1240],
+      [4440, 1240],
+      [4440, 485],
+      [4660, 485]
+    ]
+  }]
+}, Ii = class {
+  constructor(f) {
+    this.scene = f, this.blend = 0, this.layers = ["distant", "chamber"].map((m, t) => f.add.image(640, 360, Ut(f.map.id), m).setDisplaySize(1600, 800).setScrollFactor(0).setDepth(-40 + t).setAlpha(t ? 0 : 1)), f.add.rectangle(640, 360, 1280, 720, 461845, 0.21).setScrollFactor(0).setDepth(-37);
+    for (const [m, t, o, v, a] of wi[f.map.id]) {
+      const s = fe(f, t, o, m, v).setDepth(-8);
+      a && s.setDisplaySize(v, a), s.setAlpha(m === "pier" ? 0.77 : 0.91);
+    }
+    this.wires = f.add.graphics().setDepth(1), this.refresh(/* @__PURE__ */ new Set());
+  }
+  refresh(f) {
+    const m = this.wires.clear();
+    for (const t of Di[this.scene.map.id]) {
+      const o = f.has(t.id);
+      for (let v = 1; v < t.points.length; v++) {
+        const [a, s] = t.points[v - 1], [e, i] = t.points[v];
+        m.lineStyle(9, 791838, 0.9).lineBetween(a, s, e, i), m.lineStyle(3, o ? 7988418 : 10519379, o ? 0.9 : 0.42).lineBetween(a, s, e, i);
+      }
+      for (const [v, a] of [t.points[0], t.points.at(-1)]) m.fillStyle(o ? 11534318 : 13407064, 0.9).fillCircle(v, a, o ? 6 : 4);
+    }
+  }
+  update(f) {
+    const m = this.scene, t = m.player.body.y + 75, o = m.map.id === 1 ? m.player.body.x > 2780 && t < 340 ? 0.94 : 0 : t > 790 ? 1 : t < 250 ? 0.7 : 0;
+    this.blend += (o - this.blend) * Math.min(1, f / 430), this.layers[1].setAlpha(this.blend), this.layers.forEach((v, a) => {
+      v.x = 640 + (0.5 - Math.max(0, Math.min(1, m.cameras.main.scrollX / (m.map.width - 1280)))) * (a ? 120 : 180);
+    });
+  }
+};
 function Bt(f, m) {
   f?.setTint && (m ? (f.setTint(16777215), f.setTintMode?.(ut.TintModes.FILL)) : (f.clearTint(), f.setTintMode?.(ut.TintModes.MULTIPLY)));
 }
-var Li = class {
+var Bi = class {
   constructor(f, m, t, o, v, a = 180, s = 8) {
     this.scene = f, this.frameKeys = Array.from({ length: s }, (i, r) => `${o}-pose-${r}`), this.hasSplitFrames = this.frameKeys.every((i) => f.textures.exists(i)), this.textureKey = this.hasSplitFrames ? this.frameKeys[0] : f.textures.exists(o) ? o : v, this.frames = this.hasSplitFrames || this.textureKey === o ? s : 1, this.targetHeight = a, this.image = f.add.image(m, t, this.textureKey).setOrigin(0.5, 1).setDepth(12);
     const e = f.textures.get(this.textureKey).getSourceImage();
@@ -49249,12 +49674,12 @@ var Li = class {
         });
       }
       if (this.state = f, this.scene.tweens.killTweensOf(this.image), this.image.setScale(this.baseScale).setAngle(0).setAlpha(1), this.hasSplitFrames) {
-        const t = Math.min(this.frames - 1, pe[f] ?? 0);
+        const t = Math.min(this.frames - 1, ge[f] ?? 0);
         this.textureKey = this.frameKeys[t], this.image.setTexture(this.textureKey).setCrop();
         const o = this.scene.textures.get(this.textureKey).getSourceImage();
         this.sourceWidth = o.width, this.sourceHeight = o.height, this.baseScale = this.targetHeight / this.sourceHeight, this.image.setScale(this.baseScale);
       } else if (this.frames > 1) {
-        const t = Math.min(this.frames - 1, pe[f] ?? 0);
+        const t = Math.min(this.frames - 1, ge[f] ?? 0);
         this.image.setCrop(t * this.frameWidth, 0, this.frameWidth, this.sourceHeight);
       } else this.image.setCrop();
       f === "attack" ? this.scene.tweens.add({
@@ -49321,7 +49746,7 @@ var Li = class {
   destroy() {
     this.transition?.destroy(), this.image.destroy();
   }
-}, Fi = class {
+}, Ni = class {
   constructor(f, m, t, o, v = 1) {
     this.scene = f, this.type = o, this.berry = o.startsWith("berry"), this.sizeMultiplier = v, this.state = "idle", this.facing = -1, this.textureKey = this.berry ? "berry-hover" : `minion-${o}-idle`, this.image = f.add.image(m, t, this.textureKey).setOrigin(0.5, 1).setDepth(11), this.baseScale = (this.berry ? 116 : 178) * this.sizeMultiplier / this.image.height, this.image.setScale(this.baseScale), this.object = this.image, this.setState("idle", !0);
   }
@@ -49356,7 +49781,7 @@ var Li = class {
   destroy() {
     this.object.destroy();
   }
-}, me = class {
+}, xe = class {
   constructor(f, m, t, o) {
     this.scene = f, this.type = m, this.state = "idle", this.facing = -1, this.frameKeys = Array.from({ length: 8 }, (v, a) => `boss-${m}-actions-pose-${a}`), this.hasSplitFrames = this.frameKeys.every((v) => f.textures.exists(v)), this.textureKey = this.hasSplitFrames ? this.frameKeys[0] : m === "c" ? "boss-c" : "boss-d", this.image = f.add.image(t, o, this.textureKey).setOrigin(0.5, 1).setDepth(10), m === "c" ? (this.crops = {
       idle: [
@@ -49479,7 +49904,7 @@ var Li = class {
     this.image.destroy();
   }
 };
-function Oi(f, m, t, o = !1) {
+function Gi(f, m, t, o = !1) {
   const v = f.add.container(m, t).setDepth(4).setAlpha(0), a = xt(f, 0, 2, "bones", o ? 84 : 108);
   return a.setFlipX(Math.round(m) % 2 === 0), v.add(a), f.tweens.add({
     targets: v,
@@ -49487,23 +49912,23 @@ function Oi(f, m, t, o = !1) {
     duration: 240
   }), v;
 }
-function wi(f, m, t) {
+function bi(f, m, t) {
   const o = f.add.container(m, t).setDepth(5);
   return o.add(xt(f, 0, 1, "crate", 74).setDisplaySize(74, 70)), o;
 }
-function ge(f, m, t, o, v) {
+function ye(f, m, t, o, v) {
   const a = f.add.container(m, t).setDepth(3);
-  for (let s = -o / 2; s < o / 2; s += 280) {
-    const e = Math.min(280, o / 2 - s);
-    a.add(xt(f, s + e / 2, -2, v === 3 ? "metal" : "ledge", e + 2, 0));
+  for (let s = -o / 2; s < o / 2; s += 390) {
+    const e = Math.min(390, o / 2 - s);
+    a.add(fe(f, s + e / 2, -2, "ledge", e + 16, 0));
   }
   return a;
 }
-function Di(f, m, t) {
+function Ui(f, m, t) {
   const o = f.add.container(m, t).setDepth(2);
   return o.add(xt(f, 0, 2, "cabin", 1110)), o;
 }
-var Ii = class {
+var zi = class {
   constructor(f) {
     if (this.scene = f, this.route = f.map.route, this.objects = [], this.seals = [], this.elapsed = 0, this.flags = new Set(f.routeRestore?.flags || []), this.visited = /* @__PURE__ */ new Set(), this.lastSafe = {
       x: f.map.introX,
@@ -49512,7 +49937,23 @@ var Ii = class {
       for (const m of this.route.preBossFlags || []) this.flags.add(m);
       for (const m of this.route.minis) this.flags.add(m.id);
     }
+    (f.bossCheckpoint || f.routeRestore?.waveComplete) && this.flags.add("wave-clear");
     for (const m of this.route.seals) this.createSeal(m);
+    f.map.waveZone && this.createSeal({
+      id: "wave-exit",
+      x: f.map.waveZone.right + 64,
+      requires: ["wave-clear"],
+      name: "伏兵封锁",
+      hint: "先清除左侧封锁区的普通敌人",
+      flowSeal: !0
+    }), f.map.bossZone && this.createSeal({
+      id: "boss-exit",
+      x: Math.min(f.map.width - 12, f.map.bossZone.right + 64),
+      requires: ["boss-clear"],
+      name: "竞技场出口",
+      hint: "击败守关者后道路才会开启",
+      flowSeal: !0
+    });
     for (const m of f.map.traversal) this.create(m);
     this.refresh(), this.mapGraphic = f.add.graphics().setScrollFactor(0).setDepth(89), this.roomLabel = f.add.text(1260, 104, "", {
       fontFamily: "sans-serif",
@@ -49541,14 +49982,15 @@ var Ii = class {
     return this.scene.solids.create(f, m + o / 2, "pixel").setDisplaySize(t, o).setAlpha(1e-3).refreshBody();
   }
   createSeal(f) {
-    const m = this.route.bottom - this.route.top, t = this.solid(f.x, this.route.top, 96, m), o = this.scene.add.tileSprite(f.x, (this.route.top + this.route.bottom) / 2, 128, m, "prop-gate").setDepth(6);
-    o.setTileScale(128 / this.scene.textures.get("prop-gate").getSourceImage().width);
-    const v = this.label(f.name + " · 未接通", f.x - 170, 350);
+    const m = this.route.bottom - this.route.top, t = this.solid(f.x, this.route.top, 96, m), o = this.scene.add.tileSprite(f.x, (this.route.top + this.route.bottom) / 2, 98, m, Ut(this.scene.map.id), "shaft").setDepth(6), v = this.scene.textures.get(Ut(this.scene.map.id)).get("shaft");
+    o.setTileScale(98 / v.width);
+    const a = fe(this.scene, f.x, 590, "arch", 340).setDepth(-3), s = this.label(f.name + " · 未接通", f.x - 170, 350);
     this.seals.push({
       ...f,
       body: t,
       shaft: o,
-      label: v,
+      arch: a,
+      label: s,
       open: !1
     });
   }
@@ -49582,6 +50024,7 @@ var Ii = class {
     this.flags.has(f) || (this.flags.add(f), this.refresh());
   }
   refresh() {
+    this.scene.worldArt?.refresh(this.flags);
     for (const f of this.seals) !f.open && bt(this.flags, f.requires) && (f.open = !0, f.body.destroy(), f.label.setText(f.name + " · 已开启"), this.scene.tweens.add({
       targets: f.shaft,
       alpha: 0,
@@ -49661,7 +50104,7 @@ var Ii = class {
       y: t.body.y
     }), o > this.route.bottom - 110 && (t.body.body.reset(this.lastSafe.x, this.lastSafe.y), t.body.setVelocity(0, 0), t.jumpsUsed = 0, m.showNotice("落回安全落脚点 · 不扣血", 1200)), !m.activeLock && !m.bossTriggered) {
       for (const v of this.route.minis)
-        if (!(this.flags.has(v.id) || v.needsWave && !m.waveState.complete) && t.body.x > v.left + 40 && t.body.x < v.right - 40 && Math.abs(o - v.floorY) < 28 && (t.body.body.blocked.down || t.body.body.touching.down)) {
+        if (!(this.flags.has(v.id) || v.needsWave && !m.waveState.complete) && t.body.x >= (v.triggerX ?? v.left + 40) && t.body.x < v.right - 40 && Math.abs(o - v.floorY) < 28 && (t.body.body.blocked.down || t.body.body.touching.down)) {
           this.startMini(v);
           break;
         }
@@ -49670,7 +50113,7 @@ var Ii = class {
     this.drawMap();
   }
   drawMap() {
-    const f = this.scene, m = f.player.body, t = this.route.rooms.find((l) => m.x >= l.x && m.x < l.x + l.width && m.y >= l.y && m.y < l.y + l.height);
+    const f = this.scene, m = f.player.body, t = this.route.rooms.filter((l) => m.x >= l.x && m.x < l.x + l.width && m.y >= l.y && m.y < l.y + l.height).sort((l, d) => l.width * l.height - d.width * d.height)[0];
     t && this.visited.add(t.id), this.roomLabel.setText(t?.name || "连接通道").setVisible(!f.activeLock);
     const o = this.mapGraphic.clear().setVisible(!f.activeLock);
     if (f.activeLock) return;
@@ -49701,7 +50144,7 @@ var Ii = class {
     const h = n(m.x, m.y);
     o.fillStyle(16777215, 1).fillCircle(h.x, h.y, 3.5);
   }
-}, Ut = {
+}, zt = {
   "mini-shield": {
     file: "guardian-shield-v2.webp",
     height: 260,
@@ -49718,8 +50161,8 @@ var Ii = class {
     bodyWidth: 90
   }
 };
-var le = 460 / 512, re = (f) => Math.max(0, Math.min(1, f));
-function Bi(f, m, t = 0) {
+var ue = 460 / 512, ae = (f) => Math.max(0, Math.min(1, f));
+function Vi(f, m, t = 0) {
   if (!f.alive) return {
     frame: 11,
     phase: "dead",
@@ -49740,15 +50183,15 @@ function Bi(f, m, t = 0) {
     return m < f.hitAt ? {
       frame: v ? 6 : 3,
       phase: "windup",
-      progress: re(1 - (f.hitAt - m) / o.warning)
+      progress: ae(1 - (f.hitAt - m) / o.warning)
     } : m < f.hitAt + (o.activeMs || 130) ? {
       frame: v ? 7 : 4,
       phase: "strike",
-      progress: re((m - f.hitAt) / (o.activeMs || 130))
+      progress: ae((m - f.hitAt) / (o.activeMs || 130))
     } : {
       frame: v ? 8 : 5,
       phase: "recovery",
-      progress: re((m - f.hitAt - (o.activeMs || 130)) / (o.recoveryMs || 440))
+      progress: ae((m - f.hitAt - (o.activeMs || 130)) / (o.recoveryMs || 440))
     };
   }
   return f.state === "run" || Math.abs(f.body.body.velocity.x) > 18 ? {
@@ -49766,9 +50209,9 @@ function Bi(f, m, t = 0) {
     progress: 0
   };
 }
-var Ni = class {
+var Yi = class {
   constructor(f, m, t, o) {
-    this.scene = f, this.id = o, this.config = Ut[o], this.texture = `guardian-${o}`, this.baseScale = this.config.height / 440, this.image = f.add.image(m, t, this.texture, 0).setOrigin(0.5, le).setScale(this.baseScale).setDepth(11), this.ghost = f.add.image(m, t, this.texture, 0).setOrigin(0.5, le).setScale(this.baseScale).setDepth(10.9).setVisible(!1), this.object = this.image, this.state = "idle", this.frame = 0, this.facing = 1, this.travel = 0, this.motionTime = 0, this.lastTime = null, this.blendAt = -1e3, this.lean = 0, this.previousVelocity = 0, this.dying = !1;
+    this.scene = f, this.id = o, this.config = zt[o], this.texture = `guardian-${o}`, this.baseScale = this.config.height / 440, this.image = f.add.image(m, t, this.texture, 0).setOrigin(0.5, ue).setScale(this.baseScale).setDepth(11), this.ghost = f.add.image(m, t, this.texture, 0).setOrigin(0.5, ue).setScale(this.baseScale).setDepth(10.9).setVisible(!1), this.object = this.image, this.state = "idle", this.frame = 0, this.facing = 1, this.travel = 0, this.motionTime = 0, this.lastTime = null, this.blendAt = -1e3, this.lean = 0, this.previousVelocity = 0, this.dying = !1;
   }
   setState(f) {
     this.state = f, f === "hurt" && this.showFrame(9, "hurt");
@@ -49788,7 +50231,7 @@ var Ni = class {
     this.lastTime = o, this.motionTime += a, this.facing = t || this.facing;
     const s = v.body.body.velocity.x;
     this.travel += Math.abs(s) * a / 1e3;
-    const e = Bi(v, o, this.travel);
+    const e = Vi(v, o, this.travel);
     this.showFrame(e.frame, e.phase);
     let i = 0, r = 0, n = 0;
     if (e.phase === "windup")
@@ -49829,13 +50272,13 @@ var Ni = class {
     this.ghost.destroy(), this.image.destroy();
   }
 };
-function Gi(f, m, t, o, v) {
-  return f.add.image(t, o, `guardian-${m}`, 11).setOrigin(0.5, le).setScale(Ut[m].height / 440).setFlipX(v < 0).setDepth(3).setAlpha(0.72);
+function Wi(f, m, t, o, v) {
+  return f.add.image(t, o, `guardian-${m}`, 11).setOrigin(0.5, ue).setScale(zt[m].height / 440).setFlipX(v < 0).setDepth(3).setAlpha(0.72);
 }
-var ae = {
+var ne = {
   airMs: 1e4,
   restMs: 4e3
-}, Mt = {
+}, At = {
   summonWaves: 2,
   phaseRatio: 0.6,
   entranceMs: 1700,
@@ -49843,13 +50286,13 @@ var ae = {
   blastRadius: 610,
   blastHpRatio: 0.1
 };
-function xe(f) {
-  return f.alive && f.phase === 1 && !f.phaseTransitioning && (f.hp < f.maxHp * Mt.phaseRatio || f.summonWavesStarted >= Mt.summonWaves && !f.summonPending && !f.summonedAdds.some((m) => m.alive));
+function Te(f) {
+  return f.alive && f.phase === 1 && !f.phaseTransitioning && (f.hp < f.maxHp * At.phaseRatio || f.summonWavesStarted >= At.summonWaves && !f.summonPending && !f.summonedAdds.some((m) => m.alive));
 }
-function ne(f, m) {
+function oe(f, m) {
   return 1 - Math.pow(1 - m, Math.min(50, Math.max(0, f)) / (1e3 / 60));
 }
-var Lt = {
+var Pt = {
   windupMs: 850,
   recoveryMs: 950,
   cooldownMs: 6e3,
@@ -49870,33 +50313,33 @@ var Lt = {
   sniperSpeed: 1e3,
   sniperRecoveryMs: 650
 };
-function bi(f, m, t) {
+function Hi(f, m, t) {
   const o = t.x - m.x, v = t.y - m.y, a = o * o + v * v, s = a ? Math.max(0, Math.min(1, ((f.x - m.x) * o + (f.y - m.y) * v) / a)) : 0;
   return Math.hypot(f.x - m.x - o * s, f.y - m.y - v * s);
 }
-function oe(f, m = {}) {
+function he(f, m = {}) {
   return Math.max(250, f.skillCooldownMs - (m.skillCooldownReductionMs || 0));
 }
-function Ui(f, m) {
+function Xi(f, m) {
   return Math.min(m, f + 30);
 }
-var ye = 14957391, zi = 5576995, Te = 16774373;
-function yt(f, m, t) {
+var Se = 14957391, Ki = 5576995, Ce = 16774373;
+function gt(f, m, t) {
   return Math.max(m, Math.min(t, f));
 }
 function Gt(f, m) {
   return Math.hypot(f.x - m.x, f.y - m.y);
 }
-var Vi = class extends ut.Scene {
+var Zi = class extends ut.Scene {
   constructor() {
     super("BootScene");
   }
   preload() {
-    Object.entries(Ut).forEach(([t, o]) => this.load.spritesheet(`guardian-${t}`, `./assets/props/${o.file}`, {
+    pi.forEach((t) => this.load.atlas(`world-${t}`, `./assets/world-v3/${t}.webp`, `./assets/world-v3/${t}.json`)), Object.entries(zt).forEach(([t, o]) => this.load.spritesheet(`guardian-${t}`, `./assets/props/${o.file}`, {
       frameWidth: 512,
       frameHeight: 512,
       endFrame: 11
-    })), this.load.image("guardian-core-shot", "./assets/props/guardian-core-shot-v2.webp"), Object.entries(Pi).forEach(([t, o]) => this.load.image(`prop-${t}`, `./assets/props/${o}`)), [
+    })), this.load.image("guardian-core-shot", "./assets/props/guardian-core-shot-v2.webp"), Object.entries(Oi).forEach(([t, o]) => this.load.image(`prop-${t}`, `./assets/props/${o}`)), [
       "hover",
       "attack",
       "rest"
@@ -49961,12 +50404,12 @@ var Vi = class extends ut.Scene {
       window.__friendFightersPendingRun = null, this.scene.start("FightScene", m);
     }
   }
-}, Yi = class extends ut.Scene {
+}, Qi = class extends ut.Scene {
   constructor() {
     super("FightScene");
   }
   init(f = {}) {
-    this.heroId = f.heroId === "b" ? "b" : "a", this.heroData = Mi[this.heroId], this.mapIndex = yt(Number(f.mapIndex) || 0, 0, he.length - 1), this.map = he[this.mapIndex], this.bossCheckpoint = this.map.bossZone && f.bossCheckpoint === this.map.bossZone.boss ? f.bossCheckpoint : null, this.miniCheckpoint = this.map.route.minis.some((m) => m.id === f.miniCheckpoint) ? f.miniCheckpoint : null, this.routeRestore = (this.bossCheckpoint || this.miniCheckpoint) && f.routeProgress?.mapId === this.map.id ? f.routeProgress : null, this.carry = {
+    this.heroId = f.heroId === "b" ? "b" : "a", this.heroData = Li[this.heroId], this.mapIndex = gt(Number(f.mapIndex) || 0, 0, le.length - 1), this.map = le[this.mapIndex], this.bossCheckpoint = this.map.bossZone && f.bossCheckpoint === this.map.bossZone.boss ? f.bossCheckpoint : null, this.miniCheckpoint = this.map.route.minis.some((m) => m.id === f.miniCheckpoint) ? f.miniCheckpoint : null, this.routeRestore = (this.bossCheckpoint || this.miniCheckpoint) && f.routeProgress?.mapId === this.map.id ? f.routeProgress : null, this.carry = {
       maxHpBonus: f.carry?.maxHpBonus || 0,
       attackMultiplier: f.carry?.attackMultiplier || 1,
       slowUntil: f.carry?.slowUntil || 0,
@@ -49975,17 +50418,17 @@ var Vi = class extends ut.Scene {
     }, this.incomingHp = Number.isFinite(f.hp) ? f.hp : null;
   }
   create() {
-    this.soundBus = window.__friendFightersSoundBus || new Ei(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new Ci(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.dialogueQueue = [], this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.physics.world.resume(), this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
+    this.soundBus = window.__friendFightersSoundBus || new Ri(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new Mi(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.dialogueQueue = [], this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.physics.world.resume(), this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
       triggered: !1,
       index: -1,
       waiting: !1,
       complete: !1
-    }, this.laser = null, this.physics.world.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.createBackground(), this.createTerrain(), this.traversal = new Ii(this), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0.1, -145, 155), this.cameras.main.setBackgroundColor("#08090d"), this.bossCheckpoint ? (this.restoreBossCheckpoint(), this.setObjective("Boss 战前检查点 · 向右重新挑战"), this.time.delayedCall(250, () => this.beginControl())) : this.miniCheckpoint ? (this.routeRestore?.waveComplete && (this.waveState = {
+    }, this.laser = null, this.physics.world.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.createBackground(), this.createTerrain(), this.traversal = new zi(this), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0.1, -145, 155), this.cameras.main.setBackgroundColor("#08090d"), this.bossCheckpoint ? (this.restoreBossCheckpoint(), this.setObjective("Boss 战前检查点 · 向右重新挑战"), this.time.delayedCall(250, () => this.beginControl())) : this.miniCheckpoint ? (this.routeRestore?.waveComplete && (this.waveState = {
       triggered: !0,
       index: this.map.waveZone.waves.length - 1,
       waiting: !1,
       complete: !0
-    }), this.setObjective("守卫战前检查点 · 已开启的机关保持接通"), this.time.delayedCall(250, () => this.beginControl())) : (this.showStageCard(), this.setObjective(this.mapIndex === 0 ? "山门封闭 · 沿两侧阶梯登上绞盘楼" : "先清除封锁区 · 留意上行阶梯和下行井口"), this.time.delayedCall(2900, () => {
+    }), this.setObjective("守卫战前检查点 · 已开启的机关保持接通"), this.time.delayedCall(250, () => this.beginControl())) : (this.showStageCard(), this.setObjective(this.mapIndex === 0 ? "沿山道向右追赶 · 屋顶可练习二段跳并收集补给" : "先清除封锁区 · 留意上行阶梯和下行井口"), this.time.delayedCall(2900, () => {
       this.mapIndex === 0 ? this.showDialogue("prologue", () => this.beginControl()) : this.showDialogue(this.mapIndex === 1 ? "cave_arrival" : "base_arrival", () => this.beginControl());
     })), window.friendFightersPause = () => this.setPaused(!0), window.friendFightersResume = () => this.setPaused(!1), window.friendFightersRetry = () => this.restartMap(), window.friendFightersChooseItem = (f) => this.chooseShopItem(f);
   }
@@ -50004,40 +50447,15 @@ var Vi = class extends ut.Scene {
     }), this.cameras.main.centerOn(f + 145, 720 / 2);
   }
   createBackground() {
-    const f = Math.ceil(this.map.width / gt);
-    for (let m = Math.floor(this.map.route.top / 720); m * 720 < this.map.route.bottom; m++) for (let t = 0; t < f; t += 1)
-      this.add.image(t * gt + gt / 2, m * 720 + 720 / 2, this.map.background).setDisplaySize(gt + 4, 720).setFlipX(t % 2 === 1).setTint(m > 0 ? 8817828 : m < 0 ? 11581893 : 16777215).setDepth(-30), this.add.rectangle(t * gt + gt / 2, m * 720 + 720 / 2, gt + 4, 720, t % 2 ? 592146 : 1380379, m > 0 ? 0.32 : 0.17).setDepth(-29).setBlendMode(ut.BlendModes.MULTIPLY);
-    this.mapIndex === 0 && (this.add.text(330, 205, "国轩之窟  →", {
-      fontFamily: "serif",
-      fontSize: "28px",
-      color: "#f1d39b",
-      fontStyle: "bold",
-      backgroundColor: "#1a1114bb",
-      padding: {
-        x: 16,
-        y: 8
-      }
-    }).setAngle(-3).setDepth(1), this.add.text(320, 345, `A / D 移动　W 二段跳
-J 攻击　K 技能
-L：原地格挡 / 带方向闪避`, {
-      fontFamily: "sans-serif",
-      fontSize: "22px",
-      lineSpacing: 10,
-      color: "#fff2d8",
-      backgroundColor: "#090a10cc",
-      padding: {
-        x: 18,
-        y: 14
-      }
-    }).setDepth(1));
+    this.worldArt = new Ii(this);
   }
   createTerrain() {
     this.solids = this.physics.add.staticGroup();
     for (const f of this.map.route.floors)
-      this.solids.create((f.left + f.right) / 2, f.y + 64, "pixel").setDisplaySize(f.right - f.left, 128).setAlpha(1e-3).refreshBody(), ge(this, (f.left + f.right) / 2, f.y, f.right - f.left, this.map.id);
+      this.solids.create((f.left + f.right) / 2, f.y + 64, "pixel").setDisplaySize(f.right - f.left, 128).setAlpha(1e-3).refreshBody(), ye(this, (f.left + f.right) / 2, f.y, f.right - f.left, this.map.id);
     for (const f of this.map.terrain)
       f.type === "platform" && this.createPlatform(f), f.type === "crate" && this.createCrate(f.x), f.type === "rock" && this.createRockHazard(f);
-    this.mapIndex === 1 && (this.cabin = Di(this, (this.map.cabin.doorIn + this.map.cabin.doorOut) / 2, 590), this.add.text(5420, 558, "进入", {
+    this.mapIndex === 1 && (this.cabin = Ui(this, (this.map.cabin.doorIn + this.map.cabin.doorOut) / 2, 590), this.add.text(5420, 558, "进入", {
       fontFamily: "sans-serif",
       fontSize: "18px",
       color: "#ffe0a0",
@@ -50059,7 +50477,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   createPlatform(f) {
     const m = this.solids.create(f.x, f.y + 11, "pixel");
-    m.setDisplaySize(f.width, 24).setAlpha(1e-3).refreshBody(), m.body.checkCollision.down = !1, m.body.checkCollision.left = !1, m.body.checkCollision.right = !1, ge(this, f.x, f.y, f.width, this.map.id);
+    m.setDisplaySize(f.width, 24).setAlpha(1e-3).refreshBody(), m.body.checkCollision.down = !1, m.body.checkCollision.left = !1, m.body.checkCollision.right = !1, ye(this, f.x, f.y, f.width, this.map.id);
   }
   createCrate(f) {
     const m = this.solids.create(f, 556, "pixel");
@@ -50068,7 +50486,7 @@ L：原地格挡 / 带方向闪避`, {
       y: 590,
       hp: 28,
       body: m,
-      visual: wi(this, f, 590),
+      visual: bi(this, f, 590),
       alive: !0
     });
   }
@@ -50085,11 +50503,11 @@ L：原地格挡 / 带方向闪避`, {
   createPlayer() {
     const f = this.heroData.maxHp + this.carry.maxHpBonus, m = this.map.route.minis.find((s) => s.id === this.miniCheckpoint), t = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : m?.entry.x ?? this.map.introX, o = this.bossCheckpoint ? 515 : m?.entry.y ?? 515, v = this.physics.add.sprite(t, o, "pixel");
     v.setAlpha(1e-3).setDisplaySize(58, 150).setCollideWorldBounds(!0), v.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
-    const a = new Li(this, v.x, o + 75, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
+    const a = new Bi(this, v.x, o + 75, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
     this.player = {
       body: v,
       visual: a,
-      hp: yt(this.incomingHp ?? f, 1, f),
+      hp: gt(this.incomingHp ?? f, 1, f),
       maxHp: f,
       attack: this.heroData.attack * this.carry.attackMultiplier,
       speed: this.heroData.speed,
@@ -50106,7 +50524,7 @@ L：原地格挡 / 带方向闪避`, {
       dashHit: /* @__PURE__ */ new Set(),
       lastAfterimage: 0,
       hurtTintUntil: 0
-    }, window.friendFightersUI?.setSkillCooldown?.(0, oe(this.heroData, this.carry));
+    }, window.friendFightersUI?.setSkillCooldown?.(0, he(this.heroData, this.carry));
   }
   createHud() {
     this.bossNameLabel = null, this.hud = this.add.graphics().setScrollFactor(0).setDepth(90), this.worldHud = this.add.graphics().setDepth(40), this.speedLines = this.add.graphics().setScrollFactor(0).setDepth(80), this.heroLabel = this.add.text(30, 18, `${this.heroData.title} · ${this.heroData.name}`, {
@@ -50114,7 +50532,7 @@ L：原地格挡 / 带方向闪避`, {
       fontSize: "17px",
       fontStyle: "bold",
       color: "#fff4e5"
-    }).setScrollFactor(0).setDepth(91), this.objectiveLabel = this.add.text(gt / 2, 23, "", {
+    }).setScrollFactor(0).setDepth(91), this.objectiveLabel = this.add.text(It / 2, 23, "", {
       fontFamily: "sans-serif",
       fontSize: "17px",
       fontStyle: "bold",
@@ -50124,7 +50542,7 @@ L：原地格挡 / 带方向闪避`, {
         x: 18,
         y: 8
       }
-    }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(91), this.noticeLabel = this.add.text(gt / 2, 118, "", {
+    }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(91), this.noticeLabel = this.add.text(It / 2, 118, "", {
       fontFamily: "serif",
       fontSize: "34px",
       fontStyle: "bold",
@@ -50174,7 +50592,7 @@ L：原地格挡 / 带方向闪避`, {
       this.dialogueActive = !1, this.setPhysicsPause("dialogue", !1), !this.manualPaused && !this.gameOver && !this.physicsPauseReasons.has("shop") && this.inputManager.setEnabled(!0);
       return;
     }
-    const { key: m, onComplete: t, valid: o } = f, v = Ri[m];
+    const { key: m, onComplete: t, valid: o } = f, v = Fi[m];
     if (!v) {
       t?.(), this.advanceStoryQueue();
       return;
@@ -50271,7 +50689,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   update(f, m) {
     const t = Math.min(m, 34) / 1e3;
-    this.inputManager.poll(), this.drawHud(f), !(this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) && (this.updatePlayer(f, m), !(this.dialogueActive || this.gameOver || this.hitStopRunning) && (this.traversal?.update(m), this.updateEnemies(f), this.updateBoss(f, t), !(this.dialogueActive || this.gameOver) && (this.updateProjectiles(f, t), !(this.dialogueActive || this.gameOver) && (this.updateHazards(f, t), this.updatePickups(f), this.updateStageFlow(f), this.enforceArenaLock(), this.drawWorldHud()))));
+    this.inputManager.poll(), this.drawHud(f), this.worldArt?.update(m), !(this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) && (this.updatePlayer(f, m), !(this.dialogueActive || this.gameOver || this.hitStopRunning) && (this.traversal?.update(m), this.updateEnemies(f), this.updateBoss(f, t), !(this.dialogueActive || this.gameOver) && (this.updateProjectiles(f, t), !(this.dialogueActive || this.gameOver) && (this.updateHazards(f, t), this.updatePickups(f), this.updateStageFlow(f), this.enforceArenaLock(), this.drawWorldHud()))));
   }
   updatePlayer(f, m = 1e3 / 60) {
     const t = this.player, o = t.body, v = this.inputManager.axisX(), a = o.body.blocked.down || o.body.touching.down;
@@ -50285,7 +50703,7 @@ L：原地格挡 / 带方向闪避`, {
       return;
     }
     if (t.state === "attack") {
-      this.inputManager.justPressed("attack") && f > t.attackHitAt && (t.attackQueued = !0), !t.attackDidHit && f >= t.attackHitAt && (t.attackDidHit = !0, this.performPlayerAttack(t.combo === 2)), o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, ne(m, a ? 0.25 : 0.08))), f >= t.stateUntil && (t.attackQueued ? this.startPlayerAttack(f, !0) : this.setPlayerState(a ? Math.abs(v) ? "run" : "idle" : "jump")), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x);
+      this.inputManager.justPressed("attack") && f > t.attackHitAt && (t.attackQueued = !0), !t.attackDidHit && f >= t.attackHitAt && (t.attackDidHit = !0, this.performPlayerAttack(t.combo === 2)), o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, oe(m, a ? 0.25 : 0.08))), f >= t.stateUntil && (t.attackQueued ? this.startPlayerAttack(f, !0) : this.setPlayerState(a ? Math.abs(v) ? "run" : "idle" : "jump")), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x);
       return;
     }
     if (t.state === "skill") {
@@ -50311,8 +50729,8 @@ L：原地格挡 / 带方向闪避`, {
     if (v !== 0) {
       t.facing = v;
       const s = this.carry.slowUntil > Date.now() ? 0.72 : 1, e = v * t.speed * s;
-      o.setVelocityX(ut.Math.Linear(o.body.velocity.x, e, ne(m, a ? 0.31 : 0.17)));
-    } else a && o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, ne(m, 0.36)));
+      o.setVelocityX(ut.Math.Linear(o.body.velocity.x, e, oe(m, a ? 0.31 : 0.17)));
+    } else a && o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, oe(m, 0.36)));
     a ? Math.abs(o.body.velocity.x) > 48 ? this.setPlayerState("run") : this.setPlayerState("idle") : this.setPlayerState("jump"), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x), this.updateSpeedLines(f);
   }
   setPlayerState(f) {
@@ -50333,7 +50751,7 @@ L：原地格挡 / 带方向闪避`, {
     v = this.traversal?.attack(m, t, o) || v, v && this.impactFeedback(m.body.x + m.facing * t, m.body.y, f);
   }
   startPlayerSkill(f) {
-    const m = this.player, t = oe(this.heroData, this.carry);
+    const m = this.player, t = he(this.heroData, this.carry);
     m.skillReadyAt = f + t, window.friendFightersUI?.setSkillCooldown?.(t, t), m.stateUntil = f + (this.heroId === "a" ? 560 : 430), m.dashHit.clear(), this.setPlayerState("skill"), this.soundBus.play("skill"), this.heroId === "a" ? this.time.delayedCall(145, () => {
       this.player?.body?.active && this.spawnProjectile({
         owner: "player",
@@ -50371,8 +50789,8 @@ L：原地格挡 / 带方向闪避`, {
     if (m.type !== "d") return m.body;
     const t = m.body.body;
     return {
-      x: yt(f.x, t.left, t.right),
-      y: yt(f.y, t.top, t.bottom)
+      x: gt(f.x, t.left, t.right),
+      y: gt(f.y, t.top, t.bottom)
     };
   }
   spawnEnemy(f) {
@@ -50422,12 +50840,12 @@ L：原地格挡 / 带方向闪避`, {
       ...f.miniBoss,
       height: Math.round(o.height * 1.3)
     } : o, a = f.floorY ?? 590, s = t ? f.y ?? a - 260 : a - v.height / 2, e = this.physics.add.sprite(f.x, s, "pixel");
-    e.setAlpha(1e-3).setDisplaySize(f.miniBoss ? Ut[f.miniBoss.id].bodyWidth : m ? 62 : 56, v.height), e.setMaxVelocity(520, 880), t ? (e.body.setAllowGravity(!1), e.setImmovable(!1), e.setGravityY(1520), e.body.checkCollision.up = !1, this.physics.add.collider(e, this.solids)) : (e.setGravityY(1520), this.physics.add.collider(e, this.solids));
+    e.setAlpha(1e-3).setDisplaySize(f.miniBoss ? zt[f.miniBoss.id].bodyWidth : m ? 62 : 56, v.height), e.setMaxVelocity(520, 880), t ? (e.body.setAllowGravity(!1), e.setImmovable(!1), e.setGravityY(1520), e.body.checkCollision.up = !1, this.physics.add.collider(e, this.solids)) : (e.setGravityY(1520), this.physics.add.collider(e, this.solids));
     const i = {
       ...v,
       type: f.type,
       body: e,
-      visual: f.miniBoss ? new Ni(this, e.x, e.y + v.height / 2, f.miniBoss.id) : new Fi(this, e.x, e.y + v.height / 2, f.type),
+      visual: f.miniBoss ? new Yi(this, e.x, e.y + v.height / 2, f.miniBoss.id) : new Ni(this, e.x, e.y + v.height / 2, f.type),
       miniBoss: f.miniBoss || null,
       floorY: a,
       attackCycle: 0,
@@ -50446,7 +50864,7 @@ L：原地格挡 / 带方向闪避`, {
       telegraph: null,
       id: `${f.type}-${this.time.now}-${Math.random()}`,
       cyclePhase: m ? "air" : null,
-      cycleUntil: m ? this.time.now + ae.airMs : 0
+      cycleUntil: m ? this.time.now + ne.airMs : 0
     };
     return this.enemies.push(i), this.tweens.add({
       targets: i.visual.object,
@@ -50465,7 +50883,7 @@ L：原地格挡 / 带方向闪避`, {
       const t = m, o = this.player, v = o.body.x - t.body.x, a = Math.abs(v);
       if (t.facing = t.miniBoss && t.state === "windup" ? t.attackFacing : Math.sign(v) || t.facing, !(t.type.startsWith("berry") && this.updateBerryCycle(t, f))) {
         if (t.type.startsWith("berry")) {
-          const s = yt(o.body.y - 120, t.floorY - 340, t.floorY - 190) + Math.sin(f * 4e-3 + t.body.x) * 18;
+          const s = gt(o.body.y - 120, t.floorY - 340, t.floorY - 190) + Math.sin(f * 4e-3 + t.body.x) * 18;
           t.body.setVelocityY((s - t.body.y) * 2.1);
         }
         if (f < t.hurtUntil) {
@@ -50484,7 +50902,7 @@ L：原地格挡 / 带方向闪避`, {
     }
   }
   updateBerryCycle(f, m) {
-    return f.cyclePhase === "air" && m >= f.cycleUntil && (f.cyclePhase = "landing", f.state = "idle", f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null, f.body.body.setAllowGravity(!0), f.body.setVelocity(0, 180), this.projectiles.filter((t) => t.active && t.sourceEnemy === f).forEach((t) => this.destroyProjectile(t))), f.cyclePhase === "landing" ? (f.body.setVelocityX(0), (f.body.body.blocked.down || f.body.body.touching.down) && (f.cyclePhase = "rest", f.cycleUntil = m + ae.restMs, f.body.setVelocity(0, 0))) : f.cyclePhase === "rest" && m >= f.cycleUntil && (f.cyclePhase = "air", f.cycleUntil = m + ae.airMs, f.nextAttack = m + 850, f.state = "idle", f.body.body.setAllowGravity(!1), f.body.setVelocity(0, -260)), f.cyclePhase === "air" ? !1 : (f.body.setVelocityX(0), f.visual.setState(m < f.hurtUntil ? "hurt" : f.cyclePhase === "rest" ? "rest" : "idle"), f.visual.sync(f.body.x, f.body.y + f.height / 2, f.facing, m, f), !0);
+    return f.cyclePhase === "air" && m >= f.cycleUntil && (f.cyclePhase = "landing", f.state = "idle", f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null, f.body.body.setAllowGravity(!0), f.body.setVelocity(0, 180), this.projectiles.filter((t) => t.active && t.sourceEnemy === f).forEach((t) => this.destroyProjectile(t))), f.cyclePhase === "landing" ? (f.body.setVelocityX(0), (f.body.body.blocked.down || f.body.body.touching.down) && (f.cyclePhase = "rest", f.cycleUntil = m + ne.restMs, f.body.setVelocity(0, 0))) : f.cyclePhase === "rest" && m >= f.cycleUntil && (f.cyclePhase = "air", f.cycleUntil = m + ne.airMs, f.nextAttack = m + 850, f.state = "idle", f.body.body.setAllowGravity(!1), f.body.setVelocity(0, -260)), f.cyclePhase === "air" ? !1 : (f.body.setVelocityX(0), f.visual.setState(m < f.hurtUntil ? "hurt" : f.cyclePhase === "rest" ? "rest" : "idle"), f.visual.sync(f.body.x, f.body.y + f.height / 2, f.facing, m, f), !0);
   }
   startEnemyAttack(f, m) {
     f.state = "windup", f.didHit = !1;
@@ -50564,7 +50982,7 @@ L：原地格挡 / 带方向闪避`, {
   killEnemy(f) {
     f.alive = !1, f.body.disableBody(!0, !0);
     const m = f.body.x, t = f.body.y + f.height / 2, o = this.map.terrain.filter((a) => a.type === "platform" && Math.abs(a.x - m) < a.width / 2 && a.y >= t - 20), v = this.traversal?.floorBelow?.(m, t) ?? Math.min(590, ...o.map((a) => a.y - 1));
-    f.telegraph?.destroy(), f.moveLabel?.destroy(), this.traversal?.onMiniDefeated?.(f), f.visual.fadeDeath(() => f.visual.destroy(), v), this.time.delayedCall(f.miniBoss ? 520 : 245, () => this.bones.push(f.miniBoss ? Gi(this, f.miniBoss.id, m, v, f.facing) : Oi(this, m, v, f.type.startsWith("berry"))));
+    f.telegraph?.destroy(), f.moveLabel?.destroy(), this.traversal?.onMiniDefeated?.(f), f.visual.fadeDeath(() => f.visual.destroy(), v), this.time.delayedCall(f.miniBoss ? 520 : 245, () => this.bones.push(f.miniBoss ? Wi(this, f.miniBoss.id, m, v, f.facing) : Gi(this, m, v, f.type.startsWith("berry"))));
   }
   damagePlayer(f, m, t = 280, o = !1, v = !1) {
     const a = this.player, s = this.time.now;
@@ -50574,13 +50992,13 @@ L：原地格挡 / 带方向闪避`, {
       const i = Math.max(0, Math.round(f * 0.15));
       return a.hp = Math.max(1, a.hp - i), a.body.setVelocityX(-e * 70), a.invulnerableUntil = s + 180, this.soundBus.play("block"), this.spawnBlockFx(a.body.x + a.facing * 38, a.body.y - 8), !1;
     }
-    return a.hp = Math.max(0, a.hp - f), a.stateUntil = s + (o ? Lt.stunMs : 330), a.invulnerableUntil = s + (o ? Lt.protectionMs : 740), a.body.setVelocity(-e * t, -170), this.setPlayerState(o ? "knockdown" : "hurt"), a.visual.flash(115), a.hurtTintUntil = s + 115, this.soundBus.play("hurt"), this.cameras.main.shake(150, 9e-3), this.spawnHitParticles(a.body.x, a.body.y, 16732003, 7), a.hp <= 0 && this.playerDefeated(), !0;
+    return a.hp = Math.max(0, a.hp - f), a.stateUntil = s + (o ? Pt.stunMs : 330), a.invulnerableUntil = s + (o ? Pt.protectionMs : 740), a.body.setVelocity(-e * t, -170), this.setPlayerState(o ? "knockdown" : "hurt"), a.visual.flash(115), a.hurtTintUntil = s + 115, this.soundBus.play("hurt"), this.cameras.main.shake(150, 9e-3), this.spawnHitParticles(a.body.x, a.body.y, 16732003, 7), a.hp <= 0 && this.playerDefeated(), !0;
   }
   updateStageFlow() {
-    const f = this.player.body, m = this.map.waveZone;
-    !this.activeLock && !this.waveState.triggered && It(f, m.trigger) && this.traversal?.canEnter?.("wave") !== !1 && this.startWaveZone(), this.waveState.triggered && !this.waveState.complete && !this.waveState.waiting && !this.enemies.some((t) => t.alive) && this.waveState.index >= 0 && (this.waveState.index < m.waves.length - 1 ? (this.waveState.waiting = !0, this.showNotice(`WAVE ${this.waveState.index + 1} CLEAR`, 900), this.time.delayedCall(900, () => {
+    const f = this.player.body, m = this.map.waveZone, t = f.body.blocked.down || f.body.touching.down;
+    !this.activeLock && !this.waveState.triggered && t && f.x < m.right + 48 && Dt(f, m.trigger) && this.traversal?.canEnter?.("wave") !== !1 && this.startWaveZone(), this.waveState.triggered && !this.waveState.complete && !this.waveState.waiting && !this.enemies.some((o) => o.alive) && this.waveState.index >= 0 && (this.waveState.index < m.waves.length - 1 ? (this.waveState.waiting = !0, this.showNotice(`WAVE ${this.waveState.index + 1} CLEAR`, 900), this.time.delayedCall(900, () => {
       this.gameOver || (this.waveState.waiting = !1, this.waveState.index += 1, this.spawnWave(this.waveState.index));
-    })) : this.completeWaveZone()), !this.activeLock && this.map.bossZone && this.waveState.complete && !this.bossTriggered && It(f, this.map.bossZone.trigger) && this.traversal?.canEnter?.("boss") !== !1 && this.startBossArena(), this.mapIndex === 0 && this.waveState.complete && It(f, this.map.exitX) && this.traversal?.canEnter?.("exit") !== !1 && this.transitionToMap(1), this.mapIndex === 1 && this.bossDefeated && (!this.merchantVisited && It(f, this.map.cabin.doorIn) && this.traversal?.canEnter?.("cabin") !== !1 && this.enterCabin(), this.shopChosen && this.merchantVisited && It(f, this.map.cabin.doorOut) && this.transitionToMap(2));
+    })) : this.completeWaveZone()), !this.activeLock && this.map.bossZone && this.waveState.complete && !this.bossTriggered && t && f.x < this.map.bossZone.right + 48 && Dt(f, this.map.bossZone.trigger) && this.traversal?.canEnter?.("boss") !== !1 && this.startBossArena(), this.mapIndex === 0 && this.waveState.complete && Dt(f, this.map.exitX) && this.traversal?.canEnter?.("exit") !== !1 && this.transitionToMap(1), this.mapIndex === 1 && this.bossDefeated && (!this.merchantVisited && Dt(f, this.map.cabin.doorIn) && this.traversal?.canEnter?.("cabin") !== !1 && this.enterCabin(), this.shopChosen && this.merchantVisited && Dt(f, this.map.cabin.doorOut) && this.transitionToMap(2));
   }
   startWaveZone() {
     this.waveState.triggered = !0, this.waveState.index = 0, this.setArenaLock(this.map.waveZone.left, this.map.waveZone.right), this.spawnWave(0);
@@ -50590,7 +51008,7 @@ L：原地格挡 / 带方向闪避`, {
     this.soundBus.play("wave"), this.showNotice(`WAVE ${f + 1} / ${this.map.waveZone.waves.length}`), this.setObjective(`封锁战斗区 · 清除第 ${f + 1} 批敌人`), m.forEach((t) => this.spawnEnemy(t));
   }
   completeWaveZone() {
-    this.waveState.complete = !0, this.clearArenaLock(), this.soundBus.play("pickup"), this.showNotice("AREA CLEAR", 1500), this.mapIndex === 0 ? this.setObjective("道路已解锁 · 继续向右抵达洞窟入口") : this.map.bossZone && this.setObjective(this.mapIndex === 1 ? "交汇井：下行配重室是主路，上层矿廊可选挑战" : "双回路：上层冷却、下层动力，可按任意顺序接通");
+    this.waveState.complete = !0, this.traversal?.activate("wave-clear"), this.clearArenaLock(), this.soundBus.play("pickup"), this.showNotice("AREA CLEAR", 1500), this.mapIndex === 0 ? this.setObjective("伏兵已清除 · 继续向右，登上后山钟楼启动峡谷绞盘") : this.map.bossZone && this.setObjective(this.mapIndex === 1 ? "交汇井：下行配重室是主路，上层矿廊可选挑战" : "双回路：上层冷却、下层动力，可按任意顺序接通");
   }
   setArenaLock(f, m, t = 590) {
     this.activeLock = {
@@ -50642,7 +51060,7 @@ L：原地格挡 / 带方向闪避`, {
     const o = this.activeLock.floorY ?? 590;
     f.y < o - 590 + 75 && (f.y = o - 590 + 75, f.setVelocityY(Math.max(0, f.body.velocity.y)));
     const v = this.traversal?.activeMini?.enemy;
-    v?.alive && (v.body.x < m || v.body.x > t) && (v.body.x = yt(v.body.x, m, t), v.body.setVelocityX(0));
+    v?.alive && (v.body.x < m || v.body.x > t) && (v.body.x = gt(v.body.x, m, t), v.body.setVelocityX(0));
   }
   startBossArena() {
     this.bossCheckpoint = this.map.bossZone.boss, this.bossTriggered = !0, this.setArenaLock(this.map.bossZone.left, this.map.bossZone.right), this.map.bossZone.boss === "c" ? this.spawnBossC() : this.spawnBossD();
@@ -50662,7 +51080,7 @@ L：原地格挡 / 带方向闪避`, {
       x: 0,
       y: 0,
       angle: 0,
-      duration: Mt.entranceMs,
+      duration: At.entranceMs,
       ease: "Cubic.Out",
       onUpdate: () => m.visual.sync(m.body.x, 594, -1, this.time.now),
       onComplete: () => {
@@ -50675,7 +51093,7 @@ L：原地格挡 / 带方向闪避`, {
     m.setAlpha(1e-3).setDisplaySize(70, 176).setGravityY(1520).setImmovable(!1), this.physics.add.collider(m, this.solids), this.boss = {
       type: "c",
       body: m,
-      visual: new me(this, "c", m.x, 590),
+      visual: new xe(this, "c", m.x, 590),
       alive: !0,
       hp: 330,
       maxHp: 330,
@@ -50703,7 +51121,7 @@ L：原地格挡 / 带方向闪避`, {
     m.setAlpha(1e-3).setDisplaySize(430, 410).setImmovable(!0), m.body.setAllowGravity(!1), this.physics.add.collider(this.player.body, m), this.boss = {
       type: "d",
       body: m,
-      visual: new me(this, "d", m.x, 594),
+      visual: new xe(this, "d", m.x, 594),
       alive: !0,
       hp: 620,
       maxHp: 620,
@@ -50754,7 +51172,7 @@ L：原地格挡 / 带方向闪避`, {
       if (m.body.setVelocityX(0), !m.didHit && f >= m.hitAt && (m.didHit = !0, m.telegraph?.destroy(), m.telegraph = null, m.phase === 1)) {
         m.visual.setState("skill");
         const a = m.attackKind === "smash";
-        t * m.attackFacing >= -25 && o < (a ? Lt.range : 185) && Math.abs(this.player.body.y - m.body.y) < 135 && this.damagePlayer(a ? Lt.damage : 18, m.body.x, a ? 520 : 460, a), this.spawnSheetFx(m.body.x + m.facing * (a ? 145 : 92), m.body.y - 4, 2, a ? 245 : 165, m.facing), this.impactFeedback(m.body.x + m.facing * 90, m.body.y, !0, !1);
+        t * m.attackFacing >= -25 && o < (a ? Pt.range : 185) && Math.abs(this.player.body.y - m.body.y) < 135 && this.damagePlayer(a ? Pt.damage : 18, m.body.x, a ? 520 : 460, a), this.spawnSheetFx(m.body.x + m.facing * (a ? 145 : 92), m.body.y - 4, 2, a ? 245 : 165, m.facing), this.impactFeedback(m.body.x + m.facing * 90, m.body.y, !0, !1);
       }
       f >= m.stateUntil && (m.state = "idle", m.visual.setState(m.phase === 2 ? "gun" : "idle"));
       return;
@@ -50780,8 +51198,8 @@ L：原地格挡 / 带方向闪避`, {
       this.startRabbitPhase2Attack(f);
       return;
     }
-    const o = m ? Lt.windupMs : t.phase === 1 ? 540 : 680;
-    t.attackKind = m ? "smash" : "normal", t.attackFacing = t.facing, t.state = "windup", t.didHit = !1, t.hitAt = f + o, t.stateUntil = t.hitAt + (m ? Lt.recoveryMs : 320), t.nextAttack = m ? t.stateUntil + 300 : f + (t.phase === 1 ? 1450 : 1650), m && (t.nextSmash = f + Lt.cooldownMs), t.body.setVelocityX(0), t.visual.setState(t.phase === 1 ? "attack" : "gun"), m ? (t.telegraph = this.add.rectangle(t.body.x + t.facing * 145, 578, Lt.range, 22, 16734255, 0.32).setStrokeStyle(3, 16767397).setDepth(21), this.addWarningText("重斩 · 闪避或跳开", t.body.x, t.body.y - 125, o), this.soundBus.play("charge")) : t.phase === 1 ? t.telegraph = this.add.arc(t.body.x + t.facing * 102, t.body.y + 72, 88, 195, 342, !1, 16721999, 0.23).setStrokeStyle(6, 16765895, 0.9).setDepth(21) : t.telegraph = this.add.rectangle((t.body.x + this.player.body.x) / 2, this.player.body.y - 16, Math.abs(t.body.x - this.player.body.x), 8, 16727635, 0.58).setDepth(21), this.tweens.add({
+    const o = m ? Pt.windupMs : t.phase === 1 ? 540 : 680;
+    t.attackKind = m ? "smash" : "normal", t.attackFacing = t.facing, t.state = "windup", t.didHit = !1, t.hitAt = f + o, t.stateUntil = t.hitAt + (m ? Pt.recoveryMs : 320), t.nextAttack = m ? t.stateUntil + 300 : f + (t.phase === 1 ? 1450 : 1650), m && (t.nextSmash = f + Pt.cooldownMs), t.body.setVelocityX(0), t.visual.setState(t.phase === 1 ? "attack" : "gun"), m ? (t.telegraph = this.add.rectangle(t.body.x + t.facing * 145, 578, Pt.range, 22, 16734255, 0.32).setStrokeStyle(3, 16767397).setDepth(21), this.addWarningText("重斩 · 闪避或跳开", t.body.x, t.body.y - 125, o), this.soundBus.play("charge")) : t.phase === 1 ? t.telegraph = this.add.arc(t.body.x + t.facing * 102, t.body.y + 72, 88, 195, 342, !1, 16721999, 0.23).setStrokeStyle(6, 16765895, 0.9).setDepth(21) : t.telegraph = this.add.rectangle((t.body.x + this.player.body.x) / 2, this.player.body.y - 16, Math.abs(t.body.x - this.player.body.x), 8, 16727635, 0.58).setDepth(21), this.tweens.add({
       targets: t.telegraph,
       alpha: 0.1,
       duration: o / 4,
@@ -50798,7 +51216,7 @@ L：原地格挡 / 带方向闪避`, {
     if (f < m.aimLockAt || !m.aimTarget) {
       const a = this.player.body;
       m.attackFacing = m.facing = Math.sign(a.x - m.body.x) || m.attackFacing, m.aimTarget = {
-        x: a.x + yt(a.body.velocity.x * 0.12, -100, 100),
+        x: a.x + gt(a.body.velocity.x * 0.12, -100, 100),
         y: a.y
       }, m.aimOrigin = {
         x: m.body.x + m.attackFacing * 72,
@@ -50842,12 +51260,12 @@ L：原地格挡 / 带方向闪避`, {
   }
   updateBossD(f) {
     const m = this.boss;
-    if (m.body.setVelocity(0, 0), xe(m)) {
+    if (m.body.setVelocity(0, 0), Te(m)) {
       this.beginBossPhase();
       return;
     }
     if (m.phase === 1) {
-      f >= m.nextAttack && !m.summonPending && m.summonWavesStarted < Mt.summonWaves && !m.summonedAdds.some((o) => o.alive) ? this.startSummonPattern(f) : f >= m.busyUntil && m.visual.setState("idle");
+      f >= m.nextAttack && !m.summonPending && m.summonWavesStarted < At.summonWaves && !m.summonedAdds.some((o) => o.alive) ? this.startSummonPattern(f) : f >= m.busyUntil && m.visual.setState("idle");
       return;
     }
     if (f < m.busyUntil || (m.visual.setState("idle"), f < m.nextAttack)) return;
@@ -50922,7 +51340,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   startSummonPattern(f) {
     const m = this.boss;
-    if (m.phase !== 1 || m.summonPending || m.summonWavesStarted >= Mt.summonWaves) return;
+    if (m.phase !== 1 || m.summonPending || m.summonWavesStarted >= At.summonWaves) return;
     m.summonPending = !0;
     const t = m.attackVersion, o = 760;
     m.busyUntil = f + o + 450, m.nextAttack = m.busyUntil + 850, m.visual.setState("summon");
@@ -51005,7 +51423,7 @@ L：原地格挡 / 带方向闪避`, {
         this.defeatBoss();
         return;
       }
-      o.firstHurtSpoken || (o.firstHurtSpoken = !0, this.showDialogue(`${o.type}_first_hurt`, void 0, () => this.boss === o && o.alive)), (o.type === "c" && o.hp <= o.maxHp * 0.2 || o.type === "d" && xe(o)) && this.beginBossPhase();
+      o.firstHurtSpoken || (o.firstHurtSpoken = !0, this.showDialogue(`${o.type}_first_hurt`, void 0, () => this.boss === o && o.alive)), (o.type === "c" && o.hp <= o.maxHp * 0.2 || o.type === "d" && Te(o)) && this.beginBossPhase();
     }
   }
   cancelBossPatterns(f) {
@@ -51032,15 +51450,15 @@ L：原地格挡 / 带方向闪避`, {
           angle: 7,
           duration: 700,
           onComplete: () => f.visual.destroy()
-        }), this.bossDefeated = !0, this.clearArenaLock(), f.type === "c" ? (this.setObjective("道路已解锁 · 亲自向右走到小木屋"), this.showNotice("道路解锁 · 继续向右", 1900)) : this.time.delayedCall(750, () => this.missionComplete());
+        }), this.bossDefeated = !0, this.traversal?.activate?.("boss-clear"), this.clearArenaLock(), f.type === "c" ? (this.setObjective("道路已解锁 · 亲自向右走到小木屋"), this.showNotice("道路解锁 · 继续向右", 1900)) : this.time.delayedCall(750, () => this.missionComplete());
       });
     }
   }
   startMechExplosion(f) {
     if (this.gameOver || this.boss !== f || f.explosionStarted) return;
     f.explosionStarted = !0, this.setObjective("机甲自爆 · 退到左侧灯标外，或抓准时机闪避！");
-    const m = f.body.x - Mt.blastRadius, t = this.add.rectangle((m + this.map.bossZone.right) / 2, 385, this.map.bossZone.right - m, 410, 16733227, 0.15).setStrokeStyle(3, 16757581, 0.85).setDepth(8);
-    this.addWarningText("机甲自爆 · 退到左侧安全区", m + 200, 170, Mt.blastWarningMs), this.tweens.add({
+    const m = f.body.x - At.blastRadius, t = this.add.rectangle((m + this.map.bossZone.right) / 2, 385, this.map.bossZone.right - m, 410, 16733227, 0.15).setStrokeStyle(3, 16757581, 0.85).setDepth(8);
+    this.addWarningText("机甲自爆 · 退到左侧安全区", m + 200, 170, At.blastWarningMs), this.tweens.add({
       targets: t,
       alpha: 0.6,
       duration: 160,
@@ -51055,7 +51473,7 @@ L：原地格挡 / 带方向闪避`, {
       duration: 75,
       yoyo: !0,
       repeat: 10
-    }), this.soundBus.play("charge"), this.time.delayedCall(Mt.blastWarningMs, () => {
+    }), this.soundBus.play("charge"), this.time.delayedCall(At.blastWarningMs, () => {
       if (t.destroy(), this.gameOver || this.boss !== f) return;
       this.soundBus.play("heavyHit"), this.cameras.main.shake(680, 0.025), this.cameras.main.flash(200, 255, 198, 113, !1), this.tweens.killTweensOf(f.visual.image), f.visual.destroy(), xt(this, f.body.x, 595, "wreck", 560).setDepth(9);
       const o = xt(this, f.body.x - 70, 390, "explosion-0", 680, 0.5).setDepth(35);
@@ -51071,7 +51489,7 @@ L：原地格挡 / 带方向闪避`, {
         delay: 520,
         duration: 650,
         onComplete: () => o.destroy()
-      }), this.spawnHitParticles(f.body.x - 100, 430, 16752939, 18), Math.abs(this.player.body.x - f.body.x) < Mt.blastRadius && this.damagePlayer(this.player.maxHp * Mt.blastHpRatio, f.body.x, 430, !1, !0), !(this.gameOver || this.player.hp <= 0) && (f.dying = !1, this.bossDefeated = !0, this.clearArenaLock(), this.time.delayedCall(1300, () => {
+      }), this.spawnHitParticles(f.body.x - 100, 430, 16752939, 18), Math.abs(this.player.body.x - f.body.x) < At.blastRadius && this.damagePlayer(this.player.maxHp * At.blastHpRatio, f.body.x, 430, !1, !0), !(this.gameOver || this.player.hp <= 0) && (f.dying = !1, this.bossDefeated = !0, this.traversal?.activate?.("boss-clear"), this.clearArenaLock(), this.time.delayedCall(1300, () => {
         this.gameOver || this.boss !== f || this.showDialogue("rescue", () => this.missionComplete());
       }));
     });
@@ -51099,7 +51517,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   transitionToMap(f) {
     this.transitioning || (this.transitioning = !0, this.inputManager.setEnabled(!1), this.player.body.setVelocityX(0), this.cameras.main.fadeOut(430, 8, 7, 12), this.time.delayedCall(470, () => {
-      const m = f > this.mapIndex ? Ui(this.player.hp, this.player.maxHp) : this.player.hp;
+      const m = f > this.mapIndex ? Xi(this.player.hp, this.player.maxHp) : this.player.hp;
       this.scene.restart({
         heroId: this.heroId,
         mapIndex: f,
@@ -51151,11 +51569,11 @@ L：原地格挡 / 带方向闪避`, {
         this.boss?.alive && !t.hit.has(this.boss) && f - (t.lastHits.get(this.boss) ?? -1 / 0) >= 200 && Gt(this.bossContactPoint(t), t) < 120 && (t.hit.add(this.boss), t.lastHits.set(this.boss, f), this.hurtBoss(t.damage, Math.sign(t.vx) * 240, !0), this.impactFeedback(t.x, t.y, !0));
         for (const v of this.crates) v.alive && !t.hit.has(v) && Math.abs(v.x - t.x) < 70 && Math.abs(555 - t.y) < 80 && (t.hit.add(v), this.hurtCrate(v, t.damage));
         t.returning && Math.abs(t.x - this.player.body.x) < 58 && this.destroyProjectile(t);
-      } else bi(this.player.body, o, t) < (t.type === "berry" ? 62 : 52) && (this.damagePlayer(t.damage, t.x, 250) && this.impactFeedback(t.x, t.y, !1), this.destroyProjectile(t));
+      } else Hi(this.player.body, o, t) < (t.type === "berry" ? 62 : 52) && (this.damagePlayer(t.damage, t.x, 250) && this.impactFeedback(t.x, t.y, !1), this.destroyProjectile(t));
       (f >= t.expiresAt || t.x < -150 || t.x > this.map.width + 150 || t.y < (this.map.route?.top ?? 0) - 150 || t.y > (this.map.route?.bottom ?? 720) + 150) && this.destroyProjectile(t);
     }
     if (this.laser) {
-      const t = yt((f - this.laser.startedAt) / (this.laser.until - this.laser.startedAt), 0, 1);
+      const t = gt((f - this.laser.startedAt) / (this.laser.until - this.laser.startedAt), 0, 1);
       this.laser.y = ut.Math.Linear(this.laser.fromY, this.laser.toY, t), this.laser.beam.y = this.laser.y, this.laser.fx?.active && (this.laser.fx.y = this.laser.y);
     }
     if (this.laser && f <= this.laser.until && f >= this.laser.nextDamage) {
@@ -51233,7 +51651,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   updateHazards(f, m) {
     for (const t of this.hazards)
-      t.state === "idle" && !this.activeLock && It(this.player.body, t.warningX) && (t.state = "warning", t.warning = this.add.ellipse(t.x, 588, 190, 42, 16725327, 0.2).setStrokeStyle(5, 16765622, 0.92).setDepth(8), this.tweens.add({
+      t.state === "idle" && !this.activeLock && this.player.body.x < t.warningX + 280 && Dt(this.player.body, t.warningX) && (t.state = "warning", t.warning = this.add.ellipse(t.x, 588, 190, 42, 16725327, 0.2).setStrokeStyle(5, 16765622, 0.92).setDepth(8), this.tweens.add({
         targets: t.warning,
         alpha: 0.8,
         scaleX: 0.58,
@@ -51258,7 +51676,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   spawnHitParticles(f, m, t, o) {
     for (let v = 0; v < o; v += 1) {
-      const a = this.add.circle(f, m, ut.Math.Between(3, 8), v % 3 === 0 ? Te : t, 0.95).setDepth(34), s = ut.Math.FloatBetween(-Math.PI, Math.PI), e = ut.Math.Between(55, 190);
+      const a = this.add.circle(f, m, ut.Math.Between(3, 8), v % 3 === 0 ? Ce : t, 0.95).setDepth(34), s = ut.Math.FloatBetween(-Math.PI, Math.PI), e = ut.Math.Between(55, 190);
       this.tweens.add({
         targets: a,
         x: f + Math.cos(s) * e,
@@ -51293,7 +51711,7 @@ L：原地格挡 / 带方向闪避`, {
       "dodge",
       "skill"
     ].includes(m.state)) return;
-    const o = yt((t - 250) / 500, 0.15, 0.8);
+    const o = gt((t - 250) / 500, 0.15, 0.8);
     this.speedLines.lineStyle(2, this.heroId === "a" ? 11458559 : 16765136, o * 0.5);
     for (let v = 0; v < 9; v += 1) {
       const a = 100 + (v * 67 + Math.floor(f / 19) * 17) % 500, s = m.facing > 0 ? 70 + v * 131 % 760 : 1210 - v * 131 % 760;
@@ -51302,16 +51720,16 @@ L：原地格挡 / 带方向闪避`, {
   }
   drawHud(f) {
     if (!this.player) return;
-    const m = this.player, t = yt(m.hp / m.maxHp, 0, 1);
-    this.hud.clear(), this.hud.fillStyle(526605, 0.82).fillRoundedRect(24, 43, 390, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(24, 43, 390, 30, 8), this.hud.fillStyle(zi, 1).fillRoundedRect(30, 49, 378, 18, 5), this.hud.fillStyle(ye, 1).fillRoundedRect(30, 49, 378 * t, 18, 5), this.hud.fillStyle(16777215, 0.34).fillRect(34, 51, Math.max(0, 370 * t), 3);
+    const m = this.player, t = gt(m.hp / m.maxHp, 0, 1);
+    this.hud.clear(), this.hud.fillStyle(526605, 0.82).fillRoundedRect(24, 43, 390, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(24, 43, 390, 30, 8), this.hud.fillStyle(Ki, 1).fillRoundedRect(30, 49, 378, 18, 5), this.hud.fillStyle(Se, 1).fillRoundedRect(30, 49, 378 * t, 18, 5), this.hud.fillStyle(16777215, 0.34).fillRect(34, 51, Math.max(0, 370 * t), 3);
     const o = this.combatPauseSnapshot?.clockTime ?? f, v = Math.max(0, m.skillReadyAt - o);
-    this.skillLabel.setText(v > 0 ? `${this.heroData.skill} · ${Math.ceil(v / 100) / 10}s` : `${this.heroData.skill} · READY`), window.friendFightersUI?.setSkillCooldown?.(v, oe(this.heroData, this.carry));
+    this.skillLabel.setText(v > 0 ? `${this.heroData.skill} · ${Math.ceil(v / 100) / 10}s` : `${this.heroData.skill} · READY`), window.friendFightersUI?.setSkillCooldown?.(v, he(this.heroData, this.carry));
     const a = this.boss?.alive ? this.boss : this.traversal?.activeMini?.enemy;
     if (a?.alive) {
-      const s = yt(a.hp / a.maxHp, 0, 1), e = 430, i = gt - e - 28;
-      this.hud.fillStyle(526605, 0.86).fillRoundedRect(i, 43, e, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(i, 43, e, 30, 8), this.hud.fillStyle(5050396, 1).fillRoundedRect(i + 6, 49, e - 12, 18, 5), this.hud.fillStyle(a.type === "d" ? 15743590 : 14231878, 1).fillRoundedRect(i + 6, 49, (e - 12) * s, 18, 5), this.hud.fillStyle(16777215, 0.3).fillRect(i + 10, 51, Math.max(0, (e - 20) * s), 3), this.hud.fillStyle(Te, 1).fillCircle(i + 8, 28, 2);
+      const s = gt(a.hp / a.maxHp, 0, 1), e = 430, i = It - e - 28;
+      this.hud.fillStyle(526605, 0.86).fillRoundedRect(i, 43, e, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(i, 43, e, 30, 8), this.hud.fillStyle(5050396, 1).fillRoundedRect(i + 6, 49, e - 12, 18, 5), this.hud.fillStyle(a.type === "d" ? 15743590 : 14231878, 1).fillRoundedRect(i + 6, 49, (e - 12) * s, 18, 5), this.hud.fillStyle(16777215, 0.3).fillRect(i + 10, 51, Math.max(0, (e - 20) * s), 3), this.hud.fillStyle(Ce, 1).fillCircle(i + 8, 28, 2);
       const r = a.miniBoss?.name || (a.type === "c" ? "秦岭杀人兔" : "草莓熊博士 · 机甲");
-      this.bossNameLabel || (this.bossNameLabel = this.add.text(gt - 30, 18, r, {
+      this.bossNameLabel || (this.bossNameLabel = this.add.text(It - 30, 18, r, {
         fontFamily: "sans-serif",
         fontSize: "17px",
         fontStyle: "bold",
@@ -51324,11 +51742,11 @@ L：原地格挡 / 带方向闪避`, {
     for (const f of this.enemies) {
       if (!f.alive || f.hp >= f.maxHp) continue;
       const m = f.type.startsWith("berry") ? 70 : 82, t = f.body.x - m / 2, o = f.body.y - f.height / 2 - 24;
-      this.worldHud.fillStyle(2755603, 0.85).fillRoundedRect(t, o, m, 8, 3), this.worldHud.fillStyle(ye, 1).fillRoundedRect(t + 1, o + 1, (m - 2) * yt(f.hp / f.maxHp, 0, 1), 6, 2);
+      this.worldHud.fillStyle(2755603, 0.85).fillRoundedRect(t, o, m, 8, 3), this.worldHud.fillStyle(Se, 1).fillRoundedRect(t + 1, o + 1, (m - 2) * gt(f.hp / f.maxHp, 0, 1), 6, 2);
     }
   }
 };
-function Wi(f, m, t) {
+function Ji(f, m, t) {
   if (!f) return;
   const o = Math.max(0, m), v = Math.max(0, Math.min(1, 1 - o / Math.max(1, t)));
   f.style.setProperty("--skill-gray", (1 - v).toFixed(3)), f.style.setProperty("--skill-brightness", (0.6 + v * 0.4).toFixed(3)), f.style.setProperty("--skill-angle", `${(v * 360).toFixed(1)}deg`);
@@ -51337,7 +51755,7 @@ function Wi(f, m, t) {
   const s = a ? `技能冷却中，剩余 ${(Math.ceil(o / 100) / 10).toFixed(1)} 秒` : "技能已就绪";
   f.getAttribute("aria-label") !== s && f.setAttribute("aria-label", s);
 }
-function Hi(f) {
+function $i(f) {
   if (!f) return () => {
   };
   const m = (a) => {
@@ -51357,12 +51775,12 @@ function Hi(f) {
   };
   return Object.entries(v).forEach(([a, s]) => f.addEventListener(a, s, { passive: !1 })), () => Object.entries(v).forEach(([a, s]) => f.removeEventListener(a, s));
 }
-var Xi = class {
+var ji = class {
   constructor() {
     this.game = null, this.touchDevice = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0, this.screens = [...document.querySelectorAll(".screen")], this.intro = document.querySelector("#intro-screen"), this.title = document.querySelector("#title-screen"), this.select = document.querySelector("#select-screen"), this.stageCard = document.querySelector("#stage-card"), this.shop = document.querySelector("#shop-screen"), this.result = document.querySelector("#result-screen"), this.pause = document.querySelector("#pause-screen"), this.dialogue = document.querySelector("#dialogue-overlay"), this.dialoguePortraitFrame = document.querySelector(".dialogue-portrait-frame"), this.dialoguePortrait = document.querySelector("#dialogue-portrait"), this.dialogueSpeaker = document.querySelector("#dialogue-speaker"), this.dialogueText = document.querySelector("#dialogue-text"), this.dialogueProgress = document.querySelector("#dialogue-progress"), this.dialogueNext = document.querySelector("#dialogue-next"), this.touchControls = document.querySelector("#touch-controls"), this.skillButton = document.querySelector('#touch-controls [data-action="skill"]'), this.topActions = document.querySelector("#top-actions"), this.dialogueLines = [], this.dialogueIndex = 0, this.dialogueOptions = null, this.introTimers = [], this.bind(), this.playIntro();
   }
   bind() {
-    this.removeTouchGestureGuard = Hi(document.querySelector("#game-root")), document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((f) => f.addEventListener("click", () => this.startRun(f.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((f) => {
+    this.removeTouchGestureGuard = $i(document.querySelector("#game-root")), document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((f) => f.addEventListener("click", () => this.startRun(f.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((f) => {
       f.addEventListener("click", () => window.friendFightersChooseItem?.(f.dataset.item)), [
         "pointerenter",
         "pointerdown",
@@ -51418,7 +51836,7 @@ var Xi = class {
     this.topActions.classList.toggle("visible", f), this.touchControls.classList.toggle("visible", f && this.touchDevice);
   }
   setSkillCooldown(f, m) {
-    Wi(this.skillButton, f, m);
+    Ji(this.skillButton, f, m);
   }
   showStage(f, m, t) {
     const o = this.stageCard.querySelector("small"), v = this.stageCard.querySelector("h2"), a = this.stageCard.querySelector("p");
@@ -51482,12 +51900,12 @@ var Xi = class {
   returnHome() {
     this.result.classList.remove("active"), this.pause.classList.remove("active"), this.dialogue.classList.remove("active"), this.setGameplayVisible(!1), this.game && (this.game.scene.stop("FightScene"), this.game.scene.start("BootScene")), this.showOnly(this.title);
   }
-}, vi = new Xi();
-window.friendFightersUI = vi;
-var Ki = {
+}, mi = new ji();
+window.friendFightersUI = mi;
+var ki = {
   type: ut.AUTO,
   parent: "game",
-  width: gt,
+  width: It,
   height: 720,
   backgroundColor: "#08090d",
   render: {
@@ -51499,7 +51917,7 @@ var Ki = {
   scale: {
     mode: ut.Scale.FIT,
     autoCenter: ut.Scale.CENTER_BOTH,
-    width: gt,
+    width: It,
     height: 720
   },
   input: {
@@ -51531,6 +51949,6 @@ var Ki = {
     min: 30,
     smoothStep: !0
   },
-  scene: [Vi, Yi]
-}, Zi = new ut.Game(Ki);
-vi.setGame(Zi);
+  scene: [Zi, Qi]
+}, qi = new ut.Game(ki);
+mi.setGame(qi);
