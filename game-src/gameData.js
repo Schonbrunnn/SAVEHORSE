@@ -45,10 +45,10 @@ export const MAPS = [
   {
     id: 1,
     title: '秦岭山道',
-    subtitle: '山门回环 · 盾卫长与绞盘楼',
+    subtitle: '松林驿道 → 伏兵关隘 → 后山钟楼',
     background: 'stage-1',
-    width: 4600,
-    exitX: 4420,
+    width: 6200,
+    exitX: 6080,
     introX: 240,
     waveZone: {
       left: 1260,
@@ -69,7 +69,7 @@ export const MAPS = [
     terrain: [
       { type: 'crate', x: 700 },
       { type: 'platform', x: 950, y: 465, width: 320 },
-      { type: 'rock', x: 3000, warningX: 3040 },
+      { type: 'rock', x: 3020, warningX: 2820 },
       { type: 'crate', x: 3420 },
       { type: 'platform', x: 3670, y: 445, width: 360 },
       { type: 'platform', x: 3900, y: 315, width: 250 },

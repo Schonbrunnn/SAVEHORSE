@@ -1,6 +1,7 @@
 import { GROUND_Y } from './gameData.js';
 import { propImage } from './EnvironmentArt.js';
 import { hasRouteFlags } from './RouteMaps.js';
+import { worldImage, worldTexture } from './WorldArt.js';
 
 export class Traversal {
   constructor(scene) {
@@ -14,7 +15,14 @@ export class Traversal {
       for (const id of this.route.preBossFlags || []) this.flags.add(id);
       for (const mini of this.route.minis) this.flags.add(mini.id);
     }
+    if (scene.bossCheckpoint || scene.routeRestore?.waveComplete) this.flags.add('wave-clear');
     for (const spec of this.route.seals) this.createSeal(spec);
+    // Fighting is necessary, but the approach stays free. The visible exit
+    // seal prevents jumping beyond the encounter then snapping back into it.
+    if (scene.map.waveZone) this.createSeal({ id: 'wave-exit', x: scene.map.waveZone.right + 64,
+      requires: ['wave-clear'], name: '伏兵封锁', hint: '先清除左侧封锁区的普通敌人', flowSeal: true });
+    if (scene.map.bossZone) this.createSeal({ id: 'boss-exit', x: Math.min(scene.map.width - 12, scene.map.bossZone.right + 64),
+      requires: ['boss-clear'], name: '竞技场出口', hint: '击败守关者后道路才会开启', flowSeal: true });
     for (const spec of scene.map.traversal) this.create(spec);
     this.refresh();
     this.mapGraphic = scene.add.graphics().setScrollFactor(0).setDepth(89);
@@ -35,10 +43,12 @@ export class Traversal {
     const height = this.route.bottom - this.route.top;
     const body = this.solid(spec.x, this.route.top, 96, height);
     // A continuous painted gate shaft makes the full-height seal visible.
-    const shaft = this.scene.add.tileSprite(spec.x, (this.route.top + this.route.bottom) / 2, 128, height, 'prop-gate').setDepth(6);
-    shaft.setTileScale(128 / this.scene.textures.get('prop-gate').getSourceImage().width);
+    const shaft = this.scene.add.tileSprite(spec.x, (this.route.top + this.route.bottom) / 2, 98, height, worldTexture(this.scene.map.id), 'shaft').setDepth(6);
+    const frame = this.scene.textures.get(worldTexture(this.scene.map.id)).get('shaft');
+    shaft.setTileScale(98 / frame.width);
+    const arch = worldImage(this.scene, spec.x, GROUND_Y, 'arch', 340).setDepth(-3);
     const label = this.label(spec.name + ' · 未接通', spec.x - 170, GROUND_Y - 240);
-    this.seals.push({ ...spec, body, shaft, label, open: false });
+    this.seals.push({ ...spec, body, shaft, arch, label, open: false });
   }
 
   create(spec) {
@@ -73,6 +83,7 @@ export class Traversal {
   activate(id) { if (!this.flags.has(id)) { this.flags.add(id); this.refresh(); } }
 
   refresh() {
+    this.scene.worldArt?.refresh(this.flags);
     for (const gate of this.seals) {
       if (!gate.open && hasRouteFlags(this.flags, gate.requires)) {
         gate.open = true; gate.body.destroy(); gate.label.setText(gate.name + ' · 已开启');
@@ -171,7 +182,7 @@ export class Traversal {
     if (!s.activeLock && !s.bossTriggered) {
       for (const mini of this.route.minis) {
         if (this.flags.has(mini.id) || (mini.needsWave && !s.waveState.complete)) continue;
-        if (p.body.x > mini.left + 40 && p.body.x < mini.right - 40 && Math.abs(feet - mini.floorY) < 28 && (p.body.body.blocked.down || p.body.body.touching.down)) {
+        if (p.body.x >= (mini.triggerX ?? mini.left + 40) && p.body.x < mini.right - 40 && Math.abs(feet - mini.floorY) < 28 && (p.body.body.blocked.down || p.body.body.touching.down)) {
           this.startMini(mini); break;
         }
       }
@@ -186,7 +197,8 @@ export class Traversal {
 
   drawMap() {
     const s = this.scene, p = s.player.body;
-    const current = this.route.rooms.find(r => p.x >= r.x && p.x < r.x + r.width && p.y >= r.y && p.y < r.y + r.height);
+    const current = this.route.rooms.filter(r => p.x >= r.x && p.x < r.x + r.width && p.y >= r.y && p.y < r.y + r.height)
+      .sort((a, b) => a.width * a.height - b.width * b.height)[0];
     if (current) this.visited.add(current.id);
     this.roomLabel.setText(current?.name || '连接通道').setVisible(!s.activeLock);
     const g = this.mapGraphic.clear().setVisible(!s.activeLock);

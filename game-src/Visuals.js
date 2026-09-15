@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { POSE } from './gameData.js';
 import { propImage } from './EnvironmentArt.js';
+import { worldImage } from './WorldArt.js';
 
 function applyWhiteFlash(target, enabled) {
   if (!target?.setTint) return;
@@ -304,9 +305,9 @@ export function createPlatformVisual(scene, x, y, width, stage) {
   const c = scene.add.container(x, y).setDepth(3);
   // The artwork begins at the collision surface (spec.y - 1); all rock/beam
   // depth extends downward so characters don't appear to hover above it.
-  for (let left = -width / 2; left < width / 2; left += 280) {
-    const span = Math.min(280, width / 2 - left);
-    c.add(propImage(scene, left + span / 2, -2, stage === 3 ? 'metal' : 'ledge', span + 2, 0));
+  for (let left = -width / 2; left < width / 2; left += 390) {
+    const span = Math.min(390, width / 2 - left);
+    c.add(worldImage(scene, left + span / 2, -2, 'ledge', span + 16, 0));
   }
   return c;
 }

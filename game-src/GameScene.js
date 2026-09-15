@@ -7,6 +7,7 @@ import { ENVIRONMENT_ART, propImage } from './EnvironmentArt.js';
 import { Traversal } from './Traversal.js';
 import { atGroundTrigger } from './RouteMaps.js';
 import { GUARDIAN_ART, GUARDIAN_FRAME_SIZE, GuardianVisual, guardianRemains } from './GuardianVisual.js';
+import { WORLD_KITS, WorldArt } from './WorldArt.js';
 import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from './CombatRules.js';
 
 const RED = 0xe43b4f;
@@ -27,6 +28,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload() {
+    WORLD_KITS.forEach(kit => this.load.atlas(`world-${kit}`, `./assets/world-v3/${kit}.webp`, `./assets/world-v3/${kit}.json`));
     Object.entries(GUARDIAN_ART).forEach(([id, art]) => this.load.spritesheet(`guardian-${id}`, `./assets/props/${art.file}`, { frameWidth: GUARDIAN_FRAME_SIZE, frameHeight: GUARDIAN_FRAME_SIZE, endFrame: 11 }));
     this.load.image('guardian-core-shot', './assets/props/guardian-core-shot-v2.webp');
     Object.entries(ENVIRONMENT_ART).forEach(([id, file]) => this.load.image(`prop-${id}`, `./assets/props/${file}`));
@@ -160,7 +162,7 @@ export class FightScene extends Phaser.Scene {
       this.time.delayedCall(250, () => this.beginControl());
     } else {
       this.showStageCard();
-      this.setObjective(this.mapIndex === 0 ? '山门封闭 · 沿两侧阶梯登上绞盘楼' : '先清除封锁区 · 留意上行阶梯和下行井口');
+      this.setObjective(this.mapIndex === 0 ? '沿山道向右追赶 · 屋顶可练习二段跳并收集补给' : '先清除封锁区 · 留意上行阶梯和下行井口');
       this.time.delayedCall(2900, () => {
         if (this.mapIndex === 0) {
           this.showDialogue('prologue', () => this.beginControl());
@@ -192,23 +194,7 @@ export class FightScene extends Phaser.Scene {
   }
 
   createBackground() {
-    const count = Math.ceil(this.map.width / GAME_WIDTH);
-    for (let row = Math.floor(this.map.route.top / GAME_HEIGHT); row * GAME_HEIGHT < this.map.route.bottom; row++) {
-      for (let i = 0; i < count; i += 1) {
-        this.add.image(i * GAME_WIDTH + GAME_WIDTH / 2, row * GAME_HEIGHT + GAME_HEIGHT / 2, this.map.background)
-        .setDisplaySize(GAME_WIDTH + 4, GAME_HEIGHT)
-        .setFlipX(i % 2 === 1)
-        .setTint(row > 0 ? 0x868ca4 : row < 0 ? 0xb0b9c5 : 0xffffff)
-        .setDepth(-30);
-      const shade = this.add.rectangle(i * GAME_WIDTH + GAME_WIDTH / 2, row * GAME_HEIGHT + GAME_HEIGHT / 2, GAME_WIDTH + 4, GAME_HEIGHT, i % 2 ? 0x090912 : 0x15101b, row > 0 ? 0.32 : 0.17).setDepth(-29);
-      shade.setBlendMode(Phaser.BlendModes.MULTIPLY);
-      }
-    }
-
-    if (this.mapIndex === 0) {
-      this.add.text(330, 205, '国轩之窟  →', { fontFamily: 'serif', fontSize: '28px', color: '#f1d39b', fontStyle: 'bold', backgroundColor: '#1a1114bb', padding: { x: 16, y: 8 } }).setAngle(-3).setDepth(1);
-      this.add.text(320, 345, 'A / D 移动　W 二段跳\nJ 攻击　K 技能\nL：原地格挡 / 带方向闪避', { fontFamily: 'sans-serif', fontSize: '22px', lineSpacing: 10, color: '#fff2d8', backgroundColor: '#090a10cc', padding: { x: 18, y: 14 } }).setDepth(1);
-    }
+    this.worldArt = new WorldArt(this);
   }
 
   createTerrain() {
@@ -431,6 +417,7 @@ export class FightScene extends Phaser.Scene {
     const dt = Math.min(delta, 34) / 1000;
     this.inputManager.poll();
     this.drawHud(time);
+    this.worldArt?.update(delta);
     if (this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) return;
 
     this.updatePlayer(time, delta);
@@ -947,7 +934,8 @@ export class FightScene extends Phaser.Scene {
   updateStageFlow() {
     const p = this.player.body;
     const zone = this.map.waveZone;
-    if (!this.activeLock && !this.waveState.triggered && atGroundTrigger(p, zone.trigger) && this.traversal?.canEnter?.('wave') !== false) this.startWaveZone();
+    const grounded = p.body.blocked.down || p.body.touching.down;
+    if (!this.activeLock && !this.waveState.triggered && grounded && p.x < zone.right + 48 && atGroundTrigger(p, zone.trigger) && this.traversal?.canEnter?.('wave') !== false) this.startWaveZone();
 
     if (this.waveState.triggered && !this.waveState.complete && !this.waveState.waiting) {
       const alive = this.enemies.some((enemy) => enemy.alive);
@@ -967,7 +955,7 @@ export class FightScene extends Phaser.Scene {
       }
     }
 
-    if (!this.activeLock && this.map.bossZone && this.waveState.complete && !this.bossTriggered && atGroundTrigger(p, this.map.bossZone.trigger) && this.traversal?.canEnter?.('boss') !== false) this.startBossArena();
+    if (!this.activeLock && this.map.bossZone && this.waveState.complete && !this.bossTriggered && grounded && p.x < this.map.bossZone.right + 48 && atGroundTrigger(p, this.map.bossZone.trigger) && this.traversal?.canEnter?.('boss') !== false) this.startBossArena();
 
     if (this.mapIndex === 0 && this.waveState.complete && atGroundTrigger(p, this.map.exitX) && this.traversal?.canEnter?.('exit') !== false) this.transitionToMap(1);
 
@@ -994,10 +982,11 @@ export class FightScene extends Phaser.Scene {
 
   completeWaveZone() {
     this.waveState.complete = true;
+    this.traversal?.activate('wave-clear');
     this.clearArenaLock();
     this.soundBus.play('pickup');
     this.showNotice('AREA CLEAR', 1500);
-    if (this.mapIndex === 0) this.setObjective('道路已解锁 · 继续向右抵达洞窟入口');
+    if (this.mapIndex === 0) this.setObjective('伏兵已清除 · 继续向右，登上后山钟楼启动峡谷绞盘');
     else if (this.map.bossZone) this.setObjective(this.mapIndex === 1 ? '交汇井：下行配重室是主路，上层矿廊可选挑战' : '双回路：上层冷却、下层动力，可按任意顺序接通');
   }
 
@@ -1528,6 +1517,7 @@ export class FightScene extends Phaser.Scene {
     this.showDialogue(`${b.type}_defeated`, () => {
       this.tweens.add({ targets: b.visual.image, alpha: 0, y: b.visual.image.y + 36, angle: 7, duration: 700, onComplete: () => b.visual.destroy() });
       this.bossDefeated = true;
+      this.traversal?.activate?.('boss-clear');
       this.clearArenaLock();
       if (b.type === 'c') {
         this.setObjective('道路已解锁 · 亲自向右走到小木屋');
@@ -1572,6 +1562,7 @@ export class FightScene extends Phaser.Scene {
       if (this.gameOver || this.player.hp <= 0) return;
       b.dying = false;
       this.bossDefeated = true;
+      this.traversal?.activate?.('boss-clear');
       this.clearArenaLock();
       this.time.delayedCall(1300, () => {
         if (this.gameOver || this.boss !== b) return;
@@ -1791,7 +1782,7 @@ export class FightScene extends Phaser.Scene {
 
   updateHazards(time, dt) {
     for (const hazard of this.hazards) {
-      if (hazard.state === 'idle' && !this.activeLock && atGroundTrigger(this.player.body, hazard.warningX)) {
+      if (hazard.state === 'idle' && !this.activeLock && this.player.body.x < hazard.warningX + 280 && atGroundTrigger(this.player.body, hazard.warningX)) {
         hazard.state = 'warning';
         hazard.warning = this.add.ellipse(hazard.x, GROUND_Y - 2, 190, 42, 0xff354f, 0.2).setStrokeStyle(5, 0xffd2b6, 0.92).setDepth(8);
         this.tweens.add({ targets: hazard.warning, alpha: 0.8, scaleX: 0.58, duration: 720, ease: 'Sine.In' });
