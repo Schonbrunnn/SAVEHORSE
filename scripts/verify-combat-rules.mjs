@@ -1,14 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES } from '../game-src/gameData.js';
-import { BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp } from '../game-src/CombatRules.js';
+import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from '../game-src/CombatRules.js';
 
 // Run the actual scene methods with a small physics/display stub, without a
 // browser or Phaser renderer. This checks timing, not game feel or collision QA.
 const source = (await readFile(new URL('../game-src/GameScene.js', import.meta.url), 'utf8'))
   .replace(/^import .*;\n/gm, '').replace(/export class /g, 'class ');
 const Phaser = { Scene: class {}, Math: { Linear: (a, b, t) => a + (b - a) * t } };
-const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', 'ActionVisual', 'BossVisual', 'InputManager', 'SoundBus', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp, class {}, class {}, class { setEnabled(value) { this.enabled = value; } destroy() {} }, class { play() {} });
+const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', 'ActionVisual', 'BossVisual', 'InputManager', 'SoundBus', 'MECH', 'mechPhaseReady', 'motionBlend', 'Traversal', 'propImage', 'RABBIT_PHASE2', 'segmentDistance', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp, class {}, class {}, class { setEnabled(value) { this.enabled = value; } destroy() {} }, class { play() {} }, MECH, mechPhaseReady, motionBlend, class {}, () => shape(), RABBIT_PHASE2, segmentDistance);
 globalThis.window = {};
 const noOp = () => {};
 const body = (x = 100, y = 500) => ({
@@ -26,9 +26,9 @@ const scene = () => Object.assign(Object.create(FightScene.prototype), {
 });
 
 assert.equal(skillCooldownMs(HEROES.a), 4100);
-assert.equal(skillCooldownMs(HEROES.b), 1800);
+assert.equal(skillCooldownMs(HEROES.b), 1600);
 assert.equal(skillCooldownMs(HEROES.a, { skillCooldownReductionMs: 500 }), 3600);
-assert.equal(skillCooldownMs(HEROES.b, { skillCooldownReductionMs: 500 }), 1300);
+assert.equal(skillCooldownMs(HEROES.b, { skillCooldownReductionMs: 500 }), 1100);
 assert.equal(nextStageHp(42, 105), 72);
 assert.equal(nextStageHp(100, 105), 105);
 
@@ -56,12 +56,14 @@ const paused = scene();
 paused.time.now = 1000;
 paused.tweens = { getGlobalTimeScale: () => 1 };
 paused.enemies = [{ cycleUntil: 11000, nextAttack: 2500 }];
-paused.boss = { nextSmash: 5000 };
+paused.boss = { nextSmash: 5000, aimLockAt: 1600, comboSecondAt: 2320 };
 const snapshot = paused.captureCombatDeadlines();
 paused.time.now = 6000;
 paused.shiftCombatDeadlines(snapshot);
 assert.equal(paused.enemies[0].cycleUntil, 16000);
 assert.equal(paused.boss.nextSmash, 10000);
+assert.equal(paused.boss.aimLockAt, 6600);
+assert.equal(paused.boss.comboSecondAt, 7320);
 
 const shopper = scene();
 shopper.merchantVisited = true;
@@ -145,6 +147,7 @@ const checkpointScene = (data) => {
   s.setObjective = text => { s.objective = text; };
   s.showNotice = noOp;
   s.showDialogue = (key, done) => { s.lastDialogue = key; done(); };
+  s.startMechEntrance = done => done();
   s.setArenaLock = (left, right) => { s.activeLock = { left, right }; };
   s.scene = { restart(payload) { s.retryPayload = payload; } };
   // Stale fields must be cleared by create, not carried into a fresh attempt.
@@ -211,3 +214,202 @@ for (const data of [{ mapIndex: 0, bossCheckpoint: 'c' }, { mapIndex: 2, bossChe
   assert.equal(ordinary.player.body.x, ordinary.map.introX);
 }
 console.log('PASS: combat timings/items, piercing and projectile budget; C/D checkpoint lifecycle, full-health retries, fresh bosses, cleared waves/hazards and cross-map isolation.');
+
+// September adventure update: exercise actual scene methods, not copies of AI.
+const shape = (x = 0, y = 0) => {
+  const o = { x, y, active: true, displayHeight: 100, destroy() { this.active = false; } };
+  for (const method of ['setDepth', 'setStrokeStyle', 'setOrigin', 'setAlpha', 'setScale', 'setTexture', 'clear', 'lineStyle', 'lineBetween', 'strokeCircle']) o[method] = () => o;
+  return o;
+};
+const mechScene = () => {
+  const s = scene();
+  s.map = MAPS[2]; s.heroId = 'a'; s.heroData = HEROES.a; s.bossCheckpoint = 'd';
+  s.bossDefeated = false;
+  s.bossBattleStarted = true;
+  s.boss = { type: 'd', alive: true, hp: 620, maxHp: 620, phase: 1, nextAttack: 0, busyUntil: 0,
+    summonWavesStarted: 0, summonPending: false, summonedAdds: [], attackVersion: 0, patternObjects: [], body: body(5720, 385),
+    visual: { setState: noOp, flash: noOp, destroy: noOp, image: shape() } };
+  s.boss.body.disableBody = noOp;
+  s.player = { hp: 100, maxHp: 120, invulnerableUntil: 0, state: 'idle', facing: 1, body: body(5500, 515), visual: { flash: noOp } };
+  s.tasks = [];
+  s.time.delayedCall = (delay, callback) => s.tasks.push({ delay, callback });
+  s.add = { circle: shape, rectangle: shape, text: shape };
+  s.tweens = { add: noOp, killTweensOf: noOp };
+  s.addWarningText = s.setObjective = s.showNotice = s.clearArenaLock = noOp;
+  s.cameras.main.flash = noOp;
+  s.spawnEnemy = spec => { const e = { ...spec, alive: true }; s.enemies.push(e); return e; };
+  return s;
+};
+const waves = mechScene();
+let phaseCalls = 0;
+waves.beginBossPhase = () => { phaseCalls++; waves.boss.phaseTransitioning = true; };
+waves.updateBossD(0);
+assert.equal(waves.boss.summonPending, true);
+assert.equal(waves.boss.summonWavesStarted, 0);
+assert.equal(mechPhaseReady(waves.boss), false);
+waves.updateBossD(100);
+assert.equal(waves.tasks.length, 1, 'do not double schedule the pre-spawn window');
+waves.tasks.shift().callback();
+assert.equal(waves.enemies.length, 2);
+assert.equal(waves.boss.summonWavesStarted, 1);
+waves.updateBossD(5000);
+assert.equal(waves.tasks.length, 0, 'wait for all members of the first wave');
+waves.enemies[0].alive = false;
+waves.updateBossD(5000);
+assert.equal(waves.tasks.length, 0);
+waves.enemies[1].alive = false;
+waves.updateBossD(5000);
+assert.equal(mechPhaseReady(waves.boss), false, 'second wave warning is not a clear');
+waves.tasks.shift().callback();
+assert.equal(waves.boss.summonWavesStarted, 2);
+waves.updateBossD(9000);
+assert.equal(phaseCalls, 0);
+waves.boss.summonedAdds.forEach(e => { e.alive = false; });
+waves.updateBossD(9000);
+assert.equal(phaseCalls, 1);
+waves.updateBossD(9500);
+assert.equal(waves.boss.summonWavesStarted, 2, 'no third wave');
+const threshold = mechScene();
+threshold.boss.hp = 372;
+assert.equal(mechPhaseReady(threshold.boss), false, '60% exactly is not below 60%');
+threshold.boss.hp = 371.9;
+assert.equal(mechPhaseReady(threshold.boss), true, 'HP branch must work before either wave is cleared');
+threshold.startSummonPattern(0);
+threshold.cancelBossPatterns(threshold.boss);
+threshold.boss.phaseTransitioning = true;
+threshold.tasks.shift().callback();
+assert.equal(threshold.enemies.length, 0, 'cancelled summon must not leak into phase two');
+assert.equal(threshold.boss.summonWavesStarted, 0);
+
+const story = scene();
+story.heroData = HEROES.a; story.physicsPauseReasons = new Set();
+story.inputManager = { setEnabled(value) { story.enabled = value; } };
+story.setPhysicsPause = (reason, paused) => { if (paused) story.physicsPauseReasons.add(reason); else story.physicsPauseReasons.delete(reason); };
+const shown = [];
+let completeStory;
+window.friendFightersUI = { showDialogue(lines, options) { shown.push(lines); completeStory = options.onComplete; } };
+story.showDialogue('d_first_hurt');
+const firstComplete = completeStory;
+story.showDialogue('d_phase');
+assert.equal(shown.length, 1);
+firstComplete();
+assert.equal(shown.length, 2);
+assert.equal(story.enabled, false, 'keep inputs paused between story entries');
+firstComplete();
+assert.equal(shown.length, 2, 'stale completion callback may be consumed only once');
+completeStory();
+assert.equal(story.enabled, true);
+assert.equal(story.dialogueActive, false);
+assert.equal(story.physicsPauseReasons.size, 0);
+window.friendFightersUI = { hideResults: noOp };
+const interrupted = scene();
+interrupted.inputManager = { poll: noOp };
+interrupted.drawHud = noOp;
+interrupted.updatePlayer = () => { interrupted.dialogueActive = true; };
+interrupted.updateEnemies = () => assert.fail('no combat after the dialogue begins mid-frame');
+interrupted.update(100, 16);
+const dialogueHit = mechScene();
+dialogueHit.dialogueActive = true;
+assert.equal(dialogueHit.damagePlayer(12, 5720, 0, false, true), false);
+assert.equal(dialogueHit.player.hp, 100);
+assert.ok(Math.abs(motionBlend(1000 / 30, 0.31) - (1 - 0.69 ** 2)) < 1e-9);
+console.log('PASS: exactly two ordered mech waves, cancellation, strict 60% boundary, serial dialogue and same-frame combat pause.');
+
+for (const spec of [
+  { hp: 100, x: 5500, state: 'guard', protection: 0, expectedHp: 88, dead: false },
+  { hp: 10, x: 5500, state: 'guard', protection: 0, expectedHp: 0, dead: true },
+  { hp: 5, x: 4900, state: 'idle', protection: 0, expectedHp: 5, dead: false },
+  { hp: 100, x: 5500, state: 'dodge', protection: 2000, expectedHp: 100, dead: false },
+]) {
+  const death = mechScene();
+  death.player.hp = spec.hp; death.player.body.x = spec.x;
+  death.player.state = spec.state; death.player.invulnerableUntil = spec.protection;
+  death.playerDefeated = () => { death.gameOver = true; };
+  death.scene = { restart(payload) { death.retryPayload = payload; } };
+  death.showDialogue = (key, callback) => { if (key === 'rescue') death.rescued = true; callback(); };
+  death.missionComplete = () => { death.completed = true; };
+  death.defeatBoss();
+  assert.equal(death.boss.alive, false);
+  assert.equal(death.boss.dying, true);
+  assert.equal(death.bossDefeated, false, 'do not commit victory during the self-destruct warning');
+  assert.equal(death.player.hp, spec.hp);
+  assert.equal(death.tasks.filter(t => t.delay === MECH.blastWarningMs).length, 1);
+  death.time.now = MECH.blastWarningMs;
+  death.tasks.find(t => t.delay === MECH.blastWarningMs).callback();
+  assert.equal(death.player.hp, spec.expectedHp);
+  assert.equal(Boolean(death.gameOver), spec.dead);
+  assert.equal(death.bossDefeated, !spec.dead);
+  if (spec.dead) {
+    death.restartMap();
+    assert.equal(death.retryPayload.bossCheckpoint, 'd');
+    assert.equal(death.tasks.some(t => t.delay === 1300), false, 'lethal blast must not queue rescue');
+  } else {
+    death.tasks.find(t => t.delay === 1300).callback();
+    assert.equal(death.completed, true);
+    assert.equal(death.rescued, true);
+  }
+}
+console.log('PASS: mech explosion warning, max-HP 10% damage, guard bypass, safe zone/dodge, lethal checkpoint and delayed rescue.');
+
+{
+const rabbitScene = (playerX = 1120) => {
+  const s = mechScene();
+  Object.assign(s.boss, { type: 'c', phase: 2, hp: 66, maxHp: 330, phaseSpoken: true, firstHurtSpoken: true, state: 'idle', hurtUntil: 0, facing: 1, nextAttack: 0, body: body(1000, 500) });
+  s.boss.body.body.blocked.down = true;
+  s.boss.visual.sync = noOp;
+  s.player.body = body(playerX, 500);
+  s.add.graphics = shape;
+  s.tick = time => { s.time.now = time; s.updateBoss(time); };
+  return s;
+};
+const combo = rabbitScene();
+combo.tick(0);
+assert.equal(combo.boss.attackKind, 'combo');
+combo.tick(499); assert.equal(combo.player.hp, 100);
+combo.tick(500); assert.equal(combo.player.hp, 86);
+combo.tick(501); assert.equal(combo.player.hp, 86, 'first hit cannot repeat');
+combo.tick(1320); assert.equal(combo.player.hp, 62); assert.equal(combo.player.state, 'knockdown');
+combo.tick(1321); assert.equal(combo.player.hp, 62, 'second hit cannot repeat');
+const flank = rabbitScene();
+flank.tick(0); flank.player.body.x = 900;
+flank.tick(500); flank.tick(1320);
+assert.equal(flank.player.hp, 100, 'both melee strikes can be avoided by crossing behind');
+const interrupted = rabbitScene();
+interrupted.tick(0); interrupted.tick(500);
+interrupted.time.now = 700; interrupted.hurtBoss(1, 0);
+assert.equal(interrupted.boss.state, 'idle');
+interrupted.tick(1320);
+assert.equal(interrupted.player.hp, 86, 'hurt cancels the pending finisher');
+const sniper = rabbitScene(1550);
+const sniperShots = [];
+sniper.spawnProjectile = config => sniperShots.push(config);
+sniper.tick(0); assert.equal(sniper.boss.attackKind, 'sniper');
+sniper.player.body.x = 1600; sniper.player.body.y = 460;
+sniper.tick(590);
+const frozenTarget = { ...sniper.boss.aimTarget };
+sniper.tick(600); assert.equal(sniper.boss.aimLocked, true);
+sniper.player.body.x = 1300; sniper.player.body.y = 300;
+sniper.tick(959); assert.equal(sniperShots.length, 0);
+sniper.tick(960); sniper.tick(961);
+assert.equal(sniperShots.length, 1);
+assert.deepEqual(sniper.boss.aimTarget, frozenTarget, 'a locked shot must never retarget');
+assert.equal(sniperShots[0].damage, 22);
+assert.ok(Math.abs(Math.hypot(sniperShots[0].vx, sniperShots[0].vy) - 1000) < 0.001);
+assert.ok(Math.abs(Math.atan2(sniperShots[0].vy, sniperShots[0].vx) - Math.atan2(frozenTarget.y - sniperShots[0].y, frozenTarget.x - sniperShots[0].x)) < 0.001);
+const cancelShot = rabbitScene(1500);
+let cancelledShots = 0;
+cancelShot.spawnProjectile = () => cancelledShots++;
+cancelShot.tick(0); cancelShot.tick(600);
+cancelShot.hurtBoss(1, 0); cancelShot.tick(960);
+assert.equal(cancelledShots, 0);
+const swept = scene();
+swept.player = { body: body(200, 500) }; swept.map = { width: 2000 };
+swept.createFxImage = shield.createFxImage;
+let sweptHits = 0;
+swept.damagePlayer = () => { sweptHits++; return true; };
+swept.spawnProjectile({ owner: 'boss', type: 'sniper', x: 100, y: 500, vx: 1000, vy: 0, life: 1600, damage: 22 });
+swept.updateProjectiles(200, 0.2);
+swept.updateProjectiles(400, 0.2);
+assert.equal(sweptHits, 1, 'a fast projectile crossing the player hits once, even when both endpoints are outside');
+console.log('PASS: rabbit two-hit combo, flank and hurt interruption, tracking/locked sniper, pause deadlines and swept projectile collision.');
+}
