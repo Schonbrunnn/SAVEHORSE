@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "assets:build": "node scripts/build-character-assets.mjs && node scripts/build-adventure-assets.mjs",
+    "assets:build": "node scripts/build-character-assets.mjs && node scripts/build-adventure-assets.mjs && node scripts/build-guardian-assets.mjs",
     "game:build": "pnpm assets:build && vite build --config vite.game.config.js",
     "build": "pnpm game:build && vinext build",
     "start": "vinext start",
