@@ -1,0 +1,574 @@
+{
+  "frameSize": 512,
+  "footY": 460,
+  "extraction": "connected alpha components, not equal-cell crops",
+  "assets": [
+    {
+      "id": "shield",
+      "source": "art-source/guardian-shield-v2.png",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "scale": 1.0761421319796953,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 71,
+            "top": 24,
+            "width": 199,
+            "height": 370
+          },
+          "mainPixels": 47497,
+          "width": 214,
+          "height": 398,
+          "left": 125,
+          "top": 62,
+          "bottom": 460
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 364,
+            "top": 24,
+            "width": 205,
+            "height": 369
+          },
+          "mainPixels": 40785,
+          "width": 221,
+          "height": 397,
+          "left": 126,
+          "top": 63,
+          "bottom": 460
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 676,
+            "top": 24,
+            "width": 212,
+            "height": 373
+          },
+          "mainPixels": 41364,
+          "width": 228,
+          "height": 401,
+          "left": 129,
+          "top": 59,
+          "bottom": 460
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 993,
+            "top": 59,
+            "width": 217,
+            "height": 336
+          },
+          "mainPixels": 40733,
+          "width": 234,
+          "height": 362,
+          "left": 140,
+          "top": 98,
+          "bottom": 460
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 45,
+            "top": 475,
+            "width": 309,
+            "height": 336
+          },
+          "mainPixels": 47554,
+          "width": 333,
+          "height": 362,
+          "left": 128,
+          "top": 98,
+          "bottom": 460
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 370,
+            "top": 474,
+            "width": 250,
+            "height": 337
+          },
+          "mainPixels": 44708,
+          "width": 269,
+          "height": 363,
+          "left": 123,
+          "top": 97,
+          "bottom": 460
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 684,
+            "top": 417,
+            "width": 238,
+            "height": 394
+          },
+          "mainPixels": 47898,
+          "width": 256,
+          "height": 424,
+          "left": 126,
+          "top": 36,
+          "bottom": 460
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 965,
+            "top": 570,
+            "width": 253,
+            "height": 240
+          },
+          "mainPixels": 39156,
+          "width": 272,
+          "height": 258,
+          "left": 98,
+          "top": 202,
+          "bottom": 460
+        },
+        {
+          "frame": 8,
+          "sourceBounds": {
+            "left": 45,
+            "top": 892,
+            "width": 289,
+            "height": 320
+          },
+          "mainPixels": 47814,
+          "width": 311,
+          "height": 344,
+          "left": 130,
+          "top": 116,
+          "bottom": 460
+        },
+        {
+          "frame": 9,
+          "sourceBounds": {
+            "left": 377,
+            "top": 894,
+            "width": 239,
+            "height": 316
+          },
+          "mainPixels": 41657,
+          "width": 257,
+          "height": 340,
+          "left": 148,
+          "top": 120,
+          "bottom": 460
+        },
+        {
+          "frame": 10,
+          "sourceBounds": {
+            "left": 652,
+            "top": 933,
+            "width": 243,
+            "height": 274
+          },
+          "mainPixels": 42249,
+          "width": 262,
+          "height": 295,
+          "left": 124,
+          "top": 165,
+          "bottom": 460
+        },
+        {
+          "frame": 11,
+          "sourceBounds": {
+            "left": 930,
+            "top": 1085,
+            "width": 309,
+            "height": 132
+          },
+          "mainPixels": 25786,
+          "width": 333,
+          "height": 142,
+          "left": 90,
+          "top": 318,
+          "bottom": 460
+        }
+      ]
+    },
+    {
+      "id": "quarry",
+      "source": "art-source/guardian-quarry-v2.png",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "scale": 1.181058495821727,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 51,
+            "top": 112,
+            "width": 258,
+            "height": 312
+          },
+          "mainPixels": 42383,
+          "width": 305,
+          "height": 368,
+          "left": 122,
+          "top": 92,
+          "bottom": 460
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 365,
+            "top": 114,
+            "width": 259,
+            "height": 309
+          },
+          "mainPixels": 38828,
+          "width": 306,
+          "height": 365,
+          "left": 108,
+          "top": 95,
+          "bottom": 460
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 667,
+            "top": 118,
+            "width": 271,
+            "height": 302
+          },
+          "mainPixels": 37540,
+          "width": 320,
+          "height": 357,
+          "left": 113,
+          "top": 103,
+          "bottom": 460
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 959,
+            "top": 114,
+            "width": 269,
+            "height": 307
+          },
+          "mainPixels": 35250,
+          "width": 318,
+          "height": 363,
+          "left": 61,
+          "top": 97,
+          "bottom": 460
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 38,
+            "top": 534,
+            "width": 344,
+            "height": 273
+          },
+          "mainPixels": 37304,
+          "width": 406,
+          "height": 322,
+          "left": 76,
+          "top": 138,
+          "bottom": 460
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 363,
+            "top": 551,
+            "width": 316,
+            "height": 255
+          },
+          "mainPixels": 31736,
+          "width": 373,
+          "height": 301,
+          "left": 109,
+          "top": 159,
+          "bottom": 460
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 665,
+            "top": 450,
+            "width": 242,
+            "height": 359
+          },
+          "mainPixels": 39653,
+          "width": 286,
+          "height": 424,
+          "left": 102,
+          "top": 36,
+          "bottom": 460
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 962,
+            "top": 585,
+            "width": 276,
+            "height": 235
+          },
+          "mainPixels": 32816,
+          "width": 326,
+          "height": 278,
+          "left": 60,
+          "top": 182,
+          "bottom": 460
+        },
+        {
+          "frame": 8,
+          "sourceBounds": {
+            "left": 39,
+            "top": 903,
+            "width": 267,
+            "height": 263
+          },
+          "mainPixels": 33026,
+          "width": 315,
+          "height": 311,
+          "left": 70,
+          "top": 149,
+          "bottom": 460
+        },
+        {
+          "frame": 9,
+          "sourceBounds": {
+            "left": 375,
+            "top": 874,
+            "width": 244,
+            "height": 277
+          },
+          "mainPixels": 34862,
+          "width": 288,
+          "height": 327,
+          "left": 129,
+          "top": 133,
+          "bottom": 460
+        },
+        {
+          "frame": 10,
+          "sourceBounds": {
+            "left": 655,
+            "top": 942,
+            "width": 278,
+            "height": 211
+          },
+          "mainPixels": 30036,
+          "width": 328,
+          "height": 249,
+          "left": 121,
+          "top": 211,
+          "bottom": 460
+        },
+        {
+          "frame": 11,
+          "sourceBounds": {
+            "left": 941,
+            "top": 1038,
+            "width": 291,
+            "height": 130
+          },
+          "mainPixels": 20539,
+          "width": 344,
+          "height": 154,
+          "left": 85,
+          "top": 306,
+          "bottom": 460
+        }
+      ]
+    },
+    {
+      "id": "core",
+      "source": "art-source/guardian-core-v2.png",
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "scale": 1.358974358974359,
+      "frames": [
+        {
+          "frame": 0,
+          "sourceBounds": {
+            "left": 31,
+            "top": 86,
+            "width": 252,
+            "height": 257
+          },
+          "mainPixels": 35612,
+          "width": 342,
+          "height": 349,
+          "left": 85,
+          "top": 111,
+          "bottom": 460
+        },
+        {
+          "frame": 1,
+          "sourceBounds": {
+            "left": 337,
+            "top": 84,
+            "width": 258,
+            "height": 271
+          },
+          "mainPixels": 36284,
+          "width": 351,
+          "height": 368,
+          "left": 81,
+          "top": 92,
+          "bottom": 460
+        },
+        {
+          "frame": 2,
+          "sourceBounds": {
+            "left": 672,
+            "top": 72,
+            "width": 241,
+            "height": 281
+          },
+          "mainPixels": 37804,
+          "width": 328,
+          "height": 382,
+          "left": 93,
+          "top": 78,
+          "bottom": 460
+        },
+        {
+          "frame": 3,
+          "sourceBounds": {
+            "left": 958,
+            "top": 97,
+            "width": 279,
+            "height": 245
+          },
+          "mainPixels": 36883,
+          "width": 379,
+          "height": 333,
+          "left": 67,
+          "top": 127,
+          "bottom": 460
+        },
+        {
+          "frame": 4,
+          "sourceBounds": {
+            "left": 20,
+            "top": 490,
+            "width": 307,
+            "height": 236
+          },
+          "mainPixels": 39740,
+          "width": 417,
+          "height": 321,
+          "left": 48,
+          "top": 139,
+          "bottom": 460
+        },
+        {
+          "frame": 5,
+          "sourceBounds": {
+            "left": 336,
+            "top": 490,
+            "width": 257,
+            "height": 243
+          },
+          "mainPixels": 36869,
+          "width": 349,
+          "height": 330,
+          "left": 82,
+          "top": 130,
+          "bottom": 460
+        },
+        {
+          "frame": 6,
+          "sourceBounds": {
+            "left": 635,
+            "top": 460,
+            "width": 295,
+            "height": 302
+          },
+          "mainPixels": 44857,
+          "width": 401,
+          "height": 410,
+          "left": 56,
+          "top": 50,
+          "bottom": 460
+        },
+        {
+          "frame": 7,
+          "sourceBounds": {
+            "left": 948,
+            "top": 453,
+            "width": 306,
+            "height": 312
+          },
+          "mainPixels": 48483,
+          "width": 416,
+          "height": 424,
+          "left": 49,
+          "top": 36,
+          "bottom": 460
+        },
+        {
+          "frame": 8,
+          "sourceBounds": {
+            "left": 27,
+            "top": 868,
+            "width": 261,
+            "height": 258
+          },
+          "mainPixels": 38808,
+          "width": 355,
+          "height": 351,
+          "left": 79,
+          "top": 109,
+          "bottom": 460
+        },
+        {
+          "frame": 9,
+          "sourceBounds": {
+            "left": 335,
+            "top": 843,
+            "width": 267,
+            "height": 275
+          },
+          "mainPixels": 33067,
+          "width": 363,
+          "height": 374,
+          "left": 75,
+          "top": 86,
+          "bottom": 460
+        },
+        {
+          "frame": 10,
+          "sourceBounds": {
+            "left": 667,
+            "top": 920,
+            "width": 220,
+            "height": 208
+          },
+          "mainPixels": 29025,
+          "width": 299,
+          "height": 283,
+          "left": 107,
+          "top": 177,
+          "bottom": 460
+        },
+        {
+          "frame": 11,
+          "sourceBounds": {
+            "left": 947,
+            "top": 966,
+            "width": 277,
+            "height": 164
+          },
+          "mainPixels": 29360,
+          "width": 376,
+          "height": 223,
+          "left": 68,
+          "top": 237,
+          "bottom": 460
+        }
+      ]
+    }
+  ]
+}
