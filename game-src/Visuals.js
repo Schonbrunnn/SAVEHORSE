@@ -30,11 +30,25 @@ export class ActionVisual {
     this.image.setScale(this.baseScale);
     this.state = '';
     this.facing = 1;
+    this.hero = texture.includes('hero-b') ? 'b' : 'a';
+    this.travel = 0;
+    this.previousVelocity = 0;
+    this.lastSyncTime = 0;
+    this.transition = null;
     this.setState('idle', true);
   }
 
   setState(state, force = false) {
     if (!force && state === this.state) return;
+    if (this.state && !force) {
+      this.transition?.destroy();
+      this.transition = this.scene.add.image(this.image.x, this.image.y, this.textureKey)
+        .setOrigin(0.5, 1).setScale(this.image.scaleX, this.image.scaleY).setFlipX(this.image.flipX)
+        .setAngle(this.image.angle).setDepth(this.image.depth).setAlpha(0.5);
+      const previous = this.transition;
+      this.scene.tweens.add({ targets: previous, alpha: 0, duration: state === 'hurt' ? 60 : 110,
+        onComplete: () => { previous.destroy(); if (this.transition === previous) this.transition = null; } });
+    }
     this.state = state;
     this.scene.tweens.killTweensOf(this.image);
     this.image.setScale(this.baseScale).setAngle(0).setAlpha(1);
@@ -70,12 +84,31 @@ export class ActionVisual {
   }
 
   sync(x, feetY, facing, time, velocityX = 0) {
+    const dt = Math.min(34, Math.max(0, time - (this.lastSyncTime || time)));
+    this.lastSyncTime = time;
     this.facing = facing || this.facing;
     this.image.setFlipX(this.facing < 0);
-    const runBob = this.state === 'run' ? Math.sin(time * 0.027) * 4 : 0;
-    const idleBob = this.state === 'idle' ? Math.sin(time * 0.004) * 2.2 : 0;
+    const speed = Math.abs(velocityX);
+    if (this.state === 'run') {
+      this.travel += speed * dt / 1000;
+      const stride = this.hero === 'b' ? 115 : 160;
+      const frame = Math.floor((this.travel % stride) / stride * 12);
+      const key = `motion-${this.hero}-${frame}`;
+      if (this.scene.textures.exists(key)) {
+        this.textureKey = key;
+        this.image.setTexture(key).setCrop();
+      }
+    }
+    const step = this.travel / (this.hero === 'b' ? 115 : 160) * Math.PI * 2;
+    const runBob = this.state === 'run' ? -Math.abs(Math.sin(step)) * (this.hero === 'b' ? 1.25 : 3) * Math.min(1, speed / 220) : 0;
+    const idleBob = this.state === 'idle' ? Math.sin(time * 0.003) * 0.8 : 0;
     this.image.setPosition(x, feetY + (this.hasSplitFrames ? 44 * this.baseScale : 0) + runBob + idleBob);
-    if (this.state === 'run') this.image.setAngle(Math.sin(time * 0.027) * 2.2 + Math.sign(velocityX) * 1.2);
+    if (this.state === 'run' || this.state === 'idle') {
+      const lean = this.hero === 'b' ? Math.max(-2.8, Math.min(2.8, (velocityX - this.previousVelocity) * 0.055)) : velocityX / 220;
+      this.image.setAngle(this.image.angle + (lean - this.image.angle) * 0.18);
+    }
+    if (this.transition?.active) this.transition.setPosition(this.image.x, this.image.y).setFlipX(this.facing < 0);
+    this.previousVelocity = velocityX;
   }
 
   setDepth(depth) {
@@ -113,6 +146,7 @@ export class ActionVisual {
   }
 
   destroy() {
+    this.transition?.destroy();
     this.image.destroy();
   }
 }
@@ -196,7 +230,7 @@ export class BossVisual {
       };
       this.targetHeight = 230;
       this.baseScale = this.hasSplitFrames ? this.targetHeight / this.image.height : 0.29;
-      this.stateFrames = { idle: 0, run: 1, jump: 2, attack: 3, skill: 4, gun: 5, 'gun-run': 5, 'gun-jump': 5, 'gun-hurt': 5, fire: 6, hurt: 7 };
+      this.stateFrames = { idle: 0, run: 1, jump: 2, attack: 3, skill: 4, gun: 5, 'gun-run': 5, 'gun-jump': 5, 'gun-hurt': 5, 'gun-strike': 5, fire: 6, hurt: 7 };
     } else {
       this.crops = { idle: [0, 0, 1110, 855], attack: [900, 210, 630, 520], hurt: [0, 0, 1110, 855] };
       // The final mech is a fixed arena boss: its visible silhouette should
@@ -222,6 +256,10 @@ export class BossVisual {
     }
     this.image.setScale(this.baseScale).setAngle(state.endsWith('hurt') ? 7 : 0);
     this.scene.tweens.killTweensOf(this.image);
+    if (state === 'gun-strike') {
+      this.image.setAngle(-this.facing * 12);
+      this.scene.tweens.add({ targets: this.image, angle: this.facing * 14, scaleX: this.baseScale * 1.07, duration: 110, yoyo: true });
+    }
     if (['attack', 'gun', 'fire', 'charge', 'summon', 'lanes', 'fan', 'laser', 'overload'].includes(state)) {
       this.scene.tweens.add({ targets: this.image, scaleX: this.baseScale * 1.035, scaleY: this.baseScale * 0.985, duration: 135, yoyo: true });
     }
@@ -231,7 +269,8 @@ export class BossVisual {
     this.facing = facing || this.facing;
     this.image.setFlipX(this.type === 'c' && this.facing < 0);
     const bob = this.state === 'gun-run' ? Math.sin(time * 0.024) * 3 : Math.sin(time * 0.003) * (this.type === 'd' ? 2 : 1.5);
-    this.image.setPosition(x, feetY + (this.hasSplitFrames ? 44 * this.baseScale : 0) + bob);
+    this.image.setPosition(x + (this.motion?.x || 0), feetY + (this.hasSplitFrames ? 44 * this.baseScale : 0) + bob + (this.motion?.y || 0));
+    if (this.motion) this.image.setAngle(this.motion.angle);
   }
 
   flash(duration = 100) {
@@ -264,7 +303,7 @@ export function createPlatformVisual(scene, x, y, width, stage) {
   const c = scene.add.container(x, y).setDepth(3);
   // The artwork begins at the collision surface (spec.y - 1); all rock/beam
   // depth extends downward so characters don't appear to hover above it.
-  c.add(propImage(scene, 0, -2, stage === 3 ? 'metal' : 'stone', width, 0));
+  c.add(propImage(scene, 0, -2, stage === 3 ? 'metal' : 'ledge', width, 0));
   return c;
 }
 

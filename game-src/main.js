@@ -59,7 +59,7 @@ class UIController {
     window.addEventListener('keydown', (event) => {
       if (this.dialogue?.classList.contains('active') && ['Enter', ' ', 'j', 'J'].includes(event.key)) {
         event.preventDefault();
-        this.advanceDialogue();
+        if (!event.repeat) this.advanceDialogue();
       }
       if (event.key === 'Escape' && document.querySelector('#top-actions')?.classList.contains('visible')) {
         if (this.pause.classList.contains('active')) window.friendFightersResume?.();

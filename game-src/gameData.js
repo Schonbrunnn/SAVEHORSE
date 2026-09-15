@@ -23,7 +23,7 @@ export const HEROES = {
     speed: 370,
     attack: 15,
     skill: '交大冲锋',
-    skillCooldownMs: 1800,
+    skillCooldownMs: 1600,
   },
 };
 
@@ -70,6 +70,13 @@ export const MAPS = [
       { type: 'rock', x: 3000, warningX: 3040 },
       { type: 'crate', x: 3420 },
       { type: 'platform', x: 3670, y: 445, width: 360 },
+      { type: 'platform', x: 3900, y: 315, width: 250 },
+    ],
+    traversal: [
+      { type: 'lever', x: 1020, y: 465, gateX: 1190 },
+      { type: 'bridge', x: 3430, y: 455, width: 290 },
+      { type: 'reward', x: 3900, y: 258 },
+      { type: 'beacon', x: 4190, text: '沿灯火向右 · 洞窟入口' },
     ],
   },
   {
@@ -103,6 +110,14 @@ export const MAPS = [
       { type: 'platform', x: 2470, y: 455, width: 330 },
       { type: 'rock', x: 2630, warningX: 2670 },
       { type: 'crate', x: 4850 },
+      { type: 'platform', x: 4510, y: 445, width: 280 },
+      { type: 'platform', x: 4800, y: 320, width: 290 },
+    ],
+    traversal: [
+      { type: 'beacon', x: 2830, text: '前方竞技场 · 失败可从战前重新挑战' },
+      { type: 'wall', x: 4690, y: 590 },
+      { type: 'reward', x: 4810, y: 265 },
+      { type: 'beacon', x: 5150, text: '战斗已经结束 · 跟着灯火去见商人' },
     ],
   },
   {
@@ -140,13 +155,32 @@ export const MAPS = [
       { type: 'crate', x: 510 },
       { type: 'platform', x: 2520, y: 455, width: 360 },
       { type: 'rock', x: 2950, warningX: 2990 },
+      { type: 'platform', x: 3860, y: 300, width: 370 },
       { type: 'platform', x: 5060, y: 410, width: 440, bossPlatform: true },
       { type: 'platform', x: 5320, y: 286, width: 420, bossPlatform: true },
+    ],
+    traversal: [
+      { type: 'power', x: 2750, y: 590, gateX: 4310 },
+      { type: 'wall', x: 3180, y: 590 },
+      { type: 'lift', x: 3530, lowY: 540, highY: 300, width: 270 },
+      { type: 'reward', x: 3870, y: 240 },
+      { type: 'beacon', x: 4530, text: '二段跳登上高台 · 最高层可避开激光' },
+      { type: 'beacon', x: 4880, text: '左侧退避区 · 机甲自爆时回到灯标附近', noHeal: true },
     ],
   },
 ];
 
 export const DIALOGUES = {
+  cave_arrival: [
+    { speaker: '旁白', text: '山道上的伏兵散去，公主留下的发带挂在洞窟门边。', portrait: 'princess' },
+    { speaker: '{hero}', text: '她确实从这里经过。先突破封锁，再找守门的人问清楚。', portrait: 'hero' },
+    { speaker: '旁白', text: '远处传来刀刃刮过石壁的声音，洞窟深处却还亮着一盏暖灯。', portrait: 'boss-c' },
+  ],
+  base_arrival: [
+    { speaker: '神秘商人', text: '前面的熊会飞一阵，再落地喘气。别一直追着天上打。', portrait: 'merchant' },
+    { speaker: '{hero}', text: '先清掉守卫，沿升降台向里走。公主，等我。', portrait: 'hero' },
+    { speaker: '旁白', text: '暖灯留在身后。基地的粉色电流指向最深处的巨大机甲。', portrait: 'boss-d' },
+  ],
   prologue: [
     { speaker: '旁白', text: '小马国的黄昏，被一道不属于这里的粉色裂隙撕开。', portrait: 'princess' },
     { speaker: '小马公主', text: '谁在那里？卫兵——！', portrait: 'princess' },
@@ -166,7 +200,8 @@ export const DIALOGUES = {
   c_phase: [
     { speaker: '秦岭杀人兔', text: '行，逼我是吧？', portrait: 'boss-c' },
     { speaker: '旁白', text: '他放下短刀，从腰侧拔出了手枪。', portrait: 'boss-c' },
-    { speaker: '{hero}', text: '枪口会先亮，盯住预警再躲！', portrait: 'hero' },
+    { speaker: '旁白', text: '他反握枪托逼近，退开后又用一道红线紧追目标。', portrait: 'boss-c' },
+    { speaker: '{hero}', text: '近身小心两连击！红线变金锁定后，再跳开或闪避！', portrait: 'hero' },
   ],
   c_defeated: [
     { speaker: '秦岭杀人兔', text: '再感麦，老子先走了。', portrait: 'boss-c' },
@@ -195,6 +230,11 @@ export const DIALOGUES = {
   ],
   d_defeated: [
     { speaker: '草莓熊博士', text: '不可能……我的草莓熊……', portrait: 'boss-d' },
+    { speaker: '小马公主', text: '小心！它的反应炉还在亮！', portrait: 'princess' },
+    { speaker: '{hero}', text: '先离开机甲，退到左边！', portrait: 'hero' },
+  ],
+  rescue: [
+    { speaker: '旁白', text: '最后一声爆炸后，囚笼的电流终于熄灭。', portrait: 'princess' },
     { speaker: '小马公主', text: '我就知道你们会找到这里。', portrait: 'princess' },
     { speaker: '{hero}', text: '回家吧。宝马之路，到这里才算走完。', portrait: 'hero' },
   ],

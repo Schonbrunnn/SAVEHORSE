@@ -4,7 +4,8 @@ import { SoundBus } from './SoundBus.js';
 import { ActionVisual, BossVisual, EnemyVisual, createCabin, createCrateVisual, createPlatformVisual, drawBones } from './Visuals.js';
 import { DIALOGUES, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, HEROES, MAPS } from './gameData.js';
 import { ENVIRONMENT_ART, propImage } from './EnvironmentArt.js';
-import { BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp } from './CombatRules.js';
+import { Traversal } from './Traversal.js';
+import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from './CombatRules.js';
 
 const RED = 0xe43b4f;
 const RED_DARK = 0x551923;
@@ -36,6 +37,9 @@ export class BootScene extends Phaser.Scene {
       this.load.image(`hero-a-actions-pose-${index}`, `./assets/atlases/player-a/${pose}.png`);
       this.load.image(`hero-b-actions-pose-${index}`, `./assets/atlases/player-b/${pose}.png`);
     });
+    for (const hero of ['a', 'b']) for (let frame = 0; frame < 12; frame++) {
+      this.load.image(`motion-${hero}-${frame}`, `./assets/props/motion-${hero}-${frame}-v2.png`);
+    }
     const bossCPoses = ['idle', 'run', 'jump', 'attack', 'skill', 'gun', 'fire', 'hurt'];
     const bossDPoses = ['idle', 'charge', 'summon', 'lanes', 'fan', 'laser', 'overload', 'hurt'];
     bossCPoses.forEach((pose, index) => this.load.image(`boss-c-actions-pose-${index}`, `./assets/atlases/boss-c/${pose}.png`));
@@ -100,6 +104,7 @@ export class FightScene extends Phaser.Scene {
     this.events.once('shutdown', () => this.inputManager.destroy());
 
     this.dialogueActive = false;
+    this.dialogueQueue = [];
     this.manualPaused = false;
     this.gameOver = false;
     this.physicsPauseReasons = new Set();
@@ -130,6 +135,7 @@ export class FightScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, this.map.width, GAME_HEIGHT);
     this.createBackground();
     this.createTerrain();
+    this.traversal = new Traversal(this);
     this.createPlayer();
     this.createHud();
 
@@ -149,7 +155,7 @@ export class FightScene extends Phaser.Scene {
         if (this.mapIndex === 0) {
           this.showDialogue('prologue', () => this.beginControl());
         } else {
-          this.beginControl();
+          this.showDialogue(this.mapIndex === 1 ? 'cave_arrival' : 'base_arrival', () => this.beginControl());
         }
       });
     }
@@ -215,6 +221,9 @@ export class FightScene extends Phaser.Scene {
   createPlatform(spec) {
     const platform = this.solids.create(spec.x, spec.y + 11, 'pixel');
     platform.setDisplaySize(spec.width, 24).setAlpha(0.001).refreshBody();
+    platform.body.checkCollision.down = false;
+    platform.body.checkCollision.left = false;
+    platform.body.checkCollision.right = false;
     createPlatformVisual(this, spec.x, spec.y, spec.width, this.map.id);
   }
 
@@ -285,24 +294,46 @@ export class FightScene extends Phaser.Scene {
     window.friendFightersUI?.showStage(this.map.id, this.map.title, this.map.subtitle);
   }
 
-  showDialogue(key, onComplete) {
-    if (this.gameOver && key !== 'd_defeated') return;
+  showDialogue(key, onComplete, valid = () => true) {
+    if (this.gameOver || !valid()) return;
+    this.dialogueQueue ||= [];
+    this.dialogueQueue.push({ key, onComplete, valid });
+    if (!this.dialogueActive) this.advanceStoryQueue();
+  }
+
+  advanceStoryQueue() {
+    let entry;
+    while (this.dialogueQueue.length) {
+      const candidate = this.dialogueQueue.shift();
+      if (candidate.valid()) { entry = candidate; break; }
+    }
+    if (!entry || this.gameOver) {
+      this.dialogueActive = false;
+      this.setPhysicsPause('dialogue', false);
+      if (!this.manualPaused && !this.gameOver && !this.physicsPauseReasons.has('shop')) this.inputManager.setEnabled(true);
+      return;
+    }
+    const { key, onComplete, valid } = entry;
     const lines = DIALOGUES[key];
     if (!lines) {
       onComplete?.();
+      this.advanceStoryQueue();
       return;
     }
     this.dialogueActive = true;
     this.inputManager.setEnabled(false);
     this.player?.body?.setVelocityX(0);
     this.setPhysicsPause('dialogue', true);
+    let completed = false;
     window.friendFightersUI?.showDialogue(lines, {
       hero: this.heroData,
       onComplete: () => {
-        this.dialogueActive = false;
-        this.setPhysicsPause('dialogue', false);
-        if (!this.manualPaused && !this.gameOver) this.inputManager.setEnabled(true);
-        onComplete?.();
+        if (completed) return;
+        completed = true;
+        // Keep the clock paused between queued lines and callbacks. A phase
+        // transition can enqueue its story here without one controllable frame.
+        if (!this.gameOver && valid()) onComplete?.();
+        this.advanceStoryQueue();
       },
     });
   }
@@ -342,9 +373,9 @@ export class FightScene extends Phaser.Scene {
     };
     capture(this.player, ['stateUntil', 'invulnerableUntil', 'attackHitAt', 'skillReadyAt', 'hurtTintUntil', 'lastAttackAt', 'lastAfterimage']);
     this.enemies.forEach((enemy) => capture(enemy, ['stateUntil', 'hurtUntil', 'nextAttack', 'hitAt', 'cycleUntil']));
-    capture(this.boss, ['stateUntil', 'hurtUntil', 'nextAttack', 'nextLeap', 'nextSmash', 'hitAt', 'busyUntil']);
+    capture(this.boss, ['stateUntil', 'hurtUntil', 'nextAttack', 'nextLeap', 'nextSmash', 'hitAt', 'busyUntil', 'aimLockAt', 'comboSecondAt']);
     this.projectiles.forEach((projectile) => capture(projectile, ['createdAt', 'expiresAt', 'returnAt']));
-    capture(this.laser, ['until', 'nextDamage']);
+    capture(this.laser, ['startedAt', 'until', 'nextDamage']);
     return {
       clockTime: this.time.now,
       wallTime: Date.now(),
@@ -385,10 +416,14 @@ export class FightScene extends Phaser.Scene {
     this.drawHud(time);
     if (this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) return;
 
-    this.updatePlayer(time);
+    this.updatePlayer(time, delta);
+    if (this.dialogueActive || this.gameOver) return;
+    this.traversal?.update(delta);
     this.updateEnemies(time);
     this.updateBoss(time, dt);
+    if (this.dialogueActive || this.gameOver) return;
     this.updateProjectiles(time, dt);
+    if (this.dialogueActive || this.gameOver) return;
     this.updateHazards(time, dt);
     this.updatePickups(time);
     this.updateStageFlow(time);
@@ -396,7 +431,7 @@ export class FightScene extends Phaser.Scene {
     this.drawWorldHud();
   }
 
-  updatePlayer(time) {
+  updatePlayer(time, delta = 1000 / 60) {
     const p = this.player;
     const body = p.body;
     const axis = this.inputManager.axisX();
@@ -434,7 +469,7 @@ export class FightScene extends Phaser.Scene {
         p.attackDidHit = true;
         this.performPlayerAttack(p.combo === 2);
       }
-      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, 0, grounded ? 0.25 : 0.08));
+      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, 0, motionBlend(delta, grounded ? 0.25 : 0.08)));
       if (time >= p.stateUntil) {
         if (p.attackQueued) this.startPlayerAttack(time, true);
         else this.setPlayerState(grounded ? (Math.abs(axis) ? 'run' : 'idle') : 'jump');
@@ -502,9 +537,9 @@ export class FightScene extends Phaser.Scene {
       p.facing = axis;
       const slow = this.carry.slowUntil > Date.now() ? 0.72 : 1;
       const target = axis * p.speed * slow;
-      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, target, grounded ? 0.31 : 0.17));
+      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, target, motionBlend(delta, grounded ? 0.31 : 0.17)));
     } else if (grounded) {
-      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, 0, 0.36));
+      body.setVelocityX(Phaser.Math.Linear(body.body.velocity.x, 0, motionBlend(delta, 0.36)));
     }
 
     if (!grounded) this.setPlayerState('jump');
@@ -556,6 +591,7 @@ export class FightScene extends Phaser.Scene {
         connected = true;
       }
     }
+    connected = this.traversal?.attack(p, range, damage) || connected;
     if (connected) this.impactFeedback(p.body.x + p.facing * range, p.body.y, heavy);
   }
 
@@ -828,12 +864,12 @@ export class FightScene extends Phaser.Scene {
     this.time.delayedCall(245, () => this.bones.push(drawBones(this, boneX, boneY, enemy.type.startsWith('berry'))));
   }
 
-  damagePlayer(amount, sourceX, knockback = 280, knockdown = false) {
+  damagePlayer(amount, sourceX, knockback = 280, knockdown = false, unblockable = false) {
     const p = this.player;
     const now = this.time.now;
-    if (now < p.invulnerableUntil || p.hp <= 0) return false;
+    if (this.dialogueActive || this.gameOver || now < p.invulnerableUntil || p.hp <= 0) return false;
     const sourceDirection = Math.sign(sourceX - p.body.x) || -p.facing;
-    const guardingFront = p.state === 'guard' && sourceDirection === p.facing;
+    const guardingFront = !unblockable && p.state === 'guard' && sourceDirection === p.facing;
     if (guardingFront) {
       const chip = Math.max(0, Math.round(amount * 0.15));
       p.hp = Math.max(1, p.hp - chip);
@@ -961,10 +997,33 @@ export class FightScene extends Phaser.Scene {
     this.setArenaLock(this.map.bossZone.left, this.map.bossZone.right);
     if (this.map.bossZone.boss === 'c') this.spawnBossC();
     else this.spawnBossD();
-    this.showDialogue(`${this.map.bossZone.boss}_enter`, () => {
+    const enterStory = () => this.showDialogue(`${this.map.bossZone.boss}_enter`, () => {
       this.bossBattleStarted = true;
-      this.setObjective(this.boss.type === 'c' ? '击败秦岭杀人兔 · 注意刀光前摇' : '击败草莓熊博士 · 利用双层平台躲避弹幕');
+      this.boss.nextAttack = this.time.now + 850;
+      this.setObjective(this.boss.type === 'c' ? '击败秦岭杀人兔 · 注意刀光前摇' : '机甲防线 · 清除两波小熊，或将装甲打到 60% 以下');
       this.showNotice('BOSS BATTLE', 1600);
+    });
+    if (this.boss.type === 'd') this.startMechEntrance(enterStory);
+    else enterStory();
+  }
+
+  startMechEntrance(onComplete) {
+    const b = this.boss;
+    this.inputManager.setEnabled(false);
+    this.player.body.setVelocityX(0);
+    b.visual.motion = { x: 520, y: -90, angle: -7 };
+    b.visual.sync(b.body.x, GROUND_Y + 4, -1, this.time.now);
+    this.setObjective('基地震动 · 重型机甲正在进场');
+    this.soundBus.play('charge');
+    this.tweens.add({ targets: b.visual.motion, x: 0, y: 0, angle: 0, duration: MECH.entranceMs, ease: 'Cubic.Out',
+      onUpdate: () => b.visual.sync(b.body.x, GROUND_Y + 4, -1, this.time.now),
+      onComplete: () => {
+        if (this.gameOver || this.boss !== b) return;
+        this.cameras.main.shake(380, 0.013);
+        this.soundBus.play('heavyHit');
+        this.spawnHitParticles(b.body.x - 100, GROUND_Y - 8, 0xc4b5a7, 12);
+        this.time.delayedCall(450, onComplete);
+      },
     });
   }
 
@@ -993,6 +1052,7 @@ export class FightScene extends Phaser.Scene {
       hp: 620, maxHp: 620, phase: 1, facing: -1, state: 'idle', hurtUntil: 0,
       nextAttack: this.time.now + 1350, busyUntil: 0, cycle: 0,
       attackVersion: 0, patternObjects: [],
+      summonWavesStarted: 0, summonPending: false, summonedAdds: [],
       firstHurtSpoken: false, phaseSpoken: false, phaseTransitioning: false, defeatedSpoken: false, telegraph: null,
     };
   }
@@ -1028,6 +1088,7 @@ export class FightScene extends Phaser.Scene {
       return;
     }
     if (b.state === 'windup') {
+      if (b.phase === 2) { this.updateRabbitPhase2Attack(time); return; }
       b.body.setVelocityX(0);
       if (!b.didHit && time >= b.hitAt) {
         b.didHit = true;
@@ -1042,14 +1103,16 @@ export class FightScene extends Phaser.Scene {
           }
           this.spawnSheetFx(b.body.x + b.facing * (smash ? 145 : 92), b.body.y - 4, 2, smash ? 245 : 165, b.facing);
           this.impactFeedback(b.body.x + b.facing * 90, b.body.y, true, false);
-        } else {
-          this.spawnBossGunshot(b);
         }
       }
       if (time >= b.stateUntil) {
         b.state = 'idle';
         b.visual.setState(b.phase === 2 ? 'gun' : 'idle');
       }
+      return;
+    }
+    if (b.phase === 2 && time >= b.nextAttack && absDx < 900) {
+      this.startRabbitPhase2Attack(time);
       return;
     }
     if (b.phase === 1 && time >= b.nextSmash && absDx < 360) {
@@ -1079,6 +1142,7 @@ export class FightScene extends Phaser.Scene {
 
   startBossCAttack(time, smash = false) {
     const b = this.boss;
+    if (b.phase === 2) { this.startRabbitPhase2Attack(time); return; }
     const warning = smash ? RABBIT_SMASH.windupMs : b.phase === 1 ? 540 : 680;
     b.attackKind = smash ? 'smash' : 'normal';
     b.attackFacing = b.facing;
@@ -1102,24 +1166,115 @@ export class FightScene extends Phaser.Scene {
     this.tweens.add({ targets: b.telegraph, alpha: 0.1, duration: warning / 4, yoyo: true, repeat: 3 });
   }
 
+  startRabbitPhase2Attack(time) {
+    const b = this.boss, rules = RABBIT_PHASE2;
+    const close = Math.abs(this.player.body.x - b.body.x) < rules.closeRange && Math.abs(this.player.body.y - b.body.y) < 135;
+    b.state = 'windup';
+    b.attackKind = close ? 'combo' : 'sniper';
+    b.attackFacing = b.facing;
+    b.didHit = false;
+    b.comboStep = 0;
+    b.aimLocked = false;
+    b.aimTarget = null;
+    b.body.setVelocityX(0);
+    b.visual.setState('gun');
+    if (close) {
+      b.hitAt = time + rules.firstHitMs;
+      b.comboSecondAt = time + rules.secondHitMs;
+      b.stateUntil = b.comboSecondAt + rules.comboRecoveryMs;
+      b.telegraph = this.add.rectangle(b.body.x + b.facing * 135, GROUND_Y - 14, 270, 24, 0xff582f, 0.3).setStrokeStyle(3, 0xffd9a5).setDepth(21);
+      b.warningLabel = this.addWarningText('枪托两连 · 末击击倒', b.body.x, b.body.y - 130, rules.secondHitMs);
+    } else {
+      b.aimLockAt = time + rules.trackMs;
+      b.hitAt = b.aimLockAt + rules.lockMs;
+      b.stateUntil = b.hitAt + rules.sniperRecoveryMs;
+      b.telegraph = this.add.graphics().setDepth(21);
+      b.warningLabel = this.addWarningText('狙击追踪 → 金线锁定后闪避', b.body.x, b.body.y - 135, rules.trackMs + rules.lockMs);
+      this.updateRabbitAim(time);
+    }
+    b.nextAttack = b.stateUntil + 450;
+    this.soundBus.play('charge');
+  }
+
+  updateRabbitAim(time) {
+    const b = this.boss;
+    // Freeze the last visible aim sample, never retarget at the firing frame.
+    if (time < b.aimLockAt || !b.aimTarget) {
+      const target = this.player.body;
+      b.attackFacing = b.facing = Math.sign(target.x - b.body.x) || b.attackFacing;
+      b.aimTarget = { x: target.x + clamp(target.body.velocity.x * 0.12, -100, 100), y: target.y };
+      b.aimOrigin = { x: b.body.x + b.attackFacing * 72, y: b.body.y - 25 };
+    }
+    if (time >= b.aimLockAt && !b.aimLocked) {
+      b.aimLocked = true;
+      this.soundBus.play('charge');
+    }
+    const from = b.aimOrigin, target = b.aimTarget;
+    const length = Math.hypot(target.x - from.x, target.y - from.y) || 1;
+    b.telegraph.clear().lineStyle(b.aimLocked ? 5 : 2, b.aimLocked ? 0xffd675 : 0xff365e, 0.9)
+      .lineBetween(from.x, from.y, from.x + (target.x - from.x) / length * 1200, from.y + (target.y - from.y) / length * 1200)
+      .strokeCircle(target.x, target.y, b.aimLocked ? 22 : 32)
+      .lineBetween(target.x - 42, target.y, target.x + 42, target.y)
+      .lineBetween(target.x, target.y - 42, target.x, target.y + 42);
+  }
+
+  updateRabbitPhase2Attack(time) {
+    const b = this.boss, rules = RABBIT_PHASE2;
+    b.body.setVelocityX(0);
+    if (b.attackKind === 'sniper' && !b.didHit) {
+      this.updateRabbitAim(time);
+      if (time >= b.hitAt) {
+        b.didHit = true;
+        b.telegraph?.destroy(); b.telegraph = null;
+        b.warningLabel?.destroy(); b.warningLabel = null;
+        this.spawnBossGunshot(b);
+      }
+    } else if (b.attackKind === 'combo') {
+      const second = b.comboStep === 1;
+      if (b.comboStep < 2 && time >= (second ? b.comboSecondAt : b.hitAt)) {
+        b.comboStep++;
+        b.visual.setState('gun-strike', true);
+        const dx = this.player.body.x - b.body.x;
+        if (dx * b.attackFacing >= -25 && Math.abs(dx) < (second ? 285 : 215) && Math.abs(this.player.body.y - b.body.y) < 135) {
+          this.damagePlayer(second ? rules.secondDamage : rules.firstDamage, b.body.x, second ? 560 : 240, second);
+        }
+        this.spawnSheetFx(b.body.x + b.attackFacing * (second ? 150 : 92), b.body.y, 2, second ? 230 : 145, b.attackFacing);
+        this.impactFeedback(b.body.x + b.attackFacing * 95, b.body.y, second, false);
+        this.soundBus.play(second ? 'heavyHit' : 'swing');
+        if (second) { b.telegraph?.destroy(); b.telegraph = null; b.warningLabel?.destroy(); b.warningLabel = null; }
+      } else if (b.comboStep === 1 && time > b.hitAt + 180) b.visual.setState('gun');
+    }
+    if (time >= b.stateUntil) {
+      b.state = 'idle';
+      b.aimTarget = null;
+      b.visual.setState('gun');
+    }
+  }
+
   spawnBossGunshot(boss) {
     boss.visual.setState('fire');
-    const target = this.player.body;
-    const angle = Phaser.Math.Angle.Between(boss.body.x, boss.body.y - 18, target.x, target.y);
-    this.spawnProjectile({ owner: 'boss', type: 'bullet', x: boss.body.x + boss.facing * 72, y: boss.body.y - 25, vx: Math.cos(angle) * 590, vy: Math.sin(angle) * 590, damage: 15, life: 1700, cell: 3, height: 35, facing: boss.facing });
+    const target = boss.aimTarget, origin = boss.aimOrigin;
+    const angle = Math.atan2(target.y - origin.y, target.x - origin.x);
+    this.spawnProjectile({ owner: 'boss', type: 'sniper', x: origin.x, y: origin.y, vx: Math.cos(angle) * RABBIT_PHASE2.sniperSpeed, vy: Math.sin(angle) * RABBIT_PHASE2.sniperSpeed, damage: RABBIT_PHASE2.sniperDamage, life: 1600, cell: 3, height: 42, facing: boss.attackFacing });
     this.soundBus.play('shot');
-    this.cameras.main.shake(75, 0.003);
-    this.time.delayedCall(150, () => boss.alive && boss.visual.setState('gun'));
+    this.cameras.main.shake(100, 0.005);
   }
 
   updateBossD(time) {
     const b = this.boss;
     b.body.setVelocity(0, 0);
+    if (mechPhaseReady(b)) { this.beginBossPhase(); return; }
+    if (b.phase === 1) {
+      // Empty pre-spawn windows are not cleared waves. Count only actual
+      // summons, and never start the second batch while the first is alive.
+      if (time >= b.nextAttack && !b.summonPending && b.summonWavesStarted < MECH.summonWaves && !b.summonedAdds.some(enemy => enemy.alive)) this.startSummonPattern(time);
+      else if (time >= b.busyUntil) b.visual.setState('idle');
+      return;
+    }
     if (time < b.busyUntil) return;
     b.visual.setState('idle');
     if (time < b.nextAttack) return;
-    b.cycle += 1;
-    const pattern = b.phase === 2 && b.cycle % 4 === 0 ? 'laser' : ['lanes', 'summon', 'fan'][b.cycle % 3];
+    const pattern = ['laser', 'lanes', 'fan', 'laser'][b.cycle++ % 4];
     if (pattern === 'lanes') this.startLanePattern(time);
     if (pattern === 'fan') this.startFanPattern(time);
     if (pattern === 'summon') this.startSummonPattern(time);
@@ -1170,6 +1325,8 @@ export class FightScene extends Phaser.Scene {
 
   startSummonPattern(time) {
     const b = this.boss;
+    if (b.phase !== 1 || b.summonPending || b.summonWavesStarted >= MECH.summonWaves) return;
+    b.summonPending = true;
     const version = b.attackVersion;
     const warning = 760;
     b.busyUntil = time + warning + 450;
@@ -1179,15 +1336,17 @@ export class FightScene extends Phaser.Scene {
     const ringB = this.add.circle(b.body.x - 690, GROUND_Y - 190, 58, 0xff3977, 0.12).setStrokeStyle(6, 0xff9bbb, 0.9).setDepth(18);
     b.patternObjects = [ringA, ringB];
     this.tweens.add({ targets: [ringA, ringB], scale: 0.25, alpha: 1, duration: warning, ease: 'Sine.In' });
-    this.addWarningText('召唤小草莓熊', b.body.x - 430, 142, warning);
+    this.addWarningText(`小熊防线 ${b.summonWavesStarted + 1} / 2`, b.body.x - 430, 142, warning);
     this.time.delayedCall(warning, () => {
       ringA.destroy(); ringB.destroy();
-      if (!b.alive || b.phaseTransitioning || version !== b.attackVersion) return;
-      const bossAdds = this.enemies.filter((enemy) => enemy.alive && enemy.type.startsWith('berry')).length;
-      if (bossAdds < 4) {
-        this.spawnEnemy({ type: 'berryGround', x: b.body.x - 370 });
-        this.spawnEnemy({ type: 'berryFlying', x: b.body.x - 710, y: 350 });
-      }
+      if (!b.alive || b.phaseTransitioning || version !== b.attackVersion || this.boss !== b) return;
+      b.summonedAdds = [
+        this.spawnEnemy({ type: 'berryGround', x: b.body.x - 370, y: 390 }),
+        this.spawnEnemy({ type: 'berryFlying', x: b.body.x - 710, y: 300 }),
+      ];
+      b.summonWavesStarted += 1;
+      b.summonPending = false;
+      this.setObjective(`小熊防线 ${b.summonWavesStarted} / 2 · 清除后推进；也可直接攻击机甲`);
     });
   }
 
@@ -1195,8 +1354,8 @@ export class FightScene extends Phaser.Scene {
     const b = this.boss;
     const version = b.attackVersion;
     const warning = 1250;
-    const y = GROUND_Y - 112;
-    b.busyUntil = time + warning + 900;
+    const y = GROUND_Y - 90;
+    b.busyUntil = time + warning + 1250;
     b.nextAttack = b.busyUntil + 1200;
     b.visual.setState('charge');
     this.time.delayedCall(720, () => {
@@ -1205,7 +1364,7 @@ export class FightScene extends Phaser.Scene {
     const line = this.add.rectangle((this.map.bossZone.left + b.body.x) / 2, y, b.body.x - this.map.bossZone.left, 18, 0xff315f, 0.3).setStrokeStyle(4, 0xffe8d9, 0.85).setDepth(23);
     b.patternObjects = [line];
     this.tweens.add({ targets: line, alpha: 0.9, scaleY: 1.8, duration: 210, yoyo: true, repeat: 4 });
-    this.addWarningText('最终横向攻击 · 快上平台！', b.body.x - 440, 130, warning);
+    this.addWarningText('激光向上扫射 · 二段跳到最高平台！', b.body.x - 440, 130, warning);
     this.time.delayedCall(warning, () => {
       line.destroy();
       if (!b.alive || b.phaseTransitioning || version !== b.attackVersion) return;
@@ -1213,10 +1372,10 @@ export class FightScene extends Phaser.Scene {
       this.cameras.main.shake(640, 0.011);
       this.cameras.main.flash(100, 255, 235, 238, false);
       const beam = this.add.rectangle((this.map.bossZone.left + b.body.x) / 2, y, b.body.x - this.map.bossZone.left, 104, 0xff2d68, 0.82).setStrokeStyle(8, 0xffffff, 0.9).setDepth(24);
-      const fx = this.spawnSheetFx((this.map.bossZone.left + b.body.x) / 2, y, 6, 170, -1, 680);
+      const fx = this.spawnSheetFx((this.map.bossZone.left + b.body.x) / 2, y, 6, 170, -1, 1100);
       if (fx) fx.setDisplaySize(b.body.x - this.map.bossZone.left, 150);
-      this.laser = { y, height: 104, until: this.time.now + 680, nextDamage: 0, beam };
-      this.time.delayedCall(680, () => { beam.destroy(); if (this.laser?.beam === beam) this.laser = null; });
+      this.laser = { y, fromY: y, toY: GROUND_Y - 230, startedAt: this.time.now, height: 104, until: this.time.now + 1100, nextDamage: 0, beam, fx };
+      this.time.delayedCall(1100, () => { beam.destroy(); fx?.destroy(); if (this.laser?.beam === beam) this.laser = null; });
     });
   }
 
@@ -1231,53 +1390,63 @@ export class FightScene extends Phaser.Scene {
     if (!b?.alive || !this.bossBattleStarted) return;
     b.hp -= damage;
     b.hurtUntil = this.time.now + (heavy ? 230 : 145);
+    if (b.type === 'c' && b.phase === 2 && b.state === 'windup') {
+      // A real hit interrupts the current windup/combo; no delayed ghost shot.
+      b.telegraph?.destroy(); b.telegraph = null;
+      b.warningLabel?.destroy(); b.warningLabel = null;
+      b.aimTarget = null;
+      b.state = 'idle';
+      b.nextAttack = this.time.now + 650;
+    }
     b.visual.setState(b.type === 'c' && b.phase === 2 ? 'gun-hurt' : 'hurt');
     b.visual.flash(110);
     if (b.type === 'c') b.body.setVelocityX(knockback * 0.3);
     this.soundBus.play('enemyHurt');
 
+    if (b.hp <= 0) { this.defeatBoss(); return; }
     if (!b.firstHurtSpoken) {
       b.firstHurtSpoken = true;
-      this.time.delayedCall(90, () => this.showDialogue(`${b.type}_first_hurt`));
+      this.showDialogue(`${b.type}_first_hurt`, undefined, () => this.boss === b && b.alive);
     }
-    const phaseThreshold = b.type === 'c' ? b.maxHp * 0.2 : b.maxHp * 0.55;
-    if (!b.phaseSpoken && b.hp <= phaseThreshold && b.hp > 0) {
-      b.phaseSpoken = true;
-      b.phaseTransitioning = true;
-      b.state = 'phase';
-      b.didHit = true;
-      b.telegraph?.destroy();
-      b.telegraph = null;
-      if (b.type === 'd') {
-        b.attackVersion += 1;
-        b.patternObjects.forEach((object) => object?.active && object.destroy());
-        b.patternObjects = [];
-        this.projectiles.filter((projectile) => projectile.owner === 'boss').forEach((projectile) => this.destroyProjectile(projectile));
-        this.laser?.beam.destroy();
-        this.laser = null;
-      }
-      b.body.setVelocity(0, 0);
-      b.visual.setState(b.type === 'c' ? 'skill' : 'overload');
-      this.time.delayedCall(b.firstHurtSpoken ? 320 : 90, () => {
-        if (!b.alive) return;
-        this.showDialogue(`${b.type}_phase`, () => {
-          if (!b.alive) return;
-          b.phase = 2;
-          b.phaseTransitioning = false;
-          if (b.type === 'c') {
-            b.state = 'idle';
-            b.nextAttack = this.time.now + 800;
-            b.visual.setState('gun');
-          } else {
-            b.busyUntil = this.time.now + 720;
-            b.nextAttack = b.busyUntil + 680;
-            b.visual.setState('overload');
-          }
-          this.cameras.main.flash(180, 255, 60, 105, false);
-        });
-      });
-    }
-    if (b.hp <= 0) this.defeatBoss();
+    if ((b.type === 'c' && b.hp <= b.maxHp * 0.2) || (b.type === 'd' && mechPhaseReady(b))) this.beginBossPhase();
+  }
+
+  cancelBossPatterns(b) {
+    b.attackVersion = (b.attackVersion || 0) + 1;
+    b.summonPending = false;
+    b.telegraph?.destroy();
+    b.telegraph = null;
+    b.warningLabel?.destroy(); b.warningLabel = null;
+    b.aimTarget = null;
+    b.patternObjects?.forEach(object => object?.active && object.destroy());
+    b.patternObjects = [];
+    this.projectiles.filter(p => p.owner === 'boss').forEach(p => this.destroyProjectile(p));
+    this.laser?.beam.destroy();
+    this.laser?.fx?.destroy();
+    this.laser = null;
+  }
+
+  beginBossPhase() {
+    const b = this.boss;
+    if (!b?.alive || b.phaseSpoken || b.phaseTransitioning) return;
+    b.phaseSpoken = true;
+    b.phaseTransitioning = true;
+    b.state = 'phase';
+    b.didHit = true;
+    this.cancelBossPatterns(b);
+    b.body.setVelocity(0, 0);
+    b.visual.setState(b.type === 'c' ? 'skill' : 'overload');
+    this.showDialogue(`${b.type}_phase`, () => {
+      b.phase = 2;
+      b.phaseTransitioning = false;
+      b.state = 'idle';
+      b.hurtUntil = 0;
+      b.busyUntil = this.time.now + 600;
+      b.nextAttack = this.time.now + 1200;
+      b.visual.setState(b.type === 'c' ? 'gun' : 'overload');
+      this.setObjective(b.type === 'c' ? '秦岭杀人兔 · 近身两连，狙击金线锁定后闪避' : '超载模式 · 跳上高台躲扫射，抓住炮击间隙反击');
+      this.cameras.main.flash(180, 255, 60, 105, false);
+    }, () => this.boss === b && b.alive);
   }
 
   defeatBoss() {
@@ -1287,12 +1456,18 @@ export class FightScene extends Phaser.Scene {
     b.alive = false;
     b.defeatedSpoken = true;
     b.body.disableBody(true, true);
-    b.telegraph?.destroy();
-    this.projectiles.filter((projectile) => projectile.owner === 'boss').forEach((projectile) => this.destroyProjectile(projectile));
+    this.cancelBossPatterns(b);
+    this.projectiles.filter(projectile => projectile.owner !== 'player').forEach(projectile => this.destroyProjectile(projectile));
     this.enemies.filter((enemy) => enemy.alive).forEach((enemy) => this.killEnemy(enemy));
     this.soundBus.play('heavyHit');
     this.cameras.main.shake(360, 0.016);
     this.cameras.main.flash(180, 255, 255, 255, false);
+    if (b.type === 'd') {
+      b.dying = true;
+      b.visual.setState('overload');
+      this.showDialogue('d_defeated', () => this.startMechExplosion(b));
+      return;
+    }
     this.showDialogue(`${b.type}_defeated`, () => {
       this.tweens.add({ targets: b.visual.image, alpha: 0, y: b.visual.image.y + 36, angle: 7, duration: 700, onComplete: () => b.visual.destroy() });
       this.bossDefeated = true;
@@ -1303,6 +1478,48 @@ export class FightScene extends Phaser.Scene {
       } else {
         this.time.delayedCall(750, () => this.missionComplete());
       }
+    });
+  }
+
+  startMechExplosion(b) {
+    if (this.gameOver || this.boss !== b || b.explosionStarted) return;
+    b.explosionStarted = true;
+    this.setObjective('机甲自爆 · 退到左侧灯标外，或抓准时机闪避！');
+    const dangerLeft = b.body.x - MECH.blastRadius;
+    const warning = this.add.rectangle((dangerLeft + this.map.bossZone.right) / 2, GROUND_Y - 205,
+      this.map.bossZone.right - dangerLeft, 410, 0xff542b, 0.15).setStrokeStyle(3, 0xffb34d, 0.85).setDepth(8);
+    this.addWarningText('机甲自爆 · 退到左侧安全区', dangerLeft + 200, 170, MECH.blastWarningMs);
+    this.tweens.add({ targets: warning, alpha: 0.6, duration: 160, yoyo: true, repeat: 5 });
+    this.tweens.add({ targets: b.visual.image, angle: { from: -2, to: 2 }, duration: 75, yoyo: true, repeat: 10 });
+    this.soundBus.play('charge');
+    // Scene-clock timer freezes with pause/dialogue. The player remains in
+    // control until this exact instant; no victory/checkpoint is committed yet.
+    this.time.delayedCall(MECH.blastWarningMs, () => {
+      warning.destroy();
+      if (this.gameOver || this.boss !== b) return;
+      this.soundBus.play('heavyHit');
+      this.cameras.main.shake(680, 0.025);
+      this.cameras.main.flash(200, 255, 198, 113, false);
+      this.tweens.killTweensOf(b.visual.image);
+      b.visual.destroy();
+      propImage(this, b.body.x, GROUND_Y + 5, 'wreck', 560).setDepth(9);
+      const blast = propImage(this, b.body.x - 70, GROUND_Y - 200, 'explosion-0', 680, 0.5).setDepth(35);
+      [1, 2, 3].forEach((frame, index) => this.time.delayedCall(110 + index * 170, () => {
+        if (blast.active) blast.setTexture(`prop-explosion-${frame}`);
+      }));
+      this.tweens.add({ targets: blast, alpha: 0, delay: 520, duration: 650, onComplete: () => blast.destroy() });
+      this.spawnHitParticles(b.body.x - 100, GROUND_Y - 160, 0xffa12b, 18);
+      if (Math.abs(this.player.body.x - b.body.x) < MECH.blastRadius) {
+        this.damagePlayer(this.player.maxHp * MECH.blastHpRatio, b.body.x, 430, false, true);
+      }
+      if (this.gameOver || this.player.hp <= 0) return;
+      b.dying = false;
+      this.bossDefeated = true;
+      this.clearArenaLock();
+      this.time.delayedCall(1300, () => {
+        if (this.gameOver || this.boss !== b) return;
+        this.showDialogue('rescue', () => this.missionComplete());
+      });
     });
   }
 
@@ -1405,6 +1622,7 @@ export class FightScene extends Phaser.Scene {
 
   updateProjectiles(time, dt) {
     for (const projectile of this.projectiles) {
+      if (this.dialogueActive || this.gameOver) break;
       if (!projectile.active) continue;
       if (projectile.returnAt && time >= projectile.returnAt && !projectile.returning) {
         projectile.returning = true;
@@ -1413,6 +1631,7 @@ export class FightScene extends Phaser.Scene {
         projectile.facing *= -1;
         projectile.image.setFlipX(projectile.facing < 0);
       }
+      const previous = { x: projectile.x, y: projectile.y };
       projectile.x += projectile.vx * dt;
       projectile.y += projectile.vy * dt;
       projectile.image.setPosition(projectile.x, projectile.y).setAngle(projectile.image.angle + dt * (projectile.type === 'shield' ? 780 : 80));
@@ -1438,13 +1657,19 @@ export class FightScene extends Phaser.Scene {
           }
         }
         if (projectile.returning && Math.abs(projectile.x - this.player.body.x) < 58) this.destroyProjectile(projectile);
-      } else if (Math.hypot(this.player.body.x - projectile.x, this.player.body.y - projectile.y) < (projectile.type === 'berry' ? 62 : 52)) {
+      } else if (segmentDistance(this.player.body, previous, projectile) < (projectile.type === 'berry' ? 62 : 52)) {
         if (this.damagePlayer(projectile.damage, projectile.x, 250)) this.impactFeedback(projectile.x, projectile.y, false);
         this.destroyProjectile(projectile);
       }
       if (time >= projectile.expiresAt || projectile.x < -150 || projectile.x > this.map.width + 150 || projectile.y < -150 || projectile.y > 850) this.destroyProjectile(projectile);
     }
 
+    if (this.laser) {
+      const sweep = clamp((time - this.laser.startedAt) / (this.laser.until - this.laser.startedAt), 0, 1);
+      this.laser.y = Phaser.Math.Linear(this.laser.fromY, this.laser.toY, sweep);
+      this.laser.beam.y = this.laser.y;
+      if (this.laser.fx?.active) this.laser.fx.y = this.laser.y;
+    }
     if (this.laser && time <= this.laser.until && time >= this.laser.nextDamage) {
       const p = this.player.body;
       if (Math.abs(p.y - this.laser.y) < this.laser.height / 2 + 58) {
