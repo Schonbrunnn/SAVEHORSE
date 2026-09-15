@@ -194,6 +194,9 @@ for (const [mapIndex, bossId] of [[1, 'c'], [2, 'd']]) {
   assert.equal(revived.bossTriggered, false, 'allow the player to walk into the arena');
   revived.player.body.x = revived.map.bossZone.trigger;
   revived.updateStageFlow();
+  assert.equal(revived.bossTriggered, false, 'flying over a trigger is not a grounded arena entry');
+  revived.player.body.body.blocked.down = true;
+  revived.updateStageFlow();
   assert.equal(revived.boss.type, bossId);
   assert.equal(revived.boss.hp, revived.boss.maxHp);
   assert.equal(revived.boss.phase, 1);

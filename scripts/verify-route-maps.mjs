@@ -17,7 +17,7 @@ function shape(x = 0, y = 0) {
 function fixture(map, flags = []) {
   const scene = { map, routeRestore: { flags }, waveState: { complete: false }, projectiles: [],
     add: { text: shape, image: shape, graphics: shape, tileSprite: shape },
-    solids: { create: shape }, textures: { get: () => ({ getSourceImage: () => ({ width: 256 }) }) },
+    solids: { create: shape }, textures: { get: () => ({ getSourceImage: () => ({ width: 256 }), get: () => ({ width: 64, height: 96 }) }) },
     tweens: { add: spec => spec.onComplete?.() }, soundBus: { play() {} }, showNotice() {}, setObjective() {},
     spawnHitParticles() {}, hearts: [], spawnHeart(x, y) { this.hearts.push({ x, y }); },
     setArenaLock(left, right, floorY) { this.activeLock = { left, right, floorY }; },
@@ -42,9 +42,19 @@ for (const map of MAPS) {
     for (const id of ids) assert.ok(map.route.objects.some(o => o.id === id), 'required switch exists');
   }
   const mini = map.route.minis[0];
+  assert.equal(traversal.canEnter('wave'), true, 'opening waves never depend on a boss or switch');
+  const flowSeal = traversal.seals.find(s => s.id === 'wave-exit');
+  assert.equal(flowSeal.open, false);
+  traversal.activate('wave-clear');
+  assert.equal(flowSeal.open, true, 'ordinary wave clear opens only its physical exit');
   player.body.x = mini.entry.x; player.body.y = mini.floorY - 75;
   if (mini.needsWave) { traversal.update(16); assert.equal(traversal.activeMini, undefined, 'no simultaneous wave and mini lock'); }
   scene.waveState.complete = true;
+  if (mini.triggerX) {
+    player.body.x = mini.triggerX - 1;
+    traversal.update(16); assert.equal(traversal.activeMini, undefined, 'approach remains safe until the later trigger');
+    player.body.x = mini.entry.x;
+  }
   player.body.y -= 180;
   traversal.update(16); assert.equal(traversal.activeMini, undefined, 'do not capture a player passing on another layer');
   player.body.y = mini.floorY - 75;
@@ -85,6 +95,18 @@ for (const map of MAPS) {
   assert.equal(atGroundTrigger({ x: map.width, y: 1055 }, map.width - 100), false, 'lower room cannot trigger ground exit/boss');
   assert.equal(atGroundTrigger({ x: map.width, y: -285 }, map.width - 100), false, 'upper room cannot trigger ground exit/boss');
 }
+
+const firstMap = MAPS[0], firstMini = firstMap.route.minis[0];
+assert.ok(firstMini.needsWave);
+assert.ok(firstMini.triggerX >= firstMap.width * 0.6, 'first guardian belongs to the latter part of Map1');
+assert.ok(firstMini.entry.x >= firstMini.triggerX, 'retry enters the same late encounter');
+assert.ok(firstMini.left > firstMap.waveZone.right, 'guardian room is beyond both ordinary waves');
+const opener = fixture(firstMap);
+for (const x of [firstMap.introX, 740, firstMap.waveZone.trigger, firstMini.entry.x]) {
+  opener.player.body.x = x; opener.player.body.y = firstMini.floorY - 75;
+  opener.traversal.update(16); assert.equal(opener.traversal.activeMini, undefined, 'no guardian before ordinary waves are cleared');
+}
+assert.equal(atGroundTrigger({ x: 5000, y: 375 }, 4800), false, 'y450 platform is not the ground-floor arena');
 
 // Both orders must open the same final door, but either circuit alone cannot.
 for (const order of [['base-north', 'base-south'], ['base-south', 'base-north']]) {
@@ -133,6 +155,9 @@ for (const map of MAPS) {
   for (const lift of map.route.objects.filter(o => o.type === 'lift' && o.lowY > 720)) {
     assert.equal(map.route.floors.some(f => f.y === lift.highY && lift.x >= f.left && lift.x <= f.right), false, 'underground lift must rise through a real gap, not the underside of a solid floor');
     assert.ok(map.route.floors.some(f => f.y === lift.highY && Math.min(Math.abs(lift.x - f.left), Math.abs(lift.x - f.right)) < 230), 'lift must reconnect within jumping distance');
+    const clearance = lift.width / 2 + 15 + 29;
+    assert.equal(map.route.floors.some(f => f.y === lift.highY && lift.x + clearance > f.left && lift.x - clearance < f.right), false,
+      'entire rider, not only the lift center, must clear the upper-floor underside');
   }
 }
 assert.equal(hasRouteFlags(new Set(), undefined), true);
