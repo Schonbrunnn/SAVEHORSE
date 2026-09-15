@@ -1,0 +1,59 @@
+[
+  {
+    "kit": "mountain",
+    "original": {
+      "width": 1254,
+      "height": 1254
+    },
+    "frames": [
+      "distant",
+      "chamber",
+      "ledge",
+      "pier",
+      "arch",
+      "machine",
+      "landmark",
+      "scatter",
+      "shaft"
+    ],
+    "runtime": "mountain.webp"
+  },
+  {
+    "kit": "mine",
+    "original": {
+      "width": 1254,
+      "height": 1254
+    },
+    "frames": [
+      "distant",
+      "chamber",
+      "ledge",
+      "pier",
+      "arch",
+      "machine",
+      "landmark",
+      "scatter",
+      "shaft"
+    ],
+    "runtime": "mine.webp"
+  },
+  {
+    "kit": "reactor",
+    "original": {
+      "width": 1254,
+      "height": 1254
+    },
+    "frames": [
+      "distant",
+      "chamber",
+      "ledge",
+      "pier",
+      "arch",
+      "machine",
+      "landmark",
+      "scatter",
+      "shaft"
+    ],
+    "runtime": "reactor.webp"
+  }
+]
