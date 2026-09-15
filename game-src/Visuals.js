@@ -152,16 +152,17 @@ export class ActionVisual {
 }
 
 export class EnemyVisual {
-  constructor(scene, x, y, type) {
+  constructor(scene, x, y, type, sizeMultiplier = 1) {
     this.scene = scene;
     this.type = type;
     this.berry = type.startsWith('berry');
+    this.sizeMultiplier = sizeMultiplier;
     this.state = 'idle';
     this.facing = -1;
 
     this.textureKey = this.berry ? 'berry-hover' : `minion-${type}-idle`;
     this.image = scene.add.image(x, y, this.textureKey).setOrigin(0.5, 1).setDepth(11);
-    this.baseScale = (this.berry ? 116 : 178) / this.image.height;
+    this.baseScale = (this.berry ? 116 : 178) * this.sizeMultiplier / this.image.height;
     this.image.setScale(this.baseScale);
     this.object = this.image;
     this.setState('idle', true);
@@ -173,7 +174,7 @@ export class EnemyVisual {
     const pose = state === 'attack' ? 'attack' : state === 'run' ? 'run' : 'idle';
     this.textureKey = this.berry ? `berry-${state === 'attack' ? 'attack' : state === 'rest' ? 'rest' : 'hover'}` : `minion-${this.type}-${pose}`;
     this.image.setTexture(this.textureKey);
-    if (this.berry) this.baseScale = (state === 'rest' ? 86 : 116) / this.image.height;
+    if (this.berry) this.baseScale = (state === 'rest' ? 86 : 116) * this.sizeMultiplier / this.image.height;
     this.scene.tweens.killTweensOf(this.image);
     // A state change may interrupt the spawn fade before alpha reaches 1.
     this.image.setScale(this.baseScale).setAlpha(1).setAngle(state === 'hurt' ? -this.facing * 10 : 0);
@@ -303,7 +304,10 @@ export function createPlatformVisual(scene, x, y, width, stage) {
   const c = scene.add.container(x, y).setDepth(3);
   // The artwork begins at the collision surface (spec.y - 1); all rock/beam
   // depth extends downward so characters don't appear to hover above it.
-  c.add(propImage(scene, 0, -2, stage === 3 ? 'metal' : 'ledge', width, 0));
+  for (let left = -width / 2; left < width / 2; left += 280) {
+    const span = Math.min(280, width / 2 - left);
+    c.add(propImage(scene, left + span / 2, -2, stage === 3 ? 'metal' : 'ledge', span + 2, 0));
+  }
   return c;
 }
 

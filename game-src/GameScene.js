@@ -5,6 +5,7 @@ import { ActionVisual, BossVisual, EnemyVisual, createCabin, createCrateVisual, 
 import { DIALOGUES, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, HEROES, MAPS } from './gameData.js';
 import { ENVIRONMENT_ART, propImage } from './EnvironmentArt.js';
 import { Traversal } from './Traversal.js';
+import { atGroundTrigger } from './RouteMaps.js';
 import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from './CombatRules.js';
 
 const RED = 0xe43b4f;
@@ -86,6 +87,8 @@ export class FightScene extends Phaser.Scene {
     // A checkpoint belongs to this map, never to the cross-map item carry.
     this.bossCheckpoint = this.map.bossZone && data.bossCheckpoint === this.map.bossZone.boss
       ? data.bossCheckpoint : null;
+    this.miniCheckpoint = this.map.route.minis.some(m => m.id === data.miniCheckpoint) ? data.miniCheckpoint : null;
+    this.routeRestore = (this.bossCheckpoint || this.miniCheckpoint) && data.routeProgress?.mapId === this.map.id ? data.routeProgress : null;
     this.carry = {
       maxHpBonus: data.carry?.maxHpBonus || 0,
       attackMultiplier: data.carry?.attackMultiplier || 1,
@@ -132,7 +135,7 @@ export class FightScene extends Phaser.Scene {
     this.waveState = { triggered: false, index: -1, waiting: false, complete: false };
     this.laser = null;
 
-    this.physics.world.setBounds(0, 0, this.map.width, GAME_HEIGHT);
+    this.physics.world.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top);
     this.createBackground();
     this.createTerrain();
     this.traversal = new Traversal(this);
@@ -140,17 +143,21 @@ export class FightScene extends Phaser.Scene {
     this.createHud();
 
     this.physics.add.collider(this.player.body, this.solids);
-    this.cameras.main.setBounds(0, 0, this.map.width, GAME_HEIGHT);
-    this.cameras.main.startFollow(this.player.body, false, 0.095, 0, -145, 0);
+    this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top);
+    this.cameras.main.startFollow(this.player.body, false, 0.095, 0.1, -145, 155);
     this.cameras.main.setBackgroundColor('#08090d');
 
     if (this.bossCheckpoint) {
       this.restoreBossCheckpoint();
       this.setObjective('Boss 战前检查点 · 向右重新挑战');
       this.time.delayedCall(250, () => this.beginControl());
+    } else if (this.miniCheckpoint) {
+      if (this.routeRestore?.waveComplete) this.waveState = { triggered: true, index: this.map.waveZone.waves.length - 1, waiting: false, complete: true };
+      this.setObjective('守卫战前检查点 · 已开启的机关保持接通');
+      this.time.delayedCall(250, () => this.beginControl());
     } else {
       this.showStageCard();
-      this.setObjective(this.mapIndex === 0 ? '向右前进 · 熟悉移动、二段跳与攻击' : '向右推进 · 清除封锁区');
+      this.setObjective(this.mapIndex === 0 ? '山门封闭 · 沿两侧阶梯登上绞盘楼' : '先清除封锁区 · 留意上行阶梯和下行井口');
       this.time.delayedCall(2900, () => {
         if (this.mapIndex === 0) {
           this.showDialogue('prologue', () => this.beginControl());
@@ -183,16 +190,17 @@ export class FightScene extends Phaser.Scene {
 
   createBackground() {
     const count = Math.ceil(this.map.width / GAME_WIDTH);
-    for (let i = 0; i < count; i += 1) {
-      this.add.image(i * GAME_WIDTH + GAME_WIDTH / 2, GAME_HEIGHT / 2, this.map.background)
+    for (let row = Math.floor(this.map.route.top / GAME_HEIGHT); row * GAME_HEIGHT < this.map.route.bottom; row++) {
+      for (let i = 0; i < count; i += 1) {
+        this.add.image(i * GAME_WIDTH + GAME_WIDTH / 2, row * GAME_HEIGHT + GAME_HEIGHT / 2, this.map.background)
         .setDisplaySize(GAME_WIDTH + 4, GAME_HEIGHT)
         .setFlipX(i % 2 === 1)
+        .setTint(row > 0 ? 0x868ca4 : row < 0 ? 0xb0b9c5 : 0xffffff)
         .setDepth(-30);
-      const shade = this.add.rectangle(i * GAME_WIDTH + GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH + 4, GAME_HEIGHT, i % 2 ? 0x090912 : 0x15101b, 0.14).setDepth(-29);
+      const shade = this.add.rectangle(i * GAME_WIDTH + GAME_WIDTH / 2, row * GAME_HEIGHT + GAME_HEIGHT / 2, GAME_WIDTH + 4, GAME_HEIGHT, i % 2 ? 0x090912 : 0x15101b, row > 0 ? 0.32 : 0.17).setDepth(-29);
       shade.setBlendMode(Phaser.BlendModes.MULTIPLY);
+      }
     }
-
-    this.add.rectangle(this.map.width / 2, GROUND_Y + 66, this.map.width, 132, 0x111219, 0.86).setDepth(-4);
 
     if (this.mapIndex === 0) {
       this.add.text(330, 205, '国轩之窟  →', { fontFamily: 'serif', fontSize: '28px', color: '#f1d39b', fontStyle: 'bold', backgroundColor: '#1a1114bb', padding: { x: 16, y: 8 } }).setAngle(-3).setDepth(1);
@@ -202,8 +210,11 @@ export class FightScene extends Phaser.Scene {
 
   createTerrain() {
     this.solids = this.physics.add.staticGroup();
-    const ground = this.solids.create(this.map.width / 2, GROUND_Y + 64, 'pixel');
-    ground.setDisplaySize(this.map.width, 128).setAlpha(0.001).refreshBody();
+    for (const floor of this.map.route.floors) {
+      this.solids.create((floor.left + floor.right) / 2, floor.y + 64, 'pixel')
+        .setDisplaySize(floor.right - floor.left, 128).setAlpha(0.001).refreshBody();
+      createPlatformVisual(this, (floor.left + floor.right) / 2, floor.y, floor.right - floor.left, this.map.id);
+    }
 
     for (const spec of this.map.terrain) {
       if (spec.type === 'platform') this.createPlatform(spec);
@@ -239,11 +250,13 @@ export class FightScene extends Phaser.Scene {
 
   createPlayer() {
     const maxHp = this.heroData.maxHp + this.carry.maxHpBonus;
-    const spawnX = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : this.map.introX;
-    const body = this.physics.add.sprite(spawnX, GROUND_Y - 75, 'pixel');
+    const mini = this.map.route.minis.find(m => m.id === this.miniCheckpoint);
+    const spawnX = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : mini?.entry.x ?? this.map.introX;
+    const spawnY = this.bossCheckpoint ? GROUND_Y - 75 : mini?.entry.y ?? GROUND_Y - 75;
+    const body = this.physics.add.sprite(spawnX, spawnY, 'pixel');
     body.setAlpha(0.001).setDisplaySize(58, 150).setCollideWorldBounds(true);
     body.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
-    const visual = new ActionVisual(this, body.x, GROUND_Y, this.heroData.texture, `hero-${this.heroId}`, this.heroId === 'b' ? 208 : 212, 8);
+    const visual = new ActionVisual(this, body.x, spawnY + 75, this.heroData.texture, `hero-${this.heroId}`, this.heroId === 'b' ? 208 : 212, 8);
     this.player = {
       body,
       visual,
@@ -372,7 +385,7 @@ export class FightScene extends Phaser.Scene {
       });
     };
     capture(this.player, ['stateUntil', 'invulnerableUntil', 'attackHitAt', 'skillReadyAt', 'hurtTintUntil', 'lastAttackAt', 'lastAfterimage']);
-    this.enemies.forEach((enemy) => capture(enemy, ['stateUntil', 'hurtUntil', 'nextAttack', 'hitAt', 'cycleUntil']));
+    this.enemies.forEach((enemy) => capture(enemy, ['stateUntil', 'hurtUntil', 'nextAttack', 'hitAt', 'cycleUntil', 'nextFlinchAt']));
     capture(this.boss, ['stateUntil', 'hurtUntil', 'nextAttack', 'nextLeap', 'nextSmash', 'hitAt', 'busyUntil', 'aimLockAt', 'comboSecondAt']);
     this.projectiles.forEach((projectile) => capture(projectile, ['createdAt', 'expiresAt', 'returnAt']));
     capture(this.laser, ['startedAt', 'until', 'nextDamage']);
@@ -407,7 +420,8 @@ export class FightScene extends Phaser.Scene {
 
   restartMap() {
     window.friendFightersUI?.hideResults();
-    this.scene.restart({ heroId: this.heroId, mapIndex: this.mapIndex, carry: this.carry, bossCheckpoint: this.bossDefeated ? null : this.bossCheckpoint });
+    this.scene.restart({ heroId: this.heroId, mapIndex: this.mapIndex, carry: this.carry, bossCheckpoint: this.bossDefeated ? null : this.bossCheckpoint,
+      miniCheckpoint: this.miniCheckpoint, routeProgress: this.traversal?.snapshot?.() });
   }
 
   update(time, delta) {
@@ -586,7 +600,7 @@ export class FightScene extends Phaser.Scene {
       connected = true;
     }
     for (const crate of this.crates) {
-      if (crate.alive && Math.abs(crate.x - p.body.x) < range + 30 && Math.sign(crate.x - p.body.x || p.facing) === p.facing) {
+      if (crate.alive && Math.abs(crate.y - 35 - p.body.y) < 130 && Math.abs(crate.x - p.body.x) < range + 30 && Math.sign(crate.x - p.body.x || p.facing) === p.facing) {
         this.hurtCrate(crate, damage);
         connected = true;
       }
@@ -670,14 +684,16 @@ export class FightScene extends Phaser.Scene {
   spawnEnemy(spec) {
     const strawberry = spec.type.startsWith('berry');
     const flying = strawberry;
-    const values = {
+    const base = {
       shield: { hp: 46, speed: 112, damage: 10, range: 92, cooldown: 1250, height: 142 },
       ranged: { hp: 38, speed: 88, damage: 9, range: 410, cooldown: 1850, height: 138 },
       heavy: { hp: 72, speed: 72, damage: 16, range: 112, cooldown: 1900, height: 158 },
       berryGround: { hp: 34, speed: 115, damage: 9, range: 410, cooldown: 1750, height: 100 },
       berryFlying: { hp: 28, speed: 105, damage: 8, range: 420, cooldown: 1850, height: 100 },
     }[spec.type];
-    const y = flying ? (spec.y || 330) : GROUND_Y - values.height / 2;
+    const values = spec.miniBoss ? { ...base, ...spec.miniBoss, height: Math.round(base.height * 1.3) } : base;
+    const floorY = spec.floorY ?? GROUND_Y;
+    const y = flying ? (spec.y ?? floorY - 260) : floorY - values.height / 2;
     const body = this.physics.add.sprite(spec.x, y, 'pixel');
     body.setAlpha(0.001).setDisplaySize(strawberry ? 62 : 56, values.height);
     body.setMaxVelocity(520, 880);
@@ -695,7 +711,8 @@ export class FightScene extends Phaser.Scene {
       ...values,
       type: spec.type,
       body,
-      visual: new EnemyVisual(this, body.x, body.y + values.height / 2, spec.type),
+      visual: new EnemyVisual(this, body.x, body.y + values.height / 2, spec.type, spec.miniBoss ? 1.3 : 1),
+      miniBoss: spec.miniBoss || null, floorY, attackCycle: 0, nextFlinchAt: 0,
       hp: values.hp,
       maxHp: values.hp,
       alive: true,
@@ -724,11 +741,11 @@ export class FightScene extends Phaser.Scene {
       const p = this.player;
       const dx = p.body.x - e.body.x;
       const absDx = Math.abs(dx);
-      e.facing = Math.sign(dx) || e.facing;
+      e.facing = e.miniBoss && e.state === 'windup' ? e.attackFacing : Math.sign(dx) || e.facing;
 
       if (e.type.startsWith('berry') && this.updateBerryCycle(e, time)) continue;
       if (e.type.startsWith('berry')) {
-        const targetY = clamp(p.body.y - 120, 250, 400) + Math.sin(time * 0.004 + e.body.x) * 18;
+        const targetY = clamp(p.body.y - 120, e.floorY - 340, e.floorY - 190) + Math.sin(time * 0.004 + e.body.x) * 18;
         e.body.setVelocityY((targetY - e.body.y) * 2.1);
       }
 
@@ -766,7 +783,7 @@ export class FightScene extends Phaser.Scene {
           e.body.setVelocityX(Phaser.Math.Linear(e.body.body.velocity.x, 0, 0.32));
           e.visual.setState('idle');
         }
-        if (time >= e.nextAttack && absDx <= e.range && Math.abs(p.body.y - e.body.y) < (ranged ? 270 : 120)) this.startEnemyAttack(e, time);
+        if (time >= e.nextAttack && absDx <= e.range && Math.abs(p.body.y - e.body.y) < (ranged ? 300 : 140)) this.startEnemyAttack(e, time);
       }
       e.visual.sync(e.body.x, e.body.y + e.height / 2, e.facing, time);
     }
@@ -778,6 +795,7 @@ export class FightScene extends Phaser.Scene {
       enemy.state = 'idle';
       enemy.telegraph?.destroy();
       enemy.telegraph = null;
+      enemy.moveLabel?.destroy(); enemy.moveLabel = null;
       enemy.body.body.setAllowGravity(true);
       enemy.body.setVelocity(0, 180);
       // The rest window must be safe from this bear's already-fired shots too.
@@ -810,20 +828,41 @@ export class FightScene extends Phaser.Scene {
     enemy.didHit = false;
     const heavy = enemy.type === 'heavy';
     const ranged = enemy.type === 'ranged' || enemy.type.startsWith('berry');
-    const warning = heavy ? 520 : ranged ? 430 : 330;
+    const move = enemy.miniBoss?.attacks[enemy.attackCycle++ % enemy.miniBoss.attacks.length];
+    enemy.miniMove = move;
+    enemy.attackFacing = enemy.facing;
+    const warning = move?.warning ?? (heavy ? 520 : ranged ? 430 : 330);
     enemy.hitAt = time + warning;
-    enemy.stateUntil = enemy.hitAt + 240;
-    enemy.nextAttack = time + enemy.cooldown;
+    enemy.stateUntil = enemy.hitAt + (move ? 440 : 240);
+    enemy.nextAttack = Math.max(time + enemy.cooldown, enemy.stateUntil + 250);
     enemy.body.setVelocityX(0);
     const color = enemy.type.startsWith('berry') ? 0xff4f92 : 0xffb45c;
     enemy.telegraph = this.add.arc(enemy.body.x + enemy.facing * (ranged ? 44 : 68), enemy.body.y + enemy.height / 2 - 12, heavy ? 64 : 42, 205, 335, false, color, 0.25).setStrokeStyle(4, color, 0.95).setDepth(8);
     this.tweens.add({ targets: enemy.telegraph, alpha: 0.25, scale: 1.35, duration: warning, ease: 'Sine.In' });
+    if (move) enemy.moveLabel = this.addWarningText(move.name, enemy.body.x, enemy.body.y - enemy.height / 2 - 34, warning);
   }
 
   resolveEnemyAttack(enemy) {
     enemy.telegraph?.destroy();
     enemy.telegraph = null;
     if (!enemy.alive) return;
+    if (enemy.miniMove) {
+      const move = enemy.miniMove;
+      enemy.moveLabel?.destroy(); enemy.moveLabel = null;
+      if (move.volley) {
+        const angle = Math.atan2(this.player.body.y - enemy.body.y, this.player.body.x - enemy.body.x);
+        for (const offset of move.volley) this.spawnProjectile({ owner: 'enemy', sourceEnemy: enemy, type: 'berry', x: enemy.body.x, y: enemy.body.y,
+          vx: Math.cos(angle + offset) * move.speed, vy: Math.sin(angle + offset) * move.speed, damage: move.damage, life: 2300, cell: 4, height: 42, facing: enemy.attackFacing });
+        this.soundBus.play('shot');
+      } else {
+        const dx = this.player.body.x - enemy.body.x;
+        if (dx * enemy.attackFacing >= -20 && Math.abs(dx) < move.range && Math.abs(this.player.body.y - enemy.body.y) < (move.knockdown ? 125 : 150))
+          this.damagePlayer(move.damage, enemy.body.x, move.knockdown ? 490 : 320, Boolean(move.knockdown));
+        this.spawnSheetFx(enemy.body.x + enemy.attackFacing * 95, enemy.body.y, 2, move.knockdown ? 225 : 165, enemy.attackFacing);
+        this.soundBus.play(move.knockdown ? 'heavyHit' : 'swing');
+      }
+      return;
+    }
     if (enemy.type === 'ranged' || enemy.type.startsWith('berry')) {
       const target = this.player.body;
       const angle = Phaser.Math.Angle.Between(enemy.body.x, enemy.body.y, target.x, target.y);
@@ -841,14 +880,14 @@ export class FightScene extends Phaser.Scene {
   hurtEnemy(enemy, damage, knockback, heavy = false) {
     if (!enemy.alive) return;
     enemy.hp -= damage;
-    enemy.hurtUntil = this.time.now + (heavy ? 260 : 170);
-    enemy.state = 'hurt';
-    enemy.body.setVelocityX(knockback);
+    const flinch = !enemy.miniBoss || this.time.now >= enemy.nextFlinchAt;
+    enemy.hurtUntil = this.time.now + (enemy.miniBoss ? 90 : heavy ? 260 : 170);
+    if (flinch) { enemy.state = 'hurt'; enemy.nextFlinchAt = this.time.now + 1250; }
+    enemy.body.setVelocityX(knockback * (enemy.miniBoss ? 0.22 : 1));
     if (!enemy.type.startsWith('berry')) enemy.body.setVelocityY(-90);
     enemy.visual.setState('hurt');
     enemy.visual.flash();
-    enemy.telegraph?.destroy();
-    enemy.telegraph = null;
+    if (flinch) { enemy.telegraph?.destroy(); enemy.telegraph = null; enemy.moveLabel?.destroy(); enemy.moveLabel = null; }
     this.soundBus.play('enemyHurt');
     if (enemy.hp <= 0) this.killEnemy(enemy);
   }
@@ -859,7 +898,9 @@ export class FightScene extends Phaser.Scene {
     const boneX = enemy.body.x;
     const feetY = enemy.body.y + enemy.height / 2;
     const surfaces = this.map.terrain.filter((spec) => spec.type === 'platform' && Math.abs(spec.x - boneX) < spec.width / 2 && spec.y >= feetY - 20);
-    const boneY = Math.min(GROUND_Y, ...surfaces.map((spec) => spec.y - 1));
+    const boneY = this.traversal?.floorBelow?.(boneX, feetY) ?? Math.min(GROUND_Y, ...surfaces.map((spec) => spec.y - 1));
+    enemy.telegraph?.destroy(); enemy.moveLabel?.destroy();
+    this.traversal?.onMiniDefeated?.(enemy);
     enemy.visual.fadeDeath(() => enemy.visual.destroy());
     this.time.delayedCall(245, () => this.bones.push(drawBones(this, boneX, boneY, enemy.type.startsWith('berry'))));
   }
@@ -896,7 +937,7 @@ export class FightScene extends Phaser.Scene {
   updateStageFlow() {
     const p = this.player.body;
     const zone = this.map.waveZone;
-    if (!this.waveState.triggered && p.x >= zone.trigger) this.startWaveZone();
+    if (!this.activeLock && !this.waveState.triggered && atGroundTrigger(p, zone.trigger) && this.traversal?.canEnter?.('wave') !== false) this.startWaveZone();
 
     if (this.waveState.triggered && !this.waveState.complete && !this.waveState.waiting) {
       const alive = this.enemies.some((enemy) => enemy.alive);
@@ -916,13 +957,13 @@ export class FightScene extends Phaser.Scene {
       }
     }
 
-    if (this.map.bossZone && this.waveState.complete && !this.bossTriggered && p.x >= this.map.bossZone.trigger) this.startBossArena();
+    if (!this.activeLock && this.map.bossZone && this.waveState.complete && !this.bossTriggered && atGroundTrigger(p, this.map.bossZone.trigger) && this.traversal?.canEnter?.('boss') !== false) this.startBossArena();
 
-    if (this.mapIndex === 0 && this.waveState.complete && p.x >= this.map.exitX) this.transitionToMap(1);
+    if (this.mapIndex === 0 && this.waveState.complete && atGroundTrigger(p, this.map.exitX) && this.traversal?.canEnter?.('exit') !== false) this.transitionToMap(1);
 
     if (this.mapIndex === 1 && this.bossDefeated) {
-      if (!this.merchantVisited && p.x >= this.map.cabin.doorIn) this.enterCabin();
-      if (this.shopChosen && this.merchantVisited && p.x >= this.map.cabin.doorOut) this.transitionToMap(2);
+      if (!this.merchantVisited && atGroundTrigger(p, this.map.cabin.doorIn) && this.traversal?.canEnter?.('cabin') !== false) this.enterCabin();
+      if (this.shopChosen && this.merchantVisited && atGroundTrigger(p, this.map.cabin.doorOut)) this.transitionToMap(2);
     }
   }
 
@@ -947,18 +988,18 @@ export class FightScene extends Phaser.Scene {
     this.soundBus.play('pickup');
     this.showNotice('AREA CLEAR', 1500);
     if (this.mapIndex === 0) this.setObjective('道路已解锁 · 继续向右抵达洞窟入口');
-    else if (this.map.bossZone) this.setObjective(this.mapIndex === 1 ? '继续向右 · 秦岭杀人兔就在前方' : '继续向右 · 进入最终机甲竞技场');
+    else if (this.map.bossZone) this.setObjective(this.mapIndex === 1 ? '交汇井：下行配重室是主路，上层矿廊可选挑战' : '双回路：上层冷却、下层动力，可按任意顺序接通');
   }
 
-  setArenaLock(left, right) {
-    this.activeLock = { left, right };
-    this.cameras.main.setBounds(left, 0, right - left, GAME_HEIGHT);
+  setArenaLock(left, right, floorY = GROUND_Y) {
+    this.activeLock = { left, right, floorY };
+    this.cameras.main.setBounds(left, floorY - GROUND_Y, right - left, GAME_HEIGHT);
     this.gates.forEach((gate) => gate.destroy());
-    this.gates = [this.createGate(left, 'LOCK'), this.createGate(right, 'LOCK')];
+    this.gates = [this.createGate(left, 'LOCK', floorY), this.createGate(right, 'LOCK', floorY)];
   }
 
-  createGate(x, label) {
-    const container = this.add.container(x, GROUND_Y / 2).setDepth(28);
+  createGate(x, label, floorY = GROUND_Y) {
+    const container = this.add.container(x, floorY - GROUND_Y / 2).setDepth(28);
     const beam = this.add.rectangle(0, 0, 20, GROUND_Y, 0xd92952, 0.52).setStrokeStyle(4, 0xffccbd, 0.9);
     const core = this.add.rectangle(0, 0, 5, GROUND_Y, 0xffffff, 0.7);
     const text = this.add.text(0, -205, label, { fontFamily: 'sans-serif', fontSize: '13px', fontStyle: 'bold', color: '#ffe6d2', backgroundColor: '#4d1020dd', padding: { x: 8, y: 5 } }).setOrigin(0.5).setAngle(-90);
@@ -969,7 +1010,7 @@ export class FightScene extends Phaser.Scene {
 
   clearArenaLock() {
     this.activeLock = null;
-    this.cameras.main.setBounds(0, 0, this.map.width, GAME_HEIGHT);
+    this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top);
     this.gates.forEach((gate) => this.tweens.add({ targets: gate, alpha: 0, scaleY: 0, duration: 340, onComplete: () => gate.destroy() }));
     this.gates = [];
   }
@@ -988,6 +1029,12 @@ export class FightScene extends Phaser.Scene {
     if (p.x > max) {
       p.x = max;
       if (p.body.velocity.x > 0) p.setVelocityX(0);
+    }
+    const floorY = this.activeLock.floorY ?? GROUND_Y;
+    if (p.y < floorY - GROUND_Y + 75) { p.y = floorY - GROUND_Y + 75; p.setVelocityY(Math.max(0, p.body.velocity.y)); }
+    const mini = this.traversal?.activeMini?.enemy;
+    if (mini?.alive) {
+      if (mini.body.x < min || mini.body.x > max) { mini.body.x = clamp(mini.body.x, min, max); mini.body.setVelocityX(0); }
     }
   }
 
@@ -1586,9 +1633,10 @@ export class FightScene extends Phaser.Scene {
     this.inputManager.setEnabled(false);
     this.setPhysicsPause('gameover', true);
     const atBoss = Boolean(this.bossCheckpoint && !this.bossDefeated);
+    const atMini = Boolean(this.miniCheckpoint);
     window.friendFightersUI?.showResult(false, '救援暂时中断',
-      atBoss ? '将在 Boss 战前满血复活，保留道具，无需重打前面的小兵。' : '调整闪避和格挡时机，再从本关起点重试。',
-      atBoss ? '重新挑战 Boss' : '重试本关');
+      atBoss ? '将在 Boss 战前满血复活，保留道具，无需重打前面的小兵。' : atMini ? '将在守卫房间入口满血复活，已接通的机关和已清除的封锁区会保留。' : '调整闪避和格挡时机，再从本关起点重试。',
+      atBoss ? '重新挑战 Boss' : atMini ? '重新挑战守卫' : '重试本关');
   }
 
   missionComplete() {
@@ -1661,7 +1709,7 @@ export class FightScene extends Phaser.Scene {
         if (this.damagePlayer(projectile.damage, projectile.x, 250)) this.impactFeedback(projectile.x, projectile.y, false);
         this.destroyProjectile(projectile);
       }
-      if (time >= projectile.expiresAt || projectile.x < -150 || projectile.x > this.map.width + 150 || projectile.y < -150 || projectile.y > 850) this.destroyProjectile(projectile);
+      if (time >= projectile.expiresAt || projectile.x < -150 || projectile.x > this.map.width + 150 || projectile.y < (this.map.route?.top ?? 0) - 150 || projectile.y > (this.map.route?.bottom ?? 720) + 150) this.destroyProjectile(projectile);
     }
 
     if (this.laser) {
@@ -1732,7 +1780,7 @@ export class FightScene extends Phaser.Scene {
 
   updateHazards(time, dt) {
     for (const hazard of this.hazards) {
-      if (hazard.state === 'idle' && this.player.body.x >= hazard.warningX) {
+      if (hazard.state === 'idle' && !this.activeLock && atGroundTrigger(this.player.body, hazard.warningX)) {
         hazard.state = 'warning';
         hazard.warning = this.add.ellipse(hazard.x, GROUND_Y - 2, 190, 42, 0xff354f, 0.2).setStrokeStyle(5, 0xffd2b6, 0.92).setDepth(8);
         this.tweens.add({ targets: hazard.warning, alpha: 0.8, scaleX: 0.58, duration: 720, ease: 'Sine.In' });
@@ -1759,7 +1807,7 @@ export class FightScene extends Phaser.Scene {
     hazard.warning?.destroy();
     this.cameras.main.shake(220, 0.012);
     this.spawnHitParticles(hazard.x, GROUND_Y - 24, 0xb89b78, 13);
-    if (Math.abs(this.player.body.x - hazard.x) < 120 && this.player.body.y > GROUND_Y - 230) this.damagePlayer(16, hazard.x, 410);
+    if (Math.abs(this.player.body.x - hazard.x) < 120 && Math.abs(this.player.body.y - (GROUND_Y - 75)) < 155) this.damagePlayer(16, hazard.x, 410);
     for (const enemy of this.enemies) {
       if (enemy.alive && Math.abs(enemy.body.x - hazard.x) < 115) this.hurtEnemy(enemy, 32, Math.sign(enemy.body.x - hazard.x || 1) * 380, true);
     }
@@ -1840,17 +1888,18 @@ export class FightScene extends Phaser.Scene {
     this.skillLabel.setText(cooldown > 0 ? `${this.heroData.skill} · ${Math.ceil(cooldown / 100) / 10}s` : `${this.heroData.skill} · READY`);
     window.friendFightersUI?.setSkillCooldown?.(cooldown, skillCooldownMs(this.heroData, this.carry));
 
-    if (this.boss?.alive) {
-      const ratio = clamp(this.boss.hp / this.boss.maxHp, 0, 1);
+    const hudBoss = this.boss?.alive ? this.boss : this.traversal?.activeMini?.enemy;
+    if (hudBoss?.alive) {
+      const ratio = clamp(hudBoss.hp / hudBoss.maxHp, 0, 1);
       const width = 430;
       const x = GAME_WIDTH - width - 28;
       this.hud.fillStyle(0x08090d, 0.86).fillRoundedRect(x, 43, width, 30, 8);
       this.hud.lineStyle(2, 0xe9cfac, 0.5).strokeRoundedRect(x, 43, width, 30, 8);
       this.hud.fillStyle(0x4d101c, 1).fillRoundedRect(x + 6, 49, width - 12, 18, 5);
-      this.hud.fillStyle(this.boss.type === 'c' ? 0xd92946 : 0xf03a66, 1).fillRoundedRect(x + 6, 49, (width - 12) * ratio, 18, 5);
+      this.hud.fillStyle(hudBoss.type === 'd' ? 0xf03a66 : 0xd92946, 1).fillRoundedRect(x + 6, 49, (width - 12) * ratio, 18, 5);
       this.hud.fillStyle(0xffffff, 0.3).fillRect(x + 10, 51, Math.max(0, (width - 20) * ratio), 3);
       this.hud.fillStyle(WHITE, 1).fillCircle(x + 8, 28, 2);
-      const name = this.boss.type === 'c' ? '秦岭杀人兔' : '草莓熊博士 · 机甲';
+      const name = hudBoss.miniBoss?.name || (hudBoss.type === 'c' ? '秦岭杀人兔' : '草莓熊博士 · 机甲');
       if (!this.bossNameLabel) this.bossNameLabel = this.add.text(GAME_WIDTH - 30, 18, name, { fontFamily: 'sans-serif', fontSize: '17px', fontStyle: 'bold', color: '#fff4e5' }).setOrigin(1, 0).setScrollFactor(0).setDepth(91);
       this.bossNameLabel.setText(name).setVisible(true);
     } else this.bossNameLabel?.setVisible(false);

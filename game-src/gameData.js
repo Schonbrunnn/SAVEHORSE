@@ -1,3 +1,5 @@
+import { ROUTE_MAPS } from './RouteMaps.js';
+
 export const GAME_WIDTH = 1280;
 export const GAME_HEIGHT = 720;
 export const GROUND_Y = 590;
@@ -43,7 +45,7 @@ export const MAPS = [
   {
     id: 1,
     title: '秦岭山道',
-    subtitle: '教学区 · 清除两批伏兵',
+    subtitle: '山门回环 · 盾卫长与绞盘楼',
     background: 'stage-1',
     width: 4600,
     exitX: 4420,
@@ -82,7 +84,7 @@ export const MAPS = [
   {
     id: 2,
     title: '国轩之窟 · 外环',
-    subtitle: '佣兵封锁 · 秦岭杀人兔',
+    subtitle: '三层交汇井 · 秦岭杀人兔',
     background: 'stage-2',
     width: 6500,
     exitX: 6310,
@@ -123,7 +125,7 @@ export const MAPS = [
   {
     id: 3,
     title: '草莓熊基地',
-    subtitle: '立体弹幕战 · 最终营救',
+    subtitle: '双回路基地 · 最终营救',
     background: 'stage-3',
     width: 6100,
     exitX: 6000,
@@ -170,15 +172,23 @@ export const MAPS = [
   },
 ];
 
+for (const map of MAPS) {
+  map.route = ROUTE_MAPS[map.id];
+  map.traversal = map.route.objects;
+  // Preserve the established fights and their final-boss platforms. Exploration
+  // platforms now belong to the multi-floor layout instead of the old strip.
+  map.terrain = [...map.terrain.filter(spec => spec.type !== 'platform' || spec.bossPlatform), ...map.route.platforms];
+}
+
 export const DIALOGUES = {
   cave_arrival: [
     { speaker: '旁白', text: '山道上的伏兵散去，公主留下的发带挂在洞窟门边。', portrait: 'princess' },
-    { speaker: '{hero}', text: '她确实从这里经过。先突破封锁，再找守门的人问清楚。', portrait: 'hero' },
+    { speaker: '{hero}', text: '她确实从这里经过。先突破封锁，再到交汇井下层找配重机关。', portrait: 'hero' },
     { speaker: '旁白', text: '远处传来刀刃刮过石壁的声音，洞窟深处却还亮着一盏暖灯。', portrait: 'boss-c' },
   ],
   base_arrival: [
     { speaker: '神秘商人', text: '前面的熊会飞一阵，再落地喘气。别一直追着天上打。', portrait: 'merchant' },
-    { speaker: '{hero}', text: '先清掉守卫，沿升降台向里走。公主，等我。', portrait: 'hero' },
+    { speaker: '{hero}', text: '主闸连着上下两处电源。先清掉守卫，再分头找路。公主，等我。', portrait: 'hero' },
     { speaker: '旁白', text: '暖灯留在身后。基地的粉色电流指向最深处的巨大机甲。', portrait: 'boss-d' },
   ],
   prologue: [
