@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES } from '../game-src/gameData.js';
 import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from '../game-src/CombatRules.js';
 import { atGroundTrigger } from '../game-src/RouteMaps.js';
+import { guardianPose } from '../game-src/GuardianVisual.js';
 
 // Run the actual scene methods with a small physics/display stub, without a
 // browser or Phaser renderer. This checks timing, not game feel or collision QA.
@@ -468,3 +469,23 @@ const hudShape = () => {
 miniHud.hud = hudShape(); miniHud.skillLabel = hudShape(); miniHud.add = { text: hudShape };
 miniHud.drawHud(0); // A mini fight has no C/D object; its bar must not dereference this.boss.
 console.log('PASS: guardian checkpoints and cross-map isolation, warned attacks/knockdown/volley, anti-stunlock Hurt and standalone mini HUD.');
+
+const freeze = scene();
+freeze.physicsPauseReasons = new Set(); freeze.physics = { world: { pause: noOp, resume: noOp } };
+freeze.tweens = { getGlobalTimeScale: () => 1, setGlobalTimeScale: noOp };
+const frozenEnemy = { alive: true, state: 'windup', miniMove: MAPS[0].route.minis[0].attacks[0], attackVariant: 0,
+  hitAt: 1000, stateUntil: 1490, hurtUntil: 0, nextFlinchAt: 2500, body: body() };
+freeze.enemies = [frozenEnemy]; freeze.time.now = 999;
+freeze.setPhysicsPause('hitstop', true);
+assert.equal(freeze.time.paused, true);
+freeze.time.now = 1999; freeze.setPhysicsPause('hitstop', false);
+assert.equal(freeze.time.paused, false);
+assert.equal(frozenEnemy.hitAt, 2000); assert.equal(frozenEnemy.stateUntil, 2490);
+assert.equal(guardianPose(frozenEnemy, 1999).frame, 3);
+assert.equal(guardianPose(frozenEnemy, 2000).frame, 4, 'Hit Stop must not consume the strike pose');
+frozenEnemy.miniBoss = MAPS[0].route.minis[0]; frozenEnemy.hp = 140;
+frozenEnemy.type = 'shield'; frozenEnemy.visual = { setState: noOp, flash: noOp };
+freeze.hurtEnemy(frozenEnemy, 1, 0);
+assert.equal(frozenEnemy.state, 'windup'); assert.equal(frozenEnemy.hurtUntil, 0, 'armored hits flash without delaying a live attack');
+assert.equal(frozenEnemy.hitAt, 2000);
+console.log('PASS: Hit Stop freezes guardian attacks/deadlines and armored hits cannot delay damage into the recovery pose.');
