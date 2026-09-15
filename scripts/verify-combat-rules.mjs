@@ -2,13 +2,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES } from '../game-src/gameData.js';
 import { BERRY_CYCLE, RABBIT_SMASH, RABBIT_PHASE2, segmentDistance, MECH, mechPhaseReady, motionBlend, skillCooldownMs, nextStageHp } from '../game-src/CombatRules.js';
+import { atGroundTrigger } from '../game-src/RouteMaps.js';
 
 // Run the actual scene methods with a small physics/display stub, without a
 // browser or Phaser renderer. This checks timing, not game feel or collision QA.
 const source = (await readFile(new URL('../game-src/GameScene.js', import.meta.url), 'utf8'))
   .replace(/^import .*;\n/gm, '').replace(/export class /g, 'class ');
 const Phaser = { Scene: class {}, Math: { Linear: (a, b, t) => a + (b - a) * t } };
-const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', 'ActionVisual', 'BossVisual', 'InputManager', 'SoundBus', 'MECH', 'mechPhaseReady', 'motionBlend', 'Traversal', 'propImage', 'RABBIT_PHASE2', 'segmentDistance', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp, class {}, class {}, class { setEnabled(value) { this.enabled = value; } destroy() {} }, class { play() {} }, MECH, mechPhaseReady, motionBlend, class {}, () => shape(), RABBIT_PHASE2, segmentDistance);
+const FightScene = new Function('Phaser', 'HEROES', 'MAPS', 'GAME_HEIGHT', 'GAME_WIDTH', 'GROUND_Y', 'DIALOGUES', 'BERRY_CYCLE', 'RABBIT_SMASH', 'skillCooldownMs', 'nextStageHp', 'ActionVisual', 'BossVisual', 'InputManager', 'SoundBus', 'MECH', 'mechPhaseReady', 'motionBlend', 'Traversal', 'propImage', 'RABBIT_PHASE2', 'segmentDistance', 'atGroundTrigger', `${source}\nreturn FightScene;`)(Phaser, HEROES, MAPS, GAME_HEIGHT, GAME_WIDTH, GROUND_Y, DIALOGUES, BERRY_CYCLE, RABBIT_SMASH, skillCooldownMs, nextStageHp, class {}, class {}, class { setEnabled(value) { this.enabled = value; } destroy() {} }, class { play() {} }, MECH, mechPhaseReady, motionBlend, class {}, () => shape(), RABBIT_PHASE2, segmentDistance, atGroundTrigger);
 globalThis.window = {};
 const noOp = () => {};
 const body = (x = 100, y = 500) => ({
@@ -413,3 +414,57 @@ swept.updateProjectiles(400, 0.2);
 assert.equal(sweptHits, 1, 'a fast projectile crossing the player hits once, even when both endpoints are outside');
 console.log('PASS: rabbit two-hit combo, flank and hurt interruption, tracking/locked sniper, pause deadlines and swept projectile collision.');
 }
+
+// Guardian checkpoints preserve the route but never carry across maps.
+for (const [mapIndex, map] of MAPS.entries()) {
+  const mini = map.route.minis[0];
+  const progress = { mapId: map.id, flags: ['previous-switch'], waveComplete: mapIndex > 0 };
+  const restored = checkpointScene({ heroId: 'b', mapIndex, miniCheckpoint: mini.id, routeProgress: progress });
+  assert.equal(restored.player.body.x, mini.entry.x);
+  assert.equal(restored.player.body.y, mini.entry.y);
+  assert.equal(restored.player.hp, HEROES.b.maxHp);
+  assert.deepEqual(restored.routeRestore, progress);
+  assert.equal(restored.waveState.complete, progress.waveComplete);
+  restored.traversal.snapshot = () => progress;
+  restored.restartMap();
+  assert.equal(restored.retryPayload.miniCheckpoint, mini.id);
+  assert.deepEqual(restored.retryPayload.routeProgress.flags, progress.flags);
+  const invalid = checkpointScene({ mapIndex: (mapIndex + 1) % 3, miniCheckpoint: mini.id, routeProgress: progress });
+  assert.equal(invalid.miniCheckpoint, null);
+  assert.equal(invalid.routeRestore, null);
+}
+for (const map of MAPS) {
+  const spec = map.route.minis[0], s = scene();
+  const enemy = { type: spec.type, miniBoss: spec, attackCycle: 0, cooldown: spec.cooldown, facing: 1,
+    body: body(spec.x, spec.floorY - 75), height: 150, alive: true, hp: spec.hp, nextFlinchAt: 0,
+    visual: { setState: noOp, flash: noOp } };
+  s.player = { body: body(spec.x + 60, spec.floorY - 75) };
+  s.add = { arc: shape }; s.addWarningText = shape; s.tweens = { add: noOp };
+  let hits = [], shots = [];
+  s.damagePlayer = (...args) => hits.push(args); s.spawnProjectile = p => shots.push(p);
+  s.startEnemyAttack(enemy, 100);
+  assert.equal(enemy.hitAt, 100 + spec.attacks[0].warning);
+  assert.equal(enemy.attackFacing, 1);
+  s.resolveEnemyAttack(enemy);
+  if (spec.attacks[0].volley) { assert.equal(shots.length, 3); assert.ok(shots.every(p => p.sourceEnemy === enemy)); }
+  else { assert.equal(hits.length, 1); assert.equal(hits[0][0], spec.attacks[0].damage); }
+  s.time.now = 1000; s.hurtEnemy(enemy, 1, 0);
+  assert.equal(enemy.state, 'hurt'); assert.equal(enemy.nextFlinchAt, 2250);
+  s.startEnemyAttack(enemy, 1100); s.time.now = 1101; s.hurtEnemy(enemy, 1, 0);
+  assert.equal(enemy.state, 'windup', 'guardians keep Hurt feedback but cannot be permanently stun-locked');
+  hits = []; shots = [];
+  s.resolveEnemyAttack(enemy);
+  if (spec.attacks[1].knockdown) assert.equal(hits[0][3], true);
+}
+const miniHud = scene();
+miniHud.heroData = HEROES.a; miniHud.boss = null;
+miniHud.player = { hp: 90, maxHp: 100, skillReadyAt: 0 };
+miniHud.traversal = { activeMini: { enemy: { alive: true, hp: 100, maxHp: 150, miniBoss: { name: '盾卫长' } } } };
+const hudShape = () => {
+  const o = shape();
+  for (const key of ['fillStyle', 'fillRoundedRect', 'strokeRoundedRect', 'fillRect', 'fillCircle', 'setText', 'setVisible', 'setScrollFactor']) o[key] = () => o;
+  return o;
+};
+miniHud.hud = hudShape(); miniHud.skillLabel = hudShape(); miniHud.add = { text: hudShape };
+miniHud.drawHud(0); // A mini fight has no C/D object; its bar must not dereference this.boss.
+console.log('PASS: guardian checkpoints and cross-map isolation, warned attacks/knockdown/volley, anti-stunlock Hurt and standalone mini HUD.');
