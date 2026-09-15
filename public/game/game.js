@@ -1,4 +1,4 @@
-var gi = {
+var Ti = {
   50792(f) {
     var m = Object.prototype.hasOwnProperty, t = "~";
     function o() {
@@ -22662,15 +22662,15 @@ return new ` + this.key + `();
         A[X] = Math.min(E[X], M[X]), P[X] = Math.max(E[X], M[X]);
       for (X = 0; X < 3; X++)
         F[X] = y[X] + A[X], O[X] = y[X] + P[X], B[X] = y[X] + 1;
-      var Et = y[0], Rt = y[1], St = y[2], Ot = F[0], wt = F[1], Ft = F[2], Ut = O[0], zt = O[1], Vt = O[2], Yt = B[0], Wt = B[1], Ht = B[2];
-      for (G[0] = -0.5 * Et + 0.5 * Rt + 0.5 * St, G[1] = 0.5 * Et - 0.5 * Rt + 0.5 * St, G[2] = 0.5 * Et + 0.5 * Rt - 0.5 * St, U[0] = -0.5 * Ot + 0.5 * wt + 0.5 * Ft, U[1] = 0.5 * Ot - 0.5 * wt + 0.5 * Ft, U[2] = 0.5 * Ot + 0.5 * wt - 0.5 * Ft, I[0] = -0.5 * Ut + 0.5 * zt + 0.5 * Vt, I[1] = 0.5 * Ut - 0.5 * zt + 0.5 * Vt, I[2] = 0.5 * Ut + 0.5 * zt - 0.5 * Vt, R[0] = -0.5 * Yt + 0.5 * Wt + 0.5 * Ht, R[1] = 0.5 * Yt - 0.5 * Wt + 0.5 * Ht, R[2] = 0.5 * Yt + 0.5 * Wt - 0.5 * Ht, X = 0; X < 3; X++)
+      var Et = y[0], Rt = y[1], St = y[2], Ot = F[0], wt = F[1], Ft = F[2], zt = O[0], Vt = O[1], Yt = O[2], Wt = B[0], Ht = B[1], Xt = B[2];
+      for (G[0] = -0.5 * Et + 0.5 * Rt + 0.5 * St, G[1] = 0.5 * Et - 0.5 * Rt + 0.5 * St, G[2] = 0.5 * Et + 0.5 * Rt - 0.5 * St, U[0] = -0.5 * Ot + 0.5 * wt + 0.5 * Ft, U[1] = 0.5 * Ot - 0.5 * wt + 0.5 * Ft, U[2] = 0.5 * Ot + 0.5 * wt - 0.5 * Ft, I[0] = -0.5 * zt + 0.5 * Vt + 0.5 * Yt, I[1] = 0.5 * zt - 0.5 * Vt + 0.5 * Yt, I[2] = 0.5 * zt + 0.5 * Vt - 0.5 * Yt, R[0] = -0.5 * Wt + 0.5 * Ht + 0.5 * Xt, R[1] = 0.5 * Wt - 0.5 * Ht + 0.5 * Xt, R[2] = 0.5 * Wt + 0.5 * Ht - 0.5 * Xt, X = 0; X < 3; X++)
         L[X] = c[X] - G[X], w[X] = c[X] - U[X], b[X] = c[X] - I[X], z[X] = c[X] - R[X];
       if (p[0] > 0 || p[1] > 0 || p[2] > 0) {
         if (D[0] = G[0], D[1] = U[0], D[2] = I[0], D[3] = R[0], N[0] = G[1], N[1] = U[1], N[2] = I[1], N[3] = R[1], V[0] = G[2], V[1] = U[2], V[2] = I[2], V[3] = R[2], p[0] > 0) for (X = 0; X < 4; X++) D[X] = (D[X] % p[0] + p[0]) % p[0];
         if (p[1] > 0) for (X = 0; X < 4; X++) N[X] = (N[X] % p[1] + p[1]) % p[1];
         if (p[2] > 0) for (X = 0; X < 4; X++) V[X] = (V[X] % p[2] + p[2]) % p[2];
-        var Xt = D[0], Kt = N[0], Zt = V[0], Qt = D[1], Jt = N[1], $t = V[1], jt = D[2], kt = N[2], qt = V[2], _t = D[3], te = N[3], ee = V[3];
-        y[0] = Math.floor(0 * Xt + 1 * Kt + 1 * Zt + 0.5), y[1] = Math.floor(1 * Xt + 0 * Kt + 1 * Zt + 0.5), y[2] = Math.floor(1 * Xt + 1 * Kt + 0 * Zt + 0.5), F[0] = Math.floor(0 * Qt + 1 * Jt + 1 * $t + 0.5), F[1] = Math.floor(1 * Qt + 0 * Jt + 1 * $t + 0.5), F[2] = Math.floor(1 * Qt + 1 * Jt + 0 * $t + 0.5), O[0] = Math.floor(0 * jt + 1 * kt + 1 * qt + 0.5), O[1] = Math.floor(1 * jt + 0 * kt + 1 * qt + 0.5), O[2] = Math.floor(1 * jt + 1 * kt + 0 * qt + 0.5), B[0] = Math.floor(0 * _t + 1 * te + 1 * ee + 0.5), B[1] = Math.floor(1 * _t + 0 * te + 1 * ee + 0.5), B[2] = Math.floor(1 * _t + 1 * te + 0 * ee + 0.5);
+        var Kt = D[0], Zt = N[0], Qt = V[0], Jt = D[1], $t = N[1], jt = V[1], kt = D[2], qt = N[2], _t = V[2], te = D[3], ee = N[3], ie = V[3];
+        y[0] = Math.floor(0 * Kt + 1 * Zt + 1 * Qt + 0.5), y[1] = Math.floor(1 * Kt + 0 * Zt + 1 * Qt + 0.5), y[2] = Math.floor(1 * Kt + 1 * Zt + 0 * Qt + 0.5), F[0] = Math.floor(0 * Jt + 1 * $t + 1 * jt + 0.5), F[1] = Math.floor(1 * Jt + 0 * $t + 1 * jt + 0.5), F[2] = Math.floor(1 * Jt + 1 * $t + 0 * jt + 0.5), O[0] = Math.floor(0 * kt + 1 * qt + 1 * _t + 0.5), O[1] = Math.floor(1 * kt + 0 * qt + 1 * _t + 0.5), O[2] = Math.floor(1 * kt + 1 * qt + 0 * _t + 0.5), B[0] = Math.floor(0 * te + 1 * ee + 1 * ie + 0.5), B[1] = Math.floor(1 * te + 0 * ee + 1 * ie + 0.5), B[2] = Math.floor(1 * te + 1 * ee + 0 * ie + 0.5);
       }
       y[0] += e[0], y[1] += e[1], y[2] += e[2], F[0] += e[0], F[1] += e[1], F[2] += e[2], O[0] += e[0], O[1] += e[1], O[2] += e[2], B[0] += e[0], B[1] += e[1], B[2] += e[2];
       var Ct = l.vx, Dt = l.vy;
@@ -22681,16 +22681,16 @@ return new ` + this.key + `();
       else for (X = 0; X < 4; X++)
         J[X] = Q[X] * j[X], tt[X] = $[X] * j[X], k[X] = H[X];
       for (X = 0; X < 4; X++) {
-        var oe = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], he = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], le = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
-        vt[X] = 0.5 - (oe * oe + he * he + le * le), vt[X] < 0 && (vt[X] = 0), ct[X] = vt[X] * vt[X], ht[X] = ct[X] * vt[X];
+        var ue = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], fe = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], de = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
+        vt[X] = 0.5 - (ue * ue + fe * fe + de * de), vt[X] < 0 && (vt[X] = 0), ct[X] = vt[X] * vt[X], ht[X] = ct[X] * vt[X];
       }
       for (X = 0; X < 4; X++) {
-        var fi = J[X], di = tt[X], vi = k[X], ci = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], pi = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], mi = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
-        ft[X] = fi * ci + di * pi + vi * mi;
+        var ci = J[X], pi = tt[X], mi = k[X], gi = X === 0 ? L[0] : X === 1 ? w[0] : X === 2 ? b[0] : z[0], xi = X === 0 ? L[1] : X === 1 ? w[1] : X === 2 ? b[1] : z[1], yi = X === 0 ? L[2] : X === 1 ? w[2] : X === 2 ? b[2] : z[2];
+        ft[X] = ci * gi + pi * xi + mi * yi;
       }
-      var ue = 0;
-      for (X = 0; X < 4; X++) ue += ht[X] * ft[X];
-      return 39.5 * ue;
+      var ve = 0;
+      for (X = 0; X < 4; X++) ve += ht[X] * ft[X];
+      return 39.5 * ve;
     };
     f.exports = m;
   },
@@ -47723,12 +47723,12 @@ texCoord = mod(texCoord, 1.0) * outFrame.zw + outFrame.xy;` },
       UUID: t(45650)
     };
   }
-}, fe = {};
+}, ce = {};
 function ot(f) {
-  var m = fe[f];
+  var m = ce[f];
   if (m !== void 0) return m.exports;
-  var t = fe[f] = { exports: {} };
-  return gi[f](t, t.exports, ot), t.exports;
+  var t = ce[f] = { exports: {} };
+  return Ti[f](t, t.exports, ot), t.exports;
 }
 ot.d = (f, m) => {
   for (var t in m) ot.o(m, t) && !ot.o(f, t) && Object.defineProperty(f, t, {
@@ -47747,110 +47747,110 @@ ot.g = (function() {
 ot.o = (f, m) => Object.prototype.hasOwnProperty.call(f, m);
 var nt = {};
 ot.d(nt, {
-  A4: () => ze,
-  AB: () => Ke,
-  AQ: () => be,
-  Ae: () => _e,
-  Aq: () => ke,
-  Ay: () => xi,
-  B_: () => Re,
-  CB: () => ii,
-  Cu: () => Oe,
-  D7: () => Ze,
-  Dh: () => Ie,
-  En: () => xe,
-  FE: () => Ve,
-  Fu: () => je,
-  M3: () => ni,
-  NS: () => oi,
-  O1: () => Qe,
-  PX: () => li,
-  Q8: () => ti,
-  Qw: () => ye,
-  SY: () => ri,
-  Tm: () => Ce,
-  UP: () => hi,
-  XT: () => Me,
-  Xs: () => Ae,
-  Z5: () => We,
-  Zt: () => we,
-  _k: () => He,
-  aH: () => Ne,
-  dv: () => Le,
-  gX: () => Je,
-  gd: () => Te,
-  ho: () => Xe,
-  iJ: () => Ee,
-  j$: () => ei,
-  l2: () => Se,
-  nl: () => Pe,
-  pd: () => Be,
-  qt: () => si,
-  ry: () => Ue,
-  sV: () => Fe,
-  sx: () => $e,
-  x3: () => ai,
-  xS: () => De,
-  xv: () => qe,
-  zA: () => Ye,
-  zU: () => Ge
+  A4: () => We,
+  AB: () => Je,
+  AQ: () => Ve,
+  Ae: () => ii,
+  Aq: () => ti,
+  Ay: () => Si,
+  B_: () => Fe,
+  CB: () => ai,
+  Cu: () => Ie,
+  D7: () => $e,
+  Dh: () => Ge,
+  En: () => Se,
+  FE: () => He,
+  Fu: () => _e,
+  M3: () => li,
+  NS: () => ui,
+  O1: () => je,
+  PX: () => di,
+  Q8: () => si,
+  Qw: () => Ce,
+  SY: () => oi,
+  Tm: () => Me,
+  UP: () => fi,
+  XT: () => Le,
+  Xs: () => Pe,
+  Z5: () => Ke,
+  Zt: () => Be,
+  _k: () => Ze,
+  aH: () => Ue,
+  dv: () => we,
+  gX: () => ke,
+  gd: () => Ee,
+  ho: () => Qe,
+  iJ: () => Re,
+  j$: () => ri,
+  l2: () => Ae,
+  nl: () => Oe,
+  pd: () => be,
+  qt: () => ni,
+  ry: () => Ye,
+  sV: () => De,
+  sx: () => qe,
+  x3: () => hi,
+  xS: () => Ne,
+  xv: () => ei,
+  zA: () => Xe,
+  zU: () => ze
 });
 ot(63595);
-var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388), Ce = ot(26638), Ee = ot(42857), Ae = ot(83419), Me = ot(25410), Re = ot(44965), Pe = ot(27460), Le = ot(84902), Fe = ot(93055), Oe = ot(11889), we = ot(50127), De = ot(77856), Ie = ot(55738), Be = ot(14350), Ne = ot(57777), Ge = ot(75508), be = ot(44563), Ue = ot(18922), ze = ot(36909), Ve = ot(93364), Ye = ot(29795), We = ot(97482), He = ot(62194), Xe = ot(41392), Ke = ot(23717), Ze = ot(27458), Qe = ot(62501), Je = ot(90291), $e = ot(84322), je = ot(43066), ke = ot(91799), qe = Tt.VERSION, _e = Tt.LOG_VERSION, ti = Tt.AUTO, ei = Tt.CANVAS, ii = Tt.WEBGL, si = Tt.HEADLESS, ri = Tt.FOREVER, ai = Tt.NONE, ni = Tt.LEFT, oi = Tt.RIGHT, hi = Tt.UP, li = Tt.DOWN, xi = {
-  Actions: xe,
-  Animations: ye,
-  BlendModes: Te,
-  Cache: Se,
-  Cameras: Ce,
-  Core: Ee,
-  Class: Ae,
-  Curves: Me,
-  Data: Re,
-  Display: Pe,
-  DOM: Le,
-  Events: Fe,
-  Filters: Oe,
-  Game: we,
-  GameObjects: De,
-  Geom: Ie,
-  Input: Be,
-  Loader: Ne,
-  Math: Ge,
-  Physics: be,
-  Plugins: Ue,
-  Renderer: ze,
-  Scale: Ve,
-  ScaleModes: Ye,
-  Scene: We,
-  Scenes: He,
-  Structs: Xe,
-  Sound: Ke,
-  Textures: Ze,
-  Tilemaps: Qe,
-  Time: Je,
-  TintModes: $e,
-  Tweens: je,
-  Utils: ke,
-  VERSION: qe,
-  LOG_VERSION: _e,
-  AUTO: ti,
-  CANVAS: ei,
-  WEBGL: ii,
-  HEADLESS: si,
-  FOREVER: ri,
-  NONE: ai,
-  LEFT: ni,
-  RIGHT: oi,
-  UP: hi,
-  DOWN: li
-}, Yi = nt.Q8, Wi = nt.En, Hi = nt.Qw, Xi = nt.gd, Ki = nt.j$, Zi = nt.l2, Qi = nt.Tm, Ji = nt.Xs, $i = nt.iJ, ji = nt.XT, ki = nt.dv, qi = nt.PX, _i = nt.B_, ts = nt.nl, es = nt.sV, is = nt.SY, ss = nt.Cu, rs = nt.Zt, as = nt.xS, ns = nt.Dh, os = nt.qt, hs = nt.pd, ls = nt.M3, us = nt.Ae, fs = nt.aH, ds = nt.zU, vs = nt.x3, cs = nt.AQ, ps = nt.ry, ms = nt.NS, gs = nt.A4, xs = nt.FE, ys = nt.zA, Ts = nt.Z5, Ss = nt._k, Cs = nt.AB, Es = nt.ho, As = nt.D7, Ms = nt.O1, Rs = nt.gX, Ps = nt.sx, Ls = nt.Fu, Fs = nt.UP, Os = nt.Aq, ws = nt.xv, Ds = nt.CB, ut = nt.Ay, Pt = [
+var Tt = ot(8054), Se = ot(61061), Ce = ot(60421), Ee = ot(10312), Ae = ot(83388), Me = ot(26638), Re = ot(42857), Pe = ot(83419), Le = ot(25410), Fe = ot(44965), Oe = ot(27460), we = ot(84902), De = ot(93055), Ie = ot(11889), Be = ot(50127), Ne = ot(77856), Ge = ot(55738), be = ot(14350), Ue = ot(57777), ze = ot(75508), Ve = ot(44563), Ye = ot(18922), We = ot(36909), He = ot(93364), Xe = ot(29795), Ke = ot(97482), Ze = ot(62194), Qe = ot(41392), Je = ot(23717), $e = ot(27458), je = ot(62501), ke = ot(90291), qe = ot(84322), _e = ot(43066), ti = ot(91799), ei = Tt.VERSION, ii = Tt.LOG_VERSION, si = Tt.AUTO, ri = Tt.CANVAS, ai = Tt.WEBGL, ni = Tt.HEADLESS, oi = Tt.FOREVER, hi = Tt.NONE, li = Tt.LEFT, ui = Tt.RIGHT, fi = Tt.UP, di = Tt.DOWN, Si = {
+  Actions: Se,
+  Animations: Ce,
+  BlendModes: Ee,
+  Cache: Ae,
+  Cameras: Me,
+  Core: Re,
+  Class: Pe,
+  Curves: Le,
+  Data: Fe,
+  Display: Oe,
+  DOM: we,
+  Events: De,
+  Filters: Ie,
+  Game: Be,
+  GameObjects: Ne,
+  Geom: Ge,
+  Input: be,
+  Loader: Ue,
+  Math: ze,
+  Physics: Ve,
+  Plugins: Ye,
+  Renderer: We,
+  Scale: He,
+  ScaleModes: Xe,
+  Scene: Ke,
+  Scenes: Ze,
+  Structs: Qe,
+  Sound: Je,
+  Textures: $e,
+  Tilemaps: je,
+  Time: ke,
+  TintModes: qe,
+  Tweens: _e,
+  Utils: ti,
+  VERSION: ei,
+  LOG_VERSION: ii,
+  AUTO: si,
+  CANVAS: ri,
+  WEBGL: ai,
+  HEADLESS: ni,
+  FOREVER: oi,
+  NONE: hi,
+  LEFT: li,
+  RIGHT: ui,
+  UP: fi,
+  DOWN: di
+}, Qi = nt.Q8, Ji = nt.En, $i = nt.Qw, ji = nt.gd, ki = nt.j$, qi = nt.l2, _i = nt.Tm, ts = nt.Xs, es = nt.iJ, is = nt.XT, ss = nt.dv, rs = nt.PX, as = nt.B_, ns = nt.nl, os = nt.sV, hs = nt.SY, ls = nt.Cu, us = nt.Zt, fs = nt.xS, ds = nt.Dh, vs = nt.qt, cs = nt.pd, ps = nt.M3, ms = nt.Ae, gs = nt.aH, xs = nt.zU, ys = nt.x3, Ts = nt.AQ, Ss = nt.ry, Cs = nt.NS, Es = nt.A4, As = nt.FE, Ms = nt.zA, Rs = nt.Z5, Ps = nt._k, Ls = nt.AB, Fs = nt.ho, Os = nt.D7, ws = nt.O1, Ds = nt.gX, Is = nt.sx, Bs = nt.Fu, Ns = nt.UP, Gs = nt.Aq, bs = nt.xv, Us = nt.CB, ut = nt.Ay, Pt = [
   "left",
   "right",
   "jump",
   "attack",
   "skill",
   "guard"
-], yi = class {
+], Ci = class {
   constructor(f) {
     this.scene = f, this.enabled = !1, this.touchDown = Object.fromEntries(Pt.map((m) => [m, /* @__PURE__ */ new Set()])), this.pendingTouchPress = /* @__PURE__ */ new Set(), this.current = Object.fromEntries(Pt.map((m) => [m, !1])), this.previous = Object.fromEntries(Pt.map((m) => [m, !1])), this.pressed = Object.fromEntries(Pt.map((m) => [m, !1])), this.released = Object.fromEntries(Pt.map((m) => [m, !1])), this.keys = f.input.keyboard?.addKeys({
       left: ut.Input.Keyboard.KeyCodes.A,
@@ -47935,7 +47935,7 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       f.removeEventListener("pointerdown", m), f.removeEventListener("pointerup", t), f.removeEventListener("pointercancel", t), f.removeEventListener("lostpointercapture", t);
     });
   }
-}, Ti = class {
+}, Ei = class {
   constructor() {
     this.context = null, this.master = null, this.unlocked = !1, this.unlock = this.unlock.bind(this), window.addEventListener("friend-fighters-unlock-audio", this.unlock), window.addEventListener("pointerdown", this.unlock, { passive: !0 }), window.addEventListener("keydown", this.unlock);
   }
@@ -48091,7 +48091,7 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
   left: f,
   right: m,
   y: t
-}), ie = (f) => f.map(([m, t, o = 260]) => ({
+}), se = (f) => f.map(([m, t, o = 260]) => ({
   type: "platform",
   x: m,
   y: t,
@@ -48103,12 +48103,12 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
   y: o,
   width: v,
   height: a
-}), Si = {
+}), Ai = {
   1: {
     top: -900,
     bottom: 960,
     floors: [At(0, 3100), At(3730, 4600)],
-    platforms: ie([
+    platforms: se([
       [350, 430],
       [600, 270],
       [350, 110],
@@ -48236,11 +48236,16 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       attacks: [{
         name: "盾击",
         warning: 520,
+        activeMs: 130,
+        recoveryMs: 360,
+        lunge: 200,
         range: 190,
         damage: 14
       }, {
         name: "重盾落砸 · 跳起",
         warning: 850,
+        activeMs: 170,
+        recoveryMs: 580,
         range: 270,
         damage: 20,
         knockdown: !0
@@ -48257,7 +48262,7 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       At(1440, 2840, 1120),
       At(4370, 5190, 1120)
     ],
-    platforms: ie([
+    platforms: se([
       [2350, 430],
       [2640, 270],
       [2350, 110],
@@ -48407,11 +48412,16 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       attacks: [{
         name: "横扫 · 绕到背后",
         warning: 680,
+        activeMs: 160,
+        recoveryMs: 420,
+        lunge: 100,
         range: 215,
         damage: 17
       }, {
         name: "裂地重锤 · 二段跳",
         warning: 1e3,
+        activeMs: 180,
+        recoveryMs: 650,
         range: 330,
         damage: 25,
         knockdown: !0
@@ -48426,7 +48436,7 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       At(3700, 6100),
       At(2380, 4520, 1130)
     ],
-    platforms: ie([
+    platforms: se([
       [2510, 450],
       [2800, 290],
       [2510, 130],
@@ -48559,6 +48569,8 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       attacks: [{
         name: "三线瞄准",
         warning: 780,
+        activeMs: 140,
+        recoveryMs: 380,
         range: 520,
         damage: 14,
         volley: [
@@ -48570,6 +48582,8 @@ var Tt = ot(8054), xe = ot(61061), ye = ot(60421), Te = ot(10312), Se = ot(83388
       }, {
         name: "扇形弹幕",
         warning: 1e3,
+        activeMs: 180,
+        recoveryMs: 480,
         range: 540,
         damage: 16,
         volley: [
@@ -48588,7 +48602,7 @@ function bt(f, m = []) {
 function It(f, m, t = 590, o = 150) {
   return f.x >= m && Math.abs(f.y + 75 - t) <= o;
 }
-var gt = 1280, Ci = {
+var gt = 1280, Mi = {
   a: {
     name: "小宇",
     title: "奇瑞队长",
@@ -48611,7 +48625,7 @@ var gt = 1280, Ci = {
     skill: "交大冲锋",
     skillCooldownMs: 1600
   }
-}, de = {
+}, pe = {
   idle: 0,
   run: 1,
   jump: 2,
@@ -48621,7 +48635,7 @@ var gt = 1280, Ci = {
   dodge: 6,
   hurt: 7,
   knockdown: 7
-}, ne = [
+}, he = [
   {
     id: 1,
     title: "秦岭山道",
@@ -48952,9 +48966,9 @@ var gt = 1280, Ci = {
     ]
   }
 ];
-for (const f of ne)
-  f.route = Si[f.id], f.traversal = f.route.objects, f.terrain = [...f.terrain.filter((m) => m.type !== "platform" || m.bossPlatform), ...f.route.platforms];
-var Ei = {
+for (const f of he)
+  f.route = Ai[f.id], f.traversal = f.route.objects, f.terrain = [...f.terrain.filter((m) => m.type !== "platform" || m.bossPlatform), ...f.route.platforms];
+var Ri = {
   cave_arrival: [
     {
       speaker: "旁白",
@@ -49186,7 +49200,7 @@ var Ei = {
       portrait: "hero"
     }
   ]
-}, Ai = {
+}, Pi = {
   bones: "bones-v1.webp",
   crate: "crate-v1.webp",
   stone: "stone-platform-v1.webp",
@@ -49214,7 +49228,7 @@ function xt(f, m, t, o, v, a = 1) {
 function Bt(f, m) {
   f?.setTint && (m ? (f.setTint(16777215), f.setTintMode?.(ut.TintModes.FILL)) : (f.clearTint(), f.setTintMode?.(ut.TintModes.MULTIPLY)));
 }
-var Mi = class {
+var Li = class {
   constructor(f, m, t, o, v, a = 180, s = 8) {
     this.scene = f, this.frameKeys = Array.from({ length: s }, (i, r) => `${o}-pose-${r}`), this.hasSplitFrames = this.frameKeys.every((i) => f.textures.exists(i)), this.textureKey = this.hasSplitFrames ? this.frameKeys[0] : f.textures.exists(o) ? o : v, this.frames = this.hasSplitFrames || this.textureKey === o ? s : 1, this.targetHeight = a, this.image = f.add.image(m, t, this.textureKey).setOrigin(0.5, 1).setDepth(12);
     const e = f.textures.get(this.textureKey).getSourceImage();
@@ -49235,12 +49249,12 @@ var Mi = class {
         });
       }
       if (this.state = f, this.scene.tweens.killTweensOf(this.image), this.image.setScale(this.baseScale).setAngle(0).setAlpha(1), this.hasSplitFrames) {
-        const t = Math.min(this.frames - 1, de[f] ?? 0);
+        const t = Math.min(this.frames - 1, pe[f] ?? 0);
         this.textureKey = this.frameKeys[t], this.image.setTexture(this.textureKey).setCrop();
         const o = this.scene.textures.get(this.textureKey).getSourceImage();
         this.sourceWidth = o.width, this.sourceHeight = o.height, this.baseScale = this.targetHeight / this.sourceHeight, this.image.setScale(this.baseScale);
       } else if (this.frames > 1) {
-        const t = Math.min(this.frames - 1, de[f] ?? 0);
+        const t = Math.min(this.frames - 1, pe[f] ?? 0);
         this.image.setCrop(t * this.frameWidth, 0, this.frameWidth, this.sourceHeight);
       } else this.image.setCrop();
       f === "attack" ? this.scene.tweens.add({
@@ -49307,7 +49321,7 @@ var Mi = class {
   destroy() {
     this.transition?.destroy(), this.image.destroy();
   }
-}, Ri = class {
+}, Fi = class {
   constructor(f, m, t, o, v = 1) {
     this.scene = f, this.type = o, this.berry = o.startsWith("berry"), this.sizeMultiplier = v, this.state = "idle", this.facing = -1, this.textureKey = this.berry ? "berry-hover" : `minion-${o}-idle`, this.image = f.add.image(m, t, this.textureKey).setOrigin(0.5, 1).setDepth(11), this.baseScale = (this.berry ? 116 : 178) * this.sizeMultiplier / this.image.height, this.image.setScale(this.baseScale), this.object = this.image, this.setState("idle", !0);
   }
@@ -49342,7 +49356,7 @@ var Mi = class {
   destroy() {
     this.object.destroy();
   }
-}, ve = class {
+}, me = class {
   constructor(f, m, t, o) {
     this.scene = f, this.type = m, this.state = "idle", this.facing = -1, this.frameKeys = Array.from({ length: 8 }, (v, a) => `boss-${m}-actions-pose-${a}`), this.hasSplitFrames = this.frameKeys.every((v) => f.textures.exists(v)), this.textureKey = this.hasSplitFrames ? this.frameKeys[0] : m === "c" ? "boss-c" : "boss-d", this.image = f.add.image(t, o, this.textureKey).setOrigin(0.5, 1).setDepth(10), m === "c" ? (this.crops = {
       idle: [
@@ -49465,7 +49479,7 @@ var Mi = class {
     this.image.destroy();
   }
 };
-function Pi(f, m, t, o = !1) {
+function Oi(f, m, t, o = !1) {
   const v = f.add.container(m, t).setDepth(4).setAlpha(0), a = xt(f, 0, 2, "bones", o ? 84 : 108);
   return a.setFlipX(Math.round(m) % 2 === 0), v.add(a), f.tweens.add({
     targets: v,
@@ -49473,11 +49487,11 @@ function Pi(f, m, t, o = !1) {
     duration: 240
   }), v;
 }
-function Li(f, m, t) {
+function wi(f, m, t) {
   const o = f.add.container(m, t).setDepth(5);
   return o.add(xt(f, 0, 1, "crate", 74).setDisplaySize(74, 70)), o;
 }
-function ce(f, m, t, o, v) {
+function ge(f, m, t, o, v) {
   const a = f.add.container(m, t).setDepth(3);
   for (let s = -o / 2; s < o / 2; s += 280) {
     const e = Math.min(280, o / 2 - s);
@@ -49485,11 +49499,11 @@ function ce(f, m, t, o, v) {
   }
   return a;
 }
-function Fi(f, m, t) {
+function Di(f, m, t) {
   const o = f.add.container(m, t).setDepth(2);
   return o.add(xt(f, 0, 2, "cabin", 1110)), o;
 }
-var Oi = class {
+var Ii = class {
   constructor(f) {
     if (this.scene = f, this.route = f.map.route, this.objects = [], this.seals = [], this.elapsed = 0, this.flags = new Set(f.routeRestore?.flags || []), this.visited = /* @__PURE__ */ new Set(), this.lastSafe = {
       x: f.map.introX,
@@ -49687,7 +49701,138 @@ var Oi = class {
     const h = n(m.x, m.y);
     o.fillStyle(16777215, 1).fillCircle(h.x, h.y, 3.5);
   }
-}, se = {
+}, Ut = {
+  "mini-shield": {
+    file: "guardian-shield-v2.webp",
+    height: 260,
+    bodyWidth: 78
+  },
+  "mini-quarry": {
+    file: "guardian-quarry-v2.webp",
+    height: 276,
+    bodyWidth: 82
+  },
+  "mini-core": {
+    file: "guardian-core-v2.webp",
+    height: 208,
+    bodyWidth: 90
+  }
+};
+var le = 460 / 512, re = (f) => Math.max(0, Math.min(1, f));
+function Bi(f, m, t = 0) {
+  if (!f.alive) return {
+    frame: 11,
+    phase: "dead",
+    progress: 1
+  };
+  if (m < f.hurtUntil) return {
+    frame: 9,
+    phase: "hurt",
+    progress: 0
+  };
+  if (f.cyclePhase === "landing" || f.cyclePhase === "rest") return {
+    frame: 10,
+    phase: f.cyclePhase,
+    progress: 0
+  };
+  if (f.state === "windup" && f.miniMove) {
+    const o = f.miniMove, v = f.attackVariant === 1;
+    return m < f.hitAt ? {
+      frame: v ? 6 : 3,
+      phase: "windup",
+      progress: re(1 - (f.hitAt - m) / o.warning)
+    } : m < f.hitAt + (o.activeMs || 130) ? {
+      frame: v ? 7 : 4,
+      phase: "strike",
+      progress: re((m - f.hitAt) / (o.activeMs || 130))
+    } : {
+      frame: v ? 8 : 5,
+      phase: "recovery",
+      progress: re((m - f.hitAt - (o.activeMs || 130)) / (o.recoveryMs || 440))
+    };
+  }
+  return f.state === "run" || Math.abs(f.body.body.velocity.x) > 18 ? {
+    frame: [
+      1,
+      0,
+      2,
+      0
+    ][Math.floor(t / 28) % 4],
+    phase: "run",
+    progress: 0
+  } : {
+    frame: 0,
+    phase: "idle",
+    progress: 0
+  };
+}
+var Ni = class {
+  constructor(f, m, t, o) {
+    this.scene = f, this.id = o, this.config = Ut[o], this.texture = `guardian-${o}`, this.baseScale = this.config.height / 440, this.image = f.add.image(m, t, this.texture, 0).setOrigin(0.5, le).setScale(this.baseScale).setDepth(11), this.ghost = f.add.image(m, t, this.texture, 0).setOrigin(0.5, le).setScale(this.baseScale).setDepth(10.9).setVisible(!1), this.object = this.image, this.state = "idle", this.frame = 0, this.facing = 1, this.travel = 0, this.motionTime = 0, this.lastTime = null, this.blendAt = -1e3, this.lean = 0, this.previousVelocity = 0, this.dying = !1;
+  }
+  setState(f) {
+    this.state = f, f === "hurt" && this.showFrame(9, "hurt");
+  }
+  showFrame(f, m) {
+    if (f === this.frame) return;
+    const t = ![
+      "strike",
+      "hurt",
+      "dead"
+    ].includes(m);
+    this.ghost.setFrame(this.frame).setVisible(t), this.blendAt = t ? this.motionTime : -1e3, this.frame = f, this.image.setFrame(f);
+  }
+  sync(f, m, t, o, v) {
+    if (this.dying || !v) return;
+    const a = this.lastTime === null ? 0 : Math.min(34, Math.max(0, o - this.lastTime));
+    this.lastTime = o, this.motionTime += a, this.facing = t || this.facing;
+    const s = v.body.body.velocity.x;
+    this.travel += Math.abs(s) * a / 1e3;
+    const e = Bi(v, o, this.travel);
+    this.showFrame(e.frame, e.phase);
+    let i = 0, r = 0, n = 0;
+    if (e.phase === "windup")
+      i = -this.facing * 5 * e.progress, r = 3 * e.progress, n = -this.facing * e.progress;
+    else if (e.phase === "strike") i = this.facing * 9 * Math.sin(Math.PI * e.progress);
+    else if (e.phase === "run") {
+      r = -Math.abs(Math.sin(this.travel / 18)) * 2;
+      const l = Math.max(-2, Math.min(2, s / 120 + (s - this.previousVelocity) / 80));
+      this.lean += (l - this.lean) * 0.2, n = this.lean;
+    } else e.phase === "idle" && (r = Math.sin(this.motionTime / 350) * 0.8);
+    this.previousVelocity = s, this.image.setPosition(f + i, m + r).setFlipX(this.facing < 0).setAngle(n);
+    const h = Math.max(0, 1 - (this.motionTime - this.blendAt) / 75);
+    this.ghost.setPosition(this.image.x, this.image.y).setFlipX(this.image.flipX).setAngle(n).setAlpha(h * 0.3).setVisible(h > 0);
+  }
+  flash(f = 90) {
+    this.image.setTint(16777215), this.image.setTintMode?.(1), this.scene.time.delayedCall(f, () => {
+      this.image.active && (this.image.clearTint(), this.image.setTintMode?.(0));
+    });
+  }
+  fadeDeath(f, m = this.image.y) {
+    this.dying = !0, this.ghost.setVisible(!1), this.scene.tweens.killTweensOf(this.image), this.image.clearTint().setFrame(10).setAngle(0), this.scene.tweens.add({
+      targets: this.image,
+      y: m,
+      duration: 210,
+      ease: "Quad.In",
+      onComplete: () => {
+        this.image.setFrame(11), this.scene.tweens.add({
+          targets: this.image,
+          alpha: 0,
+          delay: 170,
+          duration: 260,
+          onComplete: f
+        });
+      }
+    });
+  }
+  destroy() {
+    this.ghost.destroy(), this.image.destroy();
+  }
+};
+function Gi(f, m, t, o, v) {
+  return f.add.image(t, o, `guardian-${m}`, 11).setOrigin(0.5, le).setScale(Ut[m].height / 440).setFlipX(v < 0).setDepth(3).setAlpha(0.72);
+}
+var ae = {
   airMs: 1e4,
   restMs: 4e3
 }, Mt = {
@@ -49698,10 +49843,10 @@ var Oi = class {
   blastRadius: 610,
   blastHpRatio: 0.1
 };
-function pe(f) {
+function xe(f) {
   return f.alive && f.phase === 1 && !f.phaseTransitioning && (f.hp < f.maxHp * Mt.phaseRatio || f.summonWavesStarted >= Mt.summonWaves && !f.summonPending && !f.summonedAdds.some((m) => m.alive));
 }
-function re(f, m) {
+function ne(f, m) {
   return 1 - Math.pow(1 - m, Math.min(50, Math.max(0, f)) / (1e3 / 60));
 }
 var Lt = {
@@ -49725,29 +49870,33 @@ var Lt = {
   sniperSpeed: 1e3,
   sniperRecoveryMs: 650
 };
-function wi(f, m, t) {
+function bi(f, m, t) {
   const o = t.x - m.x, v = t.y - m.y, a = o * o + v * v, s = a ? Math.max(0, Math.min(1, ((f.x - m.x) * o + (f.y - m.y) * v) / a)) : 0;
   return Math.hypot(f.x - m.x - o * s, f.y - m.y - v * s);
 }
-function ae(f, m = {}) {
+function oe(f, m = {}) {
   return Math.max(250, f.skillCooldownMs - (m.skillCooldownReductionMs || 0));
 }
-function Di(f, m) {
+function Ui(f, m) {
   return Math.min(m, f + 30);
 }
-var me = 14957391, Ii = 5576995, ge = 16774373;
+var ye = 14957391, zi = 5576995, Te = 16774373;
 function yt(f, m, t) {
   return Math.max(m, Math.min(t, f));
 }
 function Gt(f, m) {
   return Math.hypot(f.x - m.x, f.y - m.y);
 }
-var Bi = class extends ut.Scene {
+var Vi = class extends ut.Scene {
   constructor() {
     super("BootScene");
   }
   preload() {
-    Object.entries(Ai).forEach(([t, o]) => this.load.image(`prop-${t}`, `./assets/props/${o}`)), [
+    Object.entries(Ut).forEach(([t, o]) => this.load.spritesheet(`guardian-${t}`, `./assets/props/${o.file}`, {
+      frameWidth: 512,
+      frameHeight: 512,
+      endFrame: 11
+    })), this.load.image("guardian-core-shot", "./assets/props/guardian-core-shot-v2.webp"), Object.entries(Pi).forEach(([t, o]) => this.load.image(`prop-${t}`, `./assets/props/${o}`)), [
       "hover",
       "attack",
       "rest"
@@ -49812,12 +49961,12 @@ var Bi = class extends ut.Scene {
       window.__friendFightersPendingRun = null, this.scene.start("FightScene", m);
     }
   }
-}, Ni = class extends ut.Scene {
+}, Yi = class extends ut.Scene {
   constructor() {
     super("FightScene");
   }
   init(f = {}) {
-    this.heroId = f.heroId === "b" ? "b" : "a", this.heroData = Ci[this.heroId], this.mapIndex = yt(Number(f.mapIndex) || 0, 0, ne.length - 1), this.map = ne[this.mapIndex], this.bossCheckpoint = this.map.bossZone && f.bossCheckpoint === this.map.bossZone.boss ? f.bossCheckpoint : null, this.miniCheckpoint = this.map.route.minis.some((m) => m.id === f.miniCheckpoint) ? f.miniCheckpoint : null, this.routeRestore = (this.bossCheckpoint || this.miniCheckpoint) && f.routeProgress?.mapId === this.map.id ? f.routeProgress : null, this.carry = {
+    this.heroId = f.heroId === "b" ? "b" : "a", this.heroData = Mi[this.heroId], this.mapIndex = yt(Number(f.mapIndex) || 0, 0, he.length - 1), this.map = he[this.mapIndex], this.bossCheckpoint = this.map.bossZone && f.bossCheckpoint === this.map.bossZone.boss ? f.bossCheckpoint : null, this.miniCheckpoint = this.map.route.minis.some((m) => m.id === f.miniCheckpoint) ? f.miniCheckpoint : null, this.routeRestore = (this.bossCheckpoint || this.miniCheckpoint) && f.routeProgress?.mapId === this.map.id ? f.routeProgress : null, this.carry = {
       maxHpBonus: f.carry?.maxHpBonus || 0,
       attackMultiplier: f.carry?.attackMultiplier || 1,
       slowUntil: f.carry?.slowUntil || 0,
@@ -49826,12 +49975,12 @@ var Bi = class extends ut.Scene {
     }, this.incomingHp = Number.isFinite(f.hp) ? f.hp : null;
   }
   create() {
-    this.soundBus = window.__friendFightersSoundBus || new Ti(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new yi(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.dialogueQueue = [], this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.physics.world.resume(), this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
+    this.soundBus = window.__friendFightersSoundBus || new Ei(), window.__friendFightersSoundBus = this.soundBus, this.inputManager = new Ci(this), this.inputManager.setEnabled(!1), this.events.once("shutdown", () => this.inputManager.destroy()), this.dialogueActive = !1, this.dialogueQueue = [], this.manualPaused = !1, this.gameOver = !1, this.physicsPauseReasons = /* @__PURE__ */ new Set(), this.combatPauseSnapshot = null, this.time.paused = !1, this.physics.world.resume(), this.tweens.setGlobalTimeScale(1), this.hitStopRunning = !1, this.enemies = [], this.projectiles = [], this.crates = [], this.pickups = [], this.hazards = [], this.bones = [], this.activeLock = null, this.gates = [], this.boss = null, this.bossTriggered = !1, this.bossBattleStarted = !1, this.bossDefeated = !1, this.merchantVisited = !1, this.shopChosen = !!this.carry.selectedItem, this.cabinInside = !1, this.transitioning = !1, this.waveState = {
       triggered: !1,
       index: -1,
       waiting: !1,
       complete: !1
-    }, this.laser = null, this.physics.world.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.createBackground(), this.createTerrain(), this.traversal = new Oi(this), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0.1, -145, 155), this.cameras.main.setBackgroundColor("#08090d"), this.bossCheckpoint ? (this.restoreBossCheckpoint(), this.setObjective("Boss 战前检查点 · 向右重新挑战"), this.time.delayedCall(250, () => this.beginControl())) : this.miniCheckpoint ? (this.routeRestore?.waveComplete && (this.waveState = {
+    }, this.laser = null, this.physics.world.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.createBackground(), this.createTerrain(), this.traversal = new Ii(this), this.createPlayer(), this.createHud(), this.physics.add.collider(this.player.body, this.solids), this.cameras.main.setBounds(0, this.map.route.top, this.map.width, this.map.route.bottom - this.map.route.top), this.cameras.main.startFollow(this.player.body, !1, 0.095, 0.1, -145, 155), this.cameras.main.setBackgroundColor("#08090d"), this.bossCheckpoint ? (this.restoreBossCheckpoint(), this.setObjective("Boss 战前检查点 · 向右重新挑战"), this.time.delayedCall(250, () => this.beginControl())) : this.miniCheckpoint ? (this.routeRestore?.waveComplete && (this.waveState = {
       triggered: !0,
       index: this.map.waveZone.waves.length - 1,
       waiting: !1,
@@ -49885,10 +50034,10 @@ L：原地格挡 / 带方向闪避`, {
   createTerrain() {
     this.solids = this.physics.add.staticGroup();
     for (const f of this.map.route.floors)
-      this.solids.create((f.left + f.right) / 2, f.y + 64, "pixel").setDisplaySize(f.right - f.left, 128).setAlpha(1e-3).refreshBody(), ce(this, (f.left + f.right) / 2, f.y, f.right - f.left, this.map.id);
+      this.solids.create((f.left + f.right) / 2, f.y + 64, "pixel").setDisplaySize(f.right - f.left, 128).setAlpha(1e-3).refreshBody(), ge(this, (f.left + f.right) / 2, f.y, f.right - f.left, this.map.id);
     for (const f of this.map.terrain)
       f.type === "platform" && this.createPlatform(f), f.type === "crate" && this.createCrate(f.x), f.type === "rock" && this.createRockHazard(f);
-    this.mapIndex === 1 && (this.cabin = Fi(this, (this.map.cabin.doorIn + this.map.cabin.doorOut) / 2, 590), this.add.text(5420, 558, "进入", {
+    this.mapIndex === 1 && (this.cabin = Di(this, (this.map.cabin.doorIn + this.map.cabin.doorOut) / 2, 590), this.add.text(5420, 558, "进入", {
       fontFamily: "sans-serif",
       fontSize: "18px",
       color: "#ffe0a0",
@@ -49910,7 +50059,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   createPlatform(f) {
     const m = this.solids.create(f.x, f.y + 11, "pixel");
-    m.setDisplaySize(f.width, 24).setAlpha(1e-3).refreshBody(), m.body.checkCollision.down = !1, m.body.checkCollision.left = !1, m.body.checkCollision.right = !1, ce(this, f.x, f.y, f.width, this.map.id);
+    m.setDisplaySize(f.width, 24).setAlpha(1e-3).refreshBody(), m.body.checkCollision.down = !1, m.body.checkCollision.left = !1, m.body.checkCollision.right = !1, ge(this, f.x, f.y, f.width, this.map.id);
   }
   createCrate(f) {
     const m = this.solids.create(f, 556, "pixel");
@@ -49919,7 +50068,7 @@ L：原地格挡 / 带方向闪避`, {
       y: 590,
       hp: 28,
       body: m,
-      visual: Li(this, f, 590),
+      visual: wi(this, f, 590),
       alive: !0
     });
   }
@@ -49936,7 +50085,7 @@ L：原地格挡 / 带方向闪避`, {
   createPlayer() {
     const f = this.heroData.maxHp + this.carry.maxHpBonus, m = this.map.route.minis.find((s) => s.id === this.miniCheckpoint), t = this.bossCheckpoint ? this.map.bossZone.trigger - 120 : m?.entry.x ?? this.map.introX, o = this.bossCheckpoint ? 515 : m?.entry.y ?? 515, v = this.physics.add.sprite(t, o, "pixel");
     v.setAlpha(1e-3).setDisplaySize(58, 150).setCollideWorldBounds(!0), v.setGravityY(1520).setMaxVelocity(760, 920).setDragX(1400);
-    const a = new Mi(this, v.x, o + 75, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
+    const a = new Li(this, v.x, o + 75, this.heroData.texture, `hero-${this.heroId}`, this.heroId === "b" ? 208 : 212, 8);
     this.player = {
       body: v,
       visual: a,
@@ -49957,7 +50106,7 @@ L：原地格挡 / 带方向闪避`, {
       dashHit: /* @__PURE__ */ new Set(),
       lastAfterimage: 0,
       hurtTintUntil: 0
-    }, window.friendFightersUI?.setSkillCooldown?.(0, ae(this.heroData, this.carry));
+    }, window.friendFightersUI?.setSkillCooldown?.(0, oe(this.heroData, this.carry));
   }
   createHud() {
     this.bossNameLabel = null, this.hud = this.add.graphics().setScrollFactor(0).setDepth(90), this.worldHud = this.add.graphics().setDepth(40), this.speedLines = this.add.graphics().setScrollFactor(0).setDepth(80), this.heroLabel = this.add.text(30, 18, `${this.heroData.title} · ${this.heroData.name}`, {
@@ -50025,7 +50174,7 @@ L：原地格挡 / 带方向闪避`, {
       this.dialogueActive = !1, this.setPhysicsPause("dialogue", !1), !this.manualPaused && !this.gameOver && !this.physicsPauseReasons.has("shop") && this.inputManager.setEnabled(!0);
       return;
     }
-    const { key: m, onComplete: t, valid: o } = f, v = Ei[m];
+    const { key: m, onComplete: t, valid: o } = f, v = Ri[m];
     if (!v) {
       t?.(), this.advanceStoryQueue();
       return;
@@ -50041,7 +50190,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   setPhysicsPause(f, m) {
     m ? this.physicsPauseReasons.add(f) : this.physicsPauseReasons.delete(f), this.physicsPauseReasons.size > 0 ? this.physics.world.pause() : this.physics.world.resume();
-    const t = [...this.physicsPauseReasons].some((o) => o !== "hitstop");
+    const t = this.physicsPauseReasons.size > 0;
     if (t && !this.combatPauseSnapshot)
       this.combatPauseSnapshot = this.captureCombatDeadlines(), this.time.paused = !0, this.tweens.setGlobalTimeScale(0);
     else if (!t && this.combatPauseSnapshot) {
@@ -50122,7 +50271,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   update(f, m) {
     const t = Math.min(m, 34) / 1e3;
-    this.inputManager.poll(), this.drawHud(f), !(this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) && (this.updatePlayer(f, m), !(this.dialogueActive || this.gameOver) && (this.traversal?.update(m), this.updateEnemies(f), this.updateBoss(f, t), !(this.dialogueActive || this.gameOver) && (this.updateProjectiles(f, t), !(this.dialogueActive || this.gameOver) && (this.updateHazards(f, t), this.updatePickups(f), this.updateStageFlow(f), this.enforceArenaLock(), this.drawWorldHud()))));
+    this.inputManager.poll(), this.drawHud(f), !(this.dialogueActive || this.manualPaused || this.gameOver || this.hitStopRunning) && (this.updatePlayer(f, m), !(this.dialogueActive || this.gameOver || this.hitStopRunning) && (this.traversal?.update(m), this.updateEnemies(f), this.updateBoss(f, t), !(this.dialogueActive || this.gameOver) && (this.updateProjectiles(f, t), !(this.dialogueActive || this.gameOver) && (this.updateHazards(f, t), this.updatePickups(f), this.updateStageFlow(f), this.enforceArenaLock(), this.drawWorldHud()))));
   }
   updatePlayer(f, m = 1e3 / 60) {
     const t = this.player, o = t.body, v = this.inputManager.axisX(), a = o.body.blocked.down || o.body.touching.down;
@@ -50136,7 +50285,7 @@ L：原地格挡 / 带方向闪避`, {
       return;
     }
     if (t.state === "attack") {
-      this.inputManager.justPressed("attack") && f > t.attackHitAt && (t.attackQueued = !0), !t.attackDidHit && f >= t.attackHitAt && (t.attackDidHit = !0, this.performPlayerAttack(t.combo === 2)), o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, re(m, a ? 0.25 : 0.08))), f >= t.stateUntil && (t.attackQueued ? this.startPlayerAttack(f, !0) : this.setPlayerState(a ? Math.abs(v) ? "run" : "idle" : "jump")), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x);
+      this.inputManager.justPressed("attack") && f > t.attackHitAt && (t.attackQueued = !0), !t.attackDidHit && f >= t.attackHitAt && (t.attackDidHit = !0, this.performPlayerAttack(t.combo === 2)), o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, ne(m, a ? 0.25 : 0.08))), f >= t.stateUntil && (t.attackQueued ? this.startPlayerAttack(f, !0) : this.setPlayerState(a ? Math.abs(v) ? "run" : "idle" : "jump")), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x);
       return;
     }
     if (t.state === "skill") {
@@ -50162,8 +50311,8 @@ L：原地格挡 / 带方向闪避`, {
     if (v !== 0) {
       t.facing = v;
       const s = this.carry.slowUntil > Date.now() ? 0.72 : 1, e = v * t.speed * s;
-      o.setVelocityX(ut.Math.Linear(o.body.velocity.x, e, re(m, a ? 0.31 : 0.17)));
-    } else a && o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, re(m, 0.36)));
+      o.setVelocityX(ut.Math.Linear(o.body.velocity.x, e, ne(m, a ? 0.31 : 0.17)));
+    } else a && o.setVelocityX(ut.Math.Linear(o.body.velocity.x, 0, ne(m, 0.36)));
     a ? Math.abs(o.body.velocity.x) > 48 ? this.setPlayerState("run") : this.setPlayerState("idle") : this.setPlayerState("jump"), t.visual.sync(o.x, o.y + 75, t.facing, f, o.body.velocity.x), this.updateSpeedLines(f);
   }
   setPlayerState(f) {
@@ -50184,7 +50333,7 @@ L：原地格挡 / 带方向闪避`, {
     v = this.traversal?.attack(m, t, o) || v, v && this.impactFeedback(m.body.x + m.facing * t, m.body.y, f);
   }
   startPlayerSkill(f) {
-    const m = this.player, t = ae(this.heroData, this.carry);
+    const m = this.player, t = oe(this.heroData, this.carry);
     m.skillReadyAt = f + t, window.friendFightersUI?.setSkillCooldown?.(t, t), m.stateUntil = f + (this.heroId === "a" ? 560 : 430), m.dashHit.clear(), this.setPlayerState("skill"), this.soundBus.play("skill"), this.heroId === "a" ? this.time.delayedCall(145, () => {
       this.player?.body?.active && this.spawnProjectile({
         owner: "player",
@@ -50273,12 +50422,12 @@ L：原地格挡 / 带方向闪避`, {
       ...f.miniBoss,
       height: Math.round(o.height * 1.3)
     } : o, a = f.floorY ?? 590, s = t ? f.y ?? a - 260 : a - v.height / 2, e = this.physics.add.sprite(f.x, s, "pixel");
-    e.setAlpha(1e-3).setDisplaySize(m ? 62 : 56, v.height), e.setMaxVelocity(520, 880), t ? (e.body.setAllowGravity(!1), e.setImmovable(!1), e.setGravityY(1520), e.body.checkCollision.up = !1, this.physics.add.collider(e, this.solids)) : (e.setGravityY(1520), this.physics.add.collider(e, this.solids));
+    e.setAlpha(1e-3).setDisplaySize(f.miniBoss ? Ut[f.miniBoss.id].bodyWidth : m ? 62 : 56, v.height), e.setMaxVelocity(520, 880), t ? (e.body.setAllowGravity(!1), e.setImmovable(!1), e.setGravityY(1520), e.body.checkCollision.up = !1, this.physics.add.collider(e, this.solids)) : (e.setGravityY(1520), this.physics.add.collider(e, this.solids));
     const i = {
       ...v,
       type: f.type,
       body: e,
-      visual: new Ri(this, e.x, e.y + v.height / 2, f.type, f.miniBoss ? 1.3 : 1),
+      visual: f.miniBoss ? new Ni(this, e.x, e.y + v.height / 2, f.miniBoss.id) : new Fi(this, e.x, e.y + v.height / 2, f.type),
       miniBoss: f.miniBoss || null,
       floorY: a,
       attackCycle: 0,
@@ -50297,7 +50446,7 @@ L：原地格挡 / 带方向闪避`, {
       telegraph: null,
       id: `${f.type}-${this.time.now}-${Math.random()}`,
       cyclePhase: m ? "air" : null,
-      cycleUntil: m ? this.time.now + se.airMs : 0
+      cycleUntil: m ? this.time.now + ae.airMs : 0
     };
     return this.enemies.push(i), this.tweens.add({
       targets: i.visual.object,
@@ -50320,28 +50469,31 @@ L：原地格挡 / 带方向闪避`, {
           t.body.setVelocityY((s - t.body.y) * 2.1);
         }
         if (f < t.hurtUntil) {
-          t.visual.setState("hurt"), t.visual.sync(t.body.x, t.body.y + t.height / 2, t.facing, f);
+          t.visual.setState("hurt"), t.visual.sync(t.body.x, t.body.y + t.height / 2, t.facing, f, t);
           continue;
         }
-        if (t.state === "windup")
-          t.body.setVelocityX(0), t.visual.setState("attack"), !t.didHit && f >= t.hitAt && (t.didHit = !0, this.resolveEnemyAttack(t)), f >= t.stateUntil && (t.state = "idle", t.telegraph?.destroy(), t.telegraph = null);
-        else {
+        if (t.state === "windup") {
+          const s = t.miniBoss && f >= t.hitAt && f < t.hitAt + (t.miniMove?.activeMs || 130);
+          t.body.setVelocityX(s ? t.attackFacing * (t.miniMove?.lunge || 0) : 0), t.visual.setState("attack"), !t.didHit && f >= t.hitAt && (t.didHit = !0, this.resolveEnemyAttack(t)), f >= t.stateUntil && (t.state = "idle", t.telegraph?.destroy(), t.telegraph = null);
+        } else {
           const s = t.type === "ranged" || t.type.startsWith("berry");
           a > (s ? t.range * 0.82 : t.range) ? (t.state = "run", t.body.setVelocityX(t.facing * t.speed), t.visual.setState("run")) : s && a < 210 ? (t.state = "run", t.body.setVelocityX(-t.facing * t.speed * 0.75), t.visual.setState("run")) : (t.state = "idle", t.body.setVelocityX(ut.Math.Linear(t.body.body.velocity.x, 0, 0.32)), t.visual.setState("idle")), f >= t.nextAttack && a <= t.range && Math.abs(o.body.y - t.body.y) < (s ? 300 : 140) && this.startEnemyAttack(t, f);
         }
-        t.visual.sync(t.body.x, t.body.y + t.height / 2, t.facing, f);
+        t.visual.sync(t.body.x, t.body.y + t.height / 2, t.facing, f, t);
       }
     }
   }
   updateBerryCycle(f, m) {
-    return f.cyclePhase === "air" && m >= f.cycleUntil && (f.cyclePhase = "landing", f.state = "idle", f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null, f.body.body.setAllowGravity(!0), f.body.setVelocity(0, 180), this.projectiles.filter((t) => t.active && t.sourceEnemy === f).forEach((t) => this.destroyProjectile(t))), f.cyclePhase === "landing" ? (f.body.setVelocityX(0), (f.body.body.blocked.down || f.body.body.touching.down) && (f.cyclePhase = "rest", f.cycleUntil = m + se.restMs, f.body.setVelocity(0, 0))) : f.cyclePhase === "rest" && m >= f.cycleUntil && (f.cyclePhase = "air", f.cycleUntil = m + se.airMs, f.nextAttack = m + 850, f.state = "idle", f.body.body.setAllowGravity(!1), f.body.setVelocity(0, -260)), f.cyclePhase === "air" ? !1 : (f.body.setVelocityX(0), f.visual.setState(m < f.hurtUntil ? "hurt" : f.cyclePhase === "rest" ? "rest" : "idle"), f.visual.sync(f.body.x, f.body.y + f.height / 2, f.facing, m), !0);
+    return f.cyclePhase === "air" && m >= f.cycleUntil && (f.cyclePhase = "landing", f.state = "idle", f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null, f.body.body.setAllowGravity(!0), f.body.setVelocity(0, 180), this.projectiles.filter((t) => t.active && t.sourceEnemy === f).forEach((t) => this.destroyProjectile(t))), f.cyclePhase === "landing" ? (f.body.setVelocityX(0), (f.body.body.blocked.down || f.body.body.touching.down) && (f.cyclePhase = "rest", f.cycleUntil = m + ae.restMs, f.body.setVelocity(0, 0))) : f.cyclePhase === "rest" && m >= f.cycleUntil && (f.cyclePhase = "air", f.cycleUntil = m + ae.airMs, f.nextAttack = m + 850, f.state = "idle", f.body.body.setAllowGravity(!1), f.body.setVelocity(0, -260)), f.cyclePhase === "air" ? !1 : (f.body.setVelocityX(0), f.visual.setState(m < f.hurtUntil ? "hurt" : f.cyclePhase === "rest" ? "rest" : "idle"), f.visual.sync(f.body.x, f.body.y + f.height / 2, f.facing, m, f), !0);
   }
   startEnemyAttack(f, m) {
     f.state = "windup", f.didHit = !1;
-    const t = f.type === "heavy", o = f.type === "ranged" || f.type.startsWith("berry"), v = f.miniBoss?.attacks[f.attackCycle++ % f.miniBoss.attacks.length];
+    const t = f.type === "heavy", o = f.type === "ranged" || f.type.startsWith("berry");
+    f.attackVariant = f.miniBoss ? f.attackCycle++ % f.miniBoss.attacks.length : 0;
+    const v = f.miniBoss?.attacks[f.attackVariant];
     f.miniMove = v, f.attackFacing = f.facing;
     const a = v?.warning ?? (t ? 520 : o ? 430 : 330);
-    f.hitAt = m + a, f.stateUntil = f.hitAt + (v ? 440 : 240), f.nextAttack = Math.max(m + f.cooldown, f.stateUntil + 250), f.body.setVelocityX(0);
+    f.hitAt = m + a, f.stateUntil = f.hitAt + (v ? (v.activeMs || 130) + (v.recoveryMs || 440) : 240), f.nextAttack = Math.max(m + f.cooldown, f.stateUntil + 250), f.body.setVelocityX(0);
     const s = f.type.startsWith("berry") ? 16732050 : 16757852;
     f.telegraph = this.add.arc(f.body.x + f.facing * (o ? 44 : 68), f.body.y + f.height / 2 - 12, t ? 64 : 42, 205, 335, !1, s, 0.25).setStrokeStyle(4, s, 0.95).setDepth(8), this.tweens.add({
       targets: f.telegraph,
@@ -50356,17 +50508,21 @@ L：原地格挡 / 带方向闪避`, {
     if (f.miniMove) {
       const t = f.miniMove;
       if (f.moveLabel?.destroy(), f.moveLabel = null, t.volley) {
-        const o = Math.atan2(this.player.body.y - f.body.y, this.player.body.x - f.body.x);
-        for (const v of t.volley) this.spawnProjectile({
+        const o = {
+          x: f.body.x + f.attackFacing * 70,
+          y: f.body.y + 20
+        }, v = Math.atan2(this.player.body.y - o.y, this.player.body.x - o.x);
+        for (const a of t.volley) this.spawnProjectile({
           owner: "enemy",
           sourceEnemy: f,
           type: "berry",
-          x: f.body.x,
-          y: f.body.y,
-          vx: Math.cos(o + v) * t.speed,
-          vy: Math.sin(o + v) * t.speed,
+          x: o.x,
+          y: o.y,
+          vx: Math.cos(v + a) * t.speed,
+          vy: Math.sin(v + a) * t.speed,
           damage: t.damage,
           life: 2300,
+          texture: "guardian-core-shot",
           cell: 4,
           height: 42,
           facing: f.attackFacing
@@ -50374,7 +50530,7 @@ L：原地格挡 / 带方向闪避`, {
         this.soundBus.play("shot");
       } else {
         const o = this.player.body.x - f.body.x;
-        o * f.attackFacing >= -20 && Math.abs(o) < t.range && Math.abs(this.player.body.y - f.body.y) < (t.knockdown ? 125 : 150) && this.damagePlayer(t.damage, f.body.x, t.knockdown ? 490 : 320, !!t.knockdown), this.spawnSheetFx(f.body.x + f.attackFacing * 95, f.body.y, 2, t.knockdown ? 225 : 165, f.attackFacing), this.soundBus.play(t.knockdown ? "heavyHit" : "swing");
+        o * f.attackFacing >= -20 && Math.abs(o) < t.range && Math.abs(this.player.body.y - f.body.y) < (t.knockdown ? 125 : 150) && this.damagePlayer(t.damage, f.body.x, t.knockdown ? 490 : 320, !!t.knockdown) && this.impactFeedback(this.player.body.x, this.player.body.y, !!t.knockdown, !1), this.spawnSheetFx(f.body.x + f.attackFacing * 95, f.body.y, 2, t.knockdown ? 225 : 165, f.attackFacing), this.soundBus.play(t.knockdown ? "heavyHit" : "swing");
       }
       return;
     }
@@ -50403,12 +50559,12 @@ L：原地格挡 / 带方向闪避`, {
     if (!f.alive) return;
     f.hp -= m;
     const v = !f.miniBoss || this.time.now >= f.nextFlinchAt;
-    f.hurtUntil = this.time.now + (f.miniBoss ? 90 : o ? 260 : 170), v && (f.state = "hurt", f.nextFlinchAt = this.time.now + 1250), f.body.setVelocityX(t * (f.miniBoss ? 0.22 : 1)), f.type.startsWith("berry") || f.body.setVelocityY(-90), f.visual.setState("hurt"), f.visual.flash(), v && (f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null), this.soundBus.play("enemyHurt"), f.hp <= 0 && this.killEnemy(f);
+    v && (f.hurtUntil = this.time.now + (f.miniBoss ? 160 : o ? 260 : 170)), v && (f.state = "hurt", f.nextFlinchAt = this.time.now + 1250), f.body.setVelocityX(t * (f.miniBoss ? 0.22 : 1)), f.type.startsWith("berry") || f.body.setVelocityY(-90), v && f.visual.setState("hurt"), f.visual.flash(), v && (f.telegraph?.destroy(), f.telegraph = null, f.moveLabel?.destroy(), f.moveLabel = null), this.soundBus.play("enemyHurt"), f.hp <= 0 && this.killEnemy(f);
   }
   killEnemy(f) {
     f.alive = !1, f.body.disableBody(!0, !0);
     const m = f.body.x, t = f.body.y + f.height / 2, o = this.map.terrain.filter((a) => a.type === "platform" && Math.abs(a.x - m) < a.width / 2 && a.y >= t - 20), v = this.traversal?.floorBelow?.(m, t) ?? Math.min(590, ...o.map((a) => a.y - 1));
-    f.telegraph?.destroy(), f.moveLabel?.destroy(), this.traversal?.onMiniDefeated?.(f), f.visual.fadeDeath(() => f.visual.destroy()), this.time.delayedCall(245, () => this.bones.push(Pi(this, m, v, f.type.startsWith("berry"))));
+    f.telegraph?.destroy(), f.moveLabel?.destroy(), this.traversal?.onMiniDefeated?.(f), f.visual.fadeDeath(() => f.visual.destroy(), v), this.time.delayedCall(f.miniBoss ? 520 : 245, () => this.bones.push(f.miniBoss ? Gi(this, f.miniBoss.id, m, v, f.facing) : Oi(this, m, v, f.type.startsWith("berry"))));
   }
   damagePlayer(f, m, t = 280, o = !1, v = !1) {
     const a = this.player, s = this.time.now;
@@ -50519,7 +50675,7 @@ L：原地格挡 / 带方向闪避`, {
     m.setAlpha(1e-3).setDisplaySize(70, 176).setGravityY(1520).setImmovable(!1), this.physics.add.collider(m, this.solids), this.boss = {
       type: "c",
       body: m,
-      visual: new ve(this, "c", m.x, 590),
+      visual: new me(this, "c", m.x, 590),
       alive: !0,
       hp: 330,
       maxHp: 330,
@@ -50547,7 +50703,7 @@ L：原地格挡 / 带方向闪避`, {
     m.setAlpha(1e-3).setDisplaySize(430, 410).setImmovable(!0), m.body.setAllowGravity(!1), this.physics.add.collider(this.player.body, m), this.boss = {
       type: "d",
       body: m,
-      visual: new ve(this, "d", m.x, 594),
+      visual: new me(this, "d", m.x, 594),
       alive: !0,
       hp: 620,
       maxHp: 620,
@@ -50686,7 +50842,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   updateBossD(f) {
     const m = this.boss;
-    if (m.body.setVelocity(0, 0), pe(m)) {
+    if (m.body.setVelocity(0, 0), xe(m)) {
       this.beginBossPhase();
       return;
     }
@@ -50849,7 +51005,7 @@ L：原地格挡 / 带方向闪避`, {
         this.defeatBoss();
         return;
       }
-      o.firstHurtSpoken || (o.firstHurtSpoken = !0, this.showDialogue(`${o.type}_first_hurt`, void 0, () => this.boss === o && o.alive)), (o.type === "c" && o.hp <= o.maxHp * 0.2 || o.type === "d" && pe(o)) && this.beginBossPhase();
+      o.firstHurtSpoken || (o.firstHurtSpoken = !0, this.showDialogue(`${o.type}_first_hurt`, void 0, () => this.boss === o && o.alive)), (o.type === "c" && o.hp <= o.maxHp * 0.2 || o.type === "d" && xe(o)) && this.beginBossPhase();
     }
   }
   cancelBossPatterns(f) {
@@ -50943,7 +51099,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   transitionToMap(f) {
     this.transitioning || (this.transitioning = !0, this.inputManager.setEnabled(!1), this.player.body.setVelocityX(0), this.cameras.main.fadeOut(430, 8, 7, 12), this.time.delayedCall(470, () => {
-      const m = f > this.mapIndex ? Di(this.player.hp, this.player.maxHp) : this.player.hp;
+      const m = f > this.mapIndex ? Ui(this.player.hp, this.player.maxHp) : this.player.hp;
       this.scene.restart({
         heroId: this.heroId,
         mapIndex: f,
@@ -50967,7 +51123,9 @@ L：原地格挡 / 带方向闪避`, {
       const o = this.projectiles.filter((v) => v.active && v.owner === "boss");
       for (; o.length >= 10; ) this.destroyProjectile(o.shift());
     }
-    const m = this.createFxImage(f.x, f.y, f.cell, f.height, f.facing), t = {
+    const m = f.texture ? this.add.image(f.x, f.y, f.texture).setOrigin(0.5).setDepth(22) : this.createFxImage(f.x, f.y, f.cell, f.height, f.facing);
+    f.texture && m.setScale(f.height / m.height).setFlipX(f.facing < 0);
+    const t = {
       ...f,
       image: m,
       active: !0,
@@ -50993,7 +51151,7 @@ L：原地格挡 / 带方向闪避`, {
         this.boss?.alive && !t.hit.has(this.boss) && f - (t.lastHits.get(this.boss) ?? -1 / 0) >= 200 && Gt(this.bossContactPoint(t), t) < 120 && (t.hit.add(this.boss), t.lastHits.set(this.boss, f), this.hurtBoss(t.damage, Math.sign(t.vx) * 240, !0), this.impactFeedback(t.x, t.y, !0));
         for (const v of this.crates) v.alive && !t.hit.has(v) && Math.abs(v.x - t.x) < 70 && Math.abs(555 - t.y) < 80 && (t.hit.add(v), this.hurtCrate(v, t.damage));
         t.returning && Math.abs(t.x - this.player.body.x) < 58 && this.destroyProjectile(t);
-      } else wi(this.player.body, o, t) < (t.type === "berry" ? 62 : 52) && (this.damagePlayer(t.damage, t.x, 250) && this.impactFeedback(t.x, t.y, !1), this.destroyProjectile(t));
+      } else bi(this.player.body, o, t) < (t.type === "berry" ? 62 : 52) && (this.damagePlayer(t.damage, t.x, 250) && this.impactFeedback(t.x, t.y, !1), this.destroyProjectile(t));
       (f >= t.expiresAt || t.x < -150 || t.x > this.map.width + 150 || t.y < (this.map.route?.top ?? 0) - 150 || t.y > (this.map.route?.bottom ?? 720) + 150) && this.destroyProjectile(t);
     }
     if (this.laser) {
@@ -51100,7 +51258,7 @@ L：原地格挡 / 带方向闪避`, {
   }
   spawnHitParticles(f, m, t, o) {
     for (let v = 0; v < o; v += 1) {
-      const a = this.add.circle(f, m, ut.Math.Between(3, 8), v % 3 === 0 ? ge : t, 0.95).setDepth(34), s = ut.Math.FloatBetween(-Math.PI, Math.PI), e = ut.Math.Between(55, 190);
+      const a = this.add.circle(f, m, ut.Math.Between(3, 8), v % 3 === 0 ? Te : t, 0.95).setDepth(34), s = ut.Math.FloatBetween(-Math.PI, Math.PI), e = ut.Math.Between(55, 190);
       this.tweens.add({
         targets: a,
         x: f + Math.cos(s) * e,
@@ -51145,13 +51303,13 @@ L：原地格挡 / 带方向闪避`, {
   drawHud(f) {
     if (!this.player) return;
     const m = this.player, t = yt(m.hp / m.maxHp, 0, 1);
-    this.hud.clear(), this.hud.fillStyle(526605, 0.82).fillRoundedRect(24, 43, 390, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(24, 43, 390, 30, 8), this.hud.fillStyle(Ii, 1).fillRoundedRect(30, 49, 378, 18, 5), this.hud.fillStyle(me, 1).fillRoundedRect(30, 49, 378 * t, 18, 5), this.hud.fillStyle(16777215, 0.34).fillRect(34, 51, Math.max(0, 370 * t), 3);
+    this.hud.clear(), this.hud.fillStyle(526605, 0.82).fillRoundedRect(24, 43, 390, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(24, 43, 390, 30, 8), this.hud.fillStyle(zi, 1).fillRoundedRect(30, 49, 378, 18, 5), this.hud.fillStyle(ye, 1).fillRoundedRect(30, 49, 378 * t, 18, 5), this.hud.fillStyle(16777215, 0.34).fillRect(34, 51, Math.max(0, 370 * t), 3);
     const o = this.combatPauseSnapshot?.clockTime ?? f, v = Math.max(0, m.skillReadyAt - o);
-    this.skillLabel.setText(v > 0 ? `${this.heroData.skill} · ${Math.ceil(v / 100) / 10}s` : `${this.heroData.skill} · READY`), window.friendFightersUI?.setSkillCooldown?.(v, ae(this.heroData, this.carry));
+    this.skillLabel.setText(v > 0 ? `${this.heroData.skill} · ${Math.ceil(v / 100) / 10}s` : `${this.heroData.skill} · READY`), window.friendFightersUI?.setSkillCooldown?.(v, oe(this.heroData, this.carry));
     const a = this.boss?.alive ? this.boss : this.traversal?.activeMini?.enemy;
     if (a?.alive) {
       const s = yt(a.hp / a.maxHp, 0, 1), e = 430, i = gt - e - 28;
-      this.hud.fillStyle(526605, 0.86).fillRoundedRect(i, 43, e, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(i, 43, e, 30, 8), this.hud.fillStyle(5050396, 1).fillRoundedRect(i + 6, 49, e - 12, 18, 5), this.hud.fillStyle(a.type === "d" ? 15743590 : 14231878, 1).fillRoundedRect(i + 6, 49, (e - 12) * s, 18, 5), this.hud.fillStyle(16777215, 0.3).fillRect(i + 10, 51, Math.max(0, (e - 20) * s), 3), this.hud.fillStyle(ge, 1).fillCircle(i + 8, 28, 2);
+      this.hud.fillStyle(526605, 0.86).fillRoundedRect(i, 43, e, 30, 8), this.hud.lineStyle(2, 15323052, 0.5).strokeRoundedRect(i, 43, e, 30, 8), this.hud.fillStyle(5050396, 1).fillRoundedRect(i + 6, 49, e - 12, 18, 5), this.hud.fillStyle(a.type === "d" ? 15743590 : 14231878, 1).fillRoundedRect(i + 6, 49, (e - 12) * s, 18, 5), this.hud.fillStyle(16777215, 0.3).fillRect(i + 10, 51, Math.max(0, (e - 20) * s), 3), this.hud.fillStyle(Te, 1).fillCircle(i + 8, 28, 2);
       const r = a.miniBoss?.name || (a.type === "c" ? "秦岭杀人兔" : "草莓熊博士 · 机甲");
       this.bossNameLabel || (this.bossNameLabel = this.add.text(gt - 30, 18, r, {
         fontFamily: "sans-serif",
@@ -51166,11 +51324,11 @@ L：原地格挡 / 带方向闪避`, {
     for (const f of this.enemies) {
       if (!f.alive || f.hp >= f.maxHp) continue;
       const m = f.type.startsWith("berry") ? 70 : 82, t = f.body.x - m / 2, o = f.body.y - f.height / 2 - 24;
-      this.worldHud.fillStyle(2755603, 0.85).fillRoundedRect(t, o, m, 8, 3), this.worldHud.fillStyle(me, 1).fillRoundedRect(t + 1, o + 1, (m - 2) * yt(f.hp / f.maxHp, 0, 1), 6, 2);
+      this.worldHud.fillStyle(2755603, 0.85).fillRoundedRect(t, o, m, 8, 3), this.worldHud.fillStyle(ye, 1).fillRoundedRect(t + 1, o + 1, (m - 2) * yt(f.hp / f.maxHp, 0, 1), 6, 2);
     }
   }
 };
-function Gi(f, m, t) {
+function Wi(f, m, t) {
   if (!f) return;
   const o = Math.max(0, m), v = Math.max(0, Math.min(1, 1 - o / Math.max(1, t)));
   f.style.setProperty("--skill-gray", (1 - v).toFixed(3)), f.style.setProperty("--skill-brightness", (0.6 + v * 0.4).toFixed(3)), f.style.setProperty("--skill-angle", `${(v * 360).toFixed(1)}deg`);
@@ -51179,7 +51337,7 @@ function Gi(f, m, t) {
   const s = a ? `技能冷却中，剩余 ${(Math.ceil(o / 100) / 10).toFixed(1)} 秒` : "技能已就绪";
   f.getAttribute("aria-label") !== s && f.setAttribute("aria-label", s);
 }
-function bi(f) {
+function Hi(f) {
   if (!f) return () => {
   };
   const m = (a) => {
@@ -51199,12 +51357,12 @@ function bi(f) {
   };
   return Object.entries(v).forEach(([a, s]) => f.addEventListener(a, s, { passive: !1 })), () => Object.entries(v).forEach(([a, s]) => f.removeEventListener(a, s));
 }
-var Ui = class {
+var Xi = class {
   constructor() {
     this.game = null, this.touchDevice = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0, this.screens = [...document.querySelectorAll(".screen")], this.intro = document.querySelector("#intro-screen"), this.title = document.querySelector("#title-screen"), this.select = document.querySelector("#select-screen"), this.stageCard = document.querySelector("#stage-card"), this.shop = document.querySelector("#shop-screen"), this.result = document.querySelector("#result-screen"), this.pause = document.querySelector("#pause-screen"), this.dialogue = document.querySelector("#dialogue-overlay"), this.dialoguePortraitFrame = document.querySelector(".dialogue-portrait-frame"), this.dialoguePortrait = document.querySelector("#dialogue-portrait"), this.dialogueSpeaker = document.querySelector("#dialogue-speaker"), this.dialogueText = document.querySelector("#dialogue-text"), this.dialogueProgress = document.querySelector("#dialogue-progress"), this.dialogueNext = document.querySelector("#dialogue-next"), this.touchControls = document.querySelector("#touch-controls"), this.skillButton = document.querySelector('#touch-controls [data-action="skill"]'), this.topActions = document.querySelector("#top-actions"), this.dialogueLines = [], this.dialogueIndex = 0, this.dialogueOptions = null, this.introTimers = [], this.bind(), this.playIntro();
   }
   bind() {
-    this.removeTouchGestureGuard = bi(document.querySelector("#game-root")), document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((f) => f.addEventListener("click", () => this.startRun(f.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((f) => {
+    this.removeTouchGestureGuard = Hi(document.querySelector("#game-root")), document.querySelector("#skip-intro")?.addEventListener("click", () => this.finishIntro()), document.querySelector("#start-button")?.addEventListener("click", () => this.showOnly(this.select)), document.querySelector(".back-title")?.addEventListener("click", () => this.showOnly(this.title)), document.querySelectorAll(".fighter-card").forEach((f) => f.addEventListener("click", () => this.startRun(f.dataset.fighter))), document.querySelector("#pause-button")?.addEventListener("click", () => window.friendFightersPause?.()), document.querySelector("#resume-button")?.addEventListener("click", () => window.friendFightersResume?.()), document.querySelector("#retry-button")?.addEventListener("click", () => window.friendFightersRetry?.()), document.querySelector("#home-button")?.addEventListener("click", () => this.returnHome()), document.querySelectorAll("[data-item]").forEach((f) => {
       f.addEventListener("click", () => window.friendFightersChooseItem?.(f.dataset.item)), [
         "pointerenter",
         "pointerdown",
@@ -51260,7 +51418,7 @@ var Ui = class {
     this.topActions.classList.toggle("visible", f), this.touchControls.classList.toggle("visible", f && this.touchDevice);
   }
   setSkillCooldown(f, m) {
-    Gi(this.skillButton, f, m);
+    Wi(this.skillButton, f, m);
   }
   showStage(f, m, t) {
     const o = this.stageCard.querySelector("small"), v = this.stageCard.querySelector("h2"), a = this.stageCard.querySelector("p");
@@ -51324,9 +51482,9 @@ var Ui = class {
   returnHome() {
     this.result.classList.remove("active"), this.pause.classList.remove("active"), this.dialogue.classList.remove("active"), this.setGameplayVisible(!1), this.game && (this.game.scene.stop("FightScene"), this.game.scene.start("BootScene")), this.showOnly(this.title);
   }
-}, ui = new Ui();
-window.friendFightersUI = ui;
-var zi = {
+}, vi = new Xi();
+window.friendFightersUI = vi;
+var Ki = {
   type: ut.AUTO,
   parent: "game",
   width: gt,
@@ -51373,6 +51531,6 @@ var zi = {
     min: 30,
     smoothStep: !0
   },
-  scene: [Bi, Ni]
-}, Vi = new ut.Game(zi);
-ui.setGame(Vi);
+  scene: [Vi, Yi]
+}, Zi = new ut.Game(Ki);
+vi.setGame(Zi);
